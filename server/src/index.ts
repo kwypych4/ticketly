@@ -1,13 +1,18 @@
-import express, { Express, Request, Response } from 'express';
+import { expressStart, mongoConnect } from 'config';
+import * as dotenv from 'dotenv';
+import { HttpError } from 'error';
+import { NextFunction, Request, Response } from 'express';
+import { logger } from 'logger';
+import { routes } from 'routes';
 
-const app: Express = express();
+dotenv.config();
 
-const port = 5005;
+mongoConnect();
+const app = expressStart();
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello world');
-});
+app.use('/api', routes);
 
-app.listen(port, () => {
-  console.log('Running');
+app.use((err: HttpError, req: Request, res: Response, _: NextFunction) => {
+  logger.error(err.stack);
+  res.status(err.statusCode || 500).json({ error: err.message });
 });
