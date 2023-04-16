@@ -1,10 +1,8 @@
 import moment from 'moment';
 import mongoose, { Schema } from 'mongoose';
-import { Ticket } from 'types';
+import { TicketType } from 'types';
 
-import { AttachmentSchema } from './attachment';
-
-const ticket = new Schema<Ticket>({
+const ticket = new Schema<TicketType>({
   userId: {
     type: String,
     required: true,

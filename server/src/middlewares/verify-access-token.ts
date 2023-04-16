@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import { JwtType } from 'types';
 import { errorHandler } from 'utils';
 
-export const verifyAccessToken = errorHandler(async (req: any, res: Response, next: NextFunction) => {
+export const verifyAccessToken = errorHandler(async (req: Request, res: Response, next: NextFunction) => {
   const header = req.headers.authorization;
   const token = header && header.split(' ')[1];
 

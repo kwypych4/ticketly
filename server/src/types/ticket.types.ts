@@ -1,6 +1,4 @@
-import { AttachmentType } from './attachment.types';
-
-export type Ticket = {
+export type TicketType = {
   userId: string;
   categoryId: string;
   engineerId: string;
