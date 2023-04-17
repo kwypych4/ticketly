@@ -5,9 +5,11 @@
     "forceConsistentCasingInFileNames": true,           
     "strict": true,                                     
     "skipLibCheck": true,
-    "baseUrl": "src/"    
+    "baseUrl": "src/"    ,
+    "typeRoots":["src/typings", "./node_modules/@types"],
   },
   "lib": ["es2015"],
-  "typeRoots":["types", "./node_modules/@types"],
   "include": [".eslintrc.js", "src/"],
+  "typeRoots":["typings", "./node_modules/@types"],
+
 }

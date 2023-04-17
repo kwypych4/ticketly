@@ -1,4 +1,5 @@
 import { HttpError } from 'error';
+import { Request } from 'express';
 import { RefreshTokenSchema, UserSchema } from 'models';
 import { Schema } from 'mongoose';
 import { RefreshTokenType, UserIdType, UserType } from 'types';
@@ -55,7 +56,7 @@ type LoginRequest = {
     password: string;
     username: string;
   };
-};
+} & Request;
 
 type LoginResponse = {
   username: string;
@@ -84,6 +85,8 @@ const login = errorHandler<LoginRequest, LoginResponse>(async (req, _) => {
   const accessToken = createAccessToken(userDocument.id);
   const refreshToken = createRefreshToken(userDocument.id, refreshTokenDocument.id);
 
+  req.session.userId = userDocument.id;
+
   return {
     username: userDocument?.username,
     uid: userDocument?.id,
@@ -96,7 +99,7 @@ type LogoutRequest = {
   body: {
     refreshToken: string;
   };
-};
+} & Request;
 
 type LogoutResponse = {
   success: boolean;
@@ -106,7 +109,7 @@ const logout = errorHandler<LogoutRequest, LogoutResponse>(async (req, _) => {
   const refreshToken = await validateRefreshToken(req.body?.refreshToken);
   if (!refreshToken) throw new HttpError(401, 'Unauthorized');
   await RefreshTokenSchema.deleteOne({ _id: refreshToken.tokenId });
-
+  delete req.session.userId;
   return { success: true };
 });
 

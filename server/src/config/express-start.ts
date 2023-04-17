@@ -19,9 +19,13 @@ export const expressStart = () => {
   app.use(
     session({
       name: 'ticketly.sid',
-      secret: 'secret',
+      secret: environment.sessionSecret,
       resave: false,
       saveUninitialized: false,
+      cookie: {
+        secure: false, // cookie: if not appearing
+        maxAge: 1000 * 60 * 60 * 24 * 365,
+      },
     })
   );
   app.use(bodyParser.json());

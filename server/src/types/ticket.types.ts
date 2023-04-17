@@ -1,5 +1,7 @@
+import { UserIdType } from './refresh-token.types';
+
 export type TicketType = {
-  userId: string;
+  owner: UserIdType;
   categoryId: string;
   engineerId: string;
   priority: number;

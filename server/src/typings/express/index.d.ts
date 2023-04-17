@@ -1,3 +1,5 @@
+import 'express-session';
+
 import { UserIdType } from 'types/refresh-token.types';
 
 declare global {
@@ -5,5 +7,11 @@ declare global {
     interface Request {
       userId: UserIdType;
     }
+  }
+}
+
+declare module 'express-session' {
+  interface SessionData {
+    userId: UserIdType;
   }
 }
