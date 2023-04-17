@@ -1,5 +1,5 @@
 import { HttpError } from 'error';
-import { Request, Response } from 'express';
+import { Request } from 'express';
 import { TicketSchema } from 'models';
 import { TicketType } from 'types';
 import { errorHandler } from 'utils';
