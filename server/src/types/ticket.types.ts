@@ -1,3 +1,4 @@
+import { AttachmentType } from './attachment.types';
 import { UserIdType } from './refresh-token.types';
 
 export type TicketType = {
@@ -7,7 +8,8 @@ export type TicketType = {
   priority: number;
   title: string;
   estTime: number;
-  startDate?: number;
-  endDate: number;
-  // attachments: Attachment[];
+  created?: number;
+  updated?: number;
+  finished?: number;
+  attachments?: AttachmentType;
 };

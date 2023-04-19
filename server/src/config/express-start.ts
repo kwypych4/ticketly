@@ -1,5 +1,6 @@
 import bodyParser from 'body-parser';
 import express, { Express } from 'express';
+import fileUpload from 'express-fileupload';
 import session from 'express-session';
 import { logger } from 'logger';
 
@@ -29,6 +30,13 @@ export const expressStart = () => {
     })
   );
   app.use(bodyParser.json());
+
+  app.use(
+    fileUpload({
+      limits: { fileSize: 50 * 1024 * 1024 },
+    })
+  );
+
   app.listen(port, () => {
     logger.info(`Server started on port ${port}`);
   });

@@ -1,6 +1,6 @@
 import { tickets } from 'controllers';
-import express, { Request, Response } from 'express';
-import { TicketSchema } from 'models';
+import express from 'express';
+import { uploadFile } from 'middlewares';
 
 const router = express.Router();
 
@@ -8,7 +8,8 @@ router.get('/', tickets.getTicket);
 
 router.get('/:id', tickets.getOneTicket);
 
-router.post('/', tickets.createTicket);
+router.post('/', uploadFile({ apiKeyName: 'attachments' }), tickets.createTicket);
 
 router.delete('/:id', tickets.deleteTicket);
+router.patch('/:id', tickets.updateTicket);
 export const ticketsRouter = router;

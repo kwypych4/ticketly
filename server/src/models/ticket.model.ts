@@ -1,9 +1,9 @@
 import moment from 'moment';
 import mongoose, { Schema } from 'mongoose';
-import { TicketType } from 'types';
+import { AttachmentSchemaType, TicketType } from 'types';
 
 const ticket = new Schema<TicketType>({
-  userId: {
+  owner: {
     type: String,
     required: true,
   },
@@ -22,24 +22,28 @@ const ticket = new Schema<TicketType>({
   title: {
     type: String,
     required: true,
+    index: 'text',
   },
   estTime: {
     type: Number,
     required: true,
   },
-  startDate: {
-    type: Number,
+  created: {
+    type: Date,
     required: false,
-    default: moment().unix(),
+    default: moment().toISOString(),
   },
-  endDate: {
-    type: Number,
-    required: true,
+  updated: {
+    type: Date,
+    required: false,
+    default: moment().toISOString(),
   },
-  // attachments: {
-  //   type: AttachmentSchema,
-  //   required: false,
-  // },
+  finished: {
+    type: Date,
+    required: false,
+    default: 0,
+  },
+  attachments: AttachmentSchemaType,
 });
 
 export const TicketSchema = mongoose.model('Ticket', ticket);
