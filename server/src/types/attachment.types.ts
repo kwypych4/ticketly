@@ -9,9 +9,13 @@ export const AttachmentSchemaType = {
         type: String,
         required: true,
       },
+      title: {
+        type: String,
+        required: true,
+      },
     },
   ],
   required: false,
 };
 
-export type AttachmentType = { type: string; path: string }[];
+export type AttachmentType = { type: string; path: string; title: string }[];

@@ -87,6 +87,7 @@ const getOneTicket = errorHandler<OneTicketRequest, OneTicketResponse>(async (re
     owner: ticket.owner,
     priority: ticket.priority,
     title: ticket.title,
+    timeSpent: ticket.timeSpent,
     attachments: ticket.attachments,
   };
 });
@@ -118,6 +119,7 @@ const createTicket = errorHandler<CreateTicketRequest, CreateTicketResponse>(asy
         names.push({
           type: file.mimetype,
           path: `/attachments/${file.md5 + file.size + slugify(file.name)}`,
+          title: file.name,
         })
       );
 
@@ -125,7 +127,9 @@ const createTicket = errorHandler<CreateTicketRequest, CreateTicketResponse>(asy
     } else {
       const file = req.files.attachments as fileUpload.UploadedFile;
 
-      ticket.attachments = [{ type: file.mimetype, path: `/attachments/${file.md5 + file.size + slugify(file.name)}` }];
+      ticket.attachments = [
+        { type: file.mimetype, path: `/attachments/${file.md5 + file.size + slugify(file.name)}`, title: file.name },
+      ];
     }
   }
 
@@ -151,13 +155,14 @@ type UpdateTicketRequest = {
     engineer: UserIdType;
     category_id: number;
     priority: number;
+    timeSpent: number;
   };
 } & Request;
 
 type UpdateTicketResponse = { success: boolean };
 
 const updateTicket = errorHandler<UpdateTicketRequest, UpdateTicketResponse>(async (req, _) => {
-  const { engineer, category_id: categoryId, priority } = req.body;
+  const { engineer, category_id: categoryId, priority, timeSpent } = req.body;
 
   const updateParams = {
     $set: {
@@ -165,6 +170,7 @@ const updateTicket = errorHandler<UpdateTicketRequest, UpdateTicketResponse>(asy
       ...(engineer && { engineerId: engineer }),
       ...(categoryId && { categoryId }),
       ...(priority && { priority }),
+      ...(timeSpent && { timeSpent }),
     },
   };
 

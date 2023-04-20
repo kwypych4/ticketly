@@ -1,16 +1,11 @@
 import { AttachmentType } from './attachment.types';
 import { UserIdType } from './refresh-token.types';
 
-export type TicketType = {
+export type CommentType = {
   owner: UserIdType;
-  categoryId: string;
-  engineerId: string;
-  priority: number;
-  title: string;
-  estTime: number;
+  ticket: UserIdType;
+  content: string;
   created?: number;
   updated?: number;
-  finished?: number;
-  timeSpent?: number;
   attachments?: AttachmentType;
 };

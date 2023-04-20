@@ -43,6 +43,11 @@ const ticket = new Schema<TicketType>({
     required: false,
     default: 0,
   },
+  timeSpent: {
+    type: Number,
+    required: false,
+    default: 0,
+  },
   attachments: AttachmentSchemaType,
 });
 
