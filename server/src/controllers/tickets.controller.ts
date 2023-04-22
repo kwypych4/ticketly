@@ -1,9 +1,10 @@
+import { ticketStatus } from 'data/ticket-status.data';
 import { HttpError } from 'error';
 import { Request } from 'express';
 import fileUpload from 'express-fileupload';
 import { TicketSchema } from 'models';
 import moment from 'moment';
-import { AttachmentType, TicketType, UserIdType } from 'types';
+import { AttachmentType, StatusType, TicketType, UserIdType } from 'types';
 import { errorHandler, slugify } from 'utils';
 
 type TicketsRequest = {
@@ -89,6 +90,7 @@ const getOneTicket = errorHandler<OneTicketRequest, OneTicketResponse>(async (re
     title: ticket.title,
     timeSpent: ticket.timeSpent,
     attachments: ticket.attachments,
+    status: ticket.status,
   };
 });
 
@@ -156,13 +158,17 @@ type UpdateTicketRequest = {
     category_id: number;
     priority: number;
     timeSpent: number;
+    status: StatusType;
   };
 } & Request;
 
 type UpdateTicketResponse = { success: boolean };
 
 const updateTicket = errorHandler<UpdateTicketRequest, UpdateTicketResponse>(async (req, _) => {
-  const { engineer, category_id: categoryId, priority, timeSpent } = req.body;
+  const { engineer, category_id: categoryId, priority, timeSpent, status } = req.body;
+
+  if (status && !ticketStatus.includes(status))
+    throw new HttpError(500, `The ticket can only have 'new' or 'in progress' or 'blocked' or 'finished' status.`);
 
   const updateParams = {
     $set: {
@@ -171,6 +177,7 @@ const updateTicket = errorHandler<UpdateTicketRequest, UpdateTicketResponse>(asy
       ...(categoryId && { categoryId }),
       ...(priority && { priority }),
       ...(timeSpent && { timeSpent }),
+      ...(status && { status }),
     },
   };
 

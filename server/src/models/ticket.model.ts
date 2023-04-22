@@ -1,3 +1,4 @@
+import { ticketStatus } from 'data/ticket-status.data';
 import moment from 'moment';
 import mongoose, { Schema } from 'mongoose';
 import { AttachmentSchemaType, TicketType } from 'types';
@@ -49,6 +50,12 @@ const ticket = new Schema<TicketType>({
     default: 0,
   },
   attachments: AttachmentSchemaType,
+  status: {
+    type: String,
+    enum: ticketStatus,
+    default: 'new',
+    required: true,
+  },
 });
 
 export const TicketSchema = mongoose.model('Ticket', ticket);
