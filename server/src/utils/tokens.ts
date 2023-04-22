@@ -2,13 +2,23 @@ import { environment } from 'config';
 import { HttpError } from 'error';
 import jwt from 'jsonwebtoken';
 import { RefreshTokenSchema } from 'models';
-import { JwtType, UserIdType } from 'types';
+import { JwtType, UserIdType, UserRoles } from 'types';
 
-export const createAccessToken = (userId: UserIdType) => {
+export const createAccessToken = ({
+  userId,
+  role,
+  isThemeDark,
+}: {
+  userId: UserIdType;
+  role: UserRoles;
+  isThemeDark: boolean;
+}) => {
   const accessTokenSecret = environment.secretAccessToken;
 
   const jwtPayload: JwtType = {
     userId,
+    role,
+    isThemeDark,
   };
   return jwt.sign(jwtPayload, accessTokenSecret, {
     expiresIn: environment.accessTokenExpTime,

@@ -1,6 +1,8 @@
 import { JwtPayload } from 'jsonwebtoken';
 import { Schema } from 'mongoose';
 
+import { UserRoles } from './user.types';
+
 export type RefreshTokenType = {
   owner: {
     type: Schema.Types.ObjectId;
@@ -20,4 +22,5 @@ export type TokenIdType = {
 export type JwtType = {
   userId: UserIdType;
   tokenId?: TokenIdType;
+  role: UserRoles;
 } & JwtPayload;

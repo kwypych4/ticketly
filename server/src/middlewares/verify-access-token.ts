@@ -14,6 +14,7 @@ export const verifyAccessToken = errorHandler(async (req: Request, res: Response
   try {
     const decodedToken = jwt.verify(token, environment.secretAccessToken) as JwtType;
     req.userId = decodedToken.userId;
+    req.role = decodedToken.role;
     next();
   } catch (error) {
     throw new HttpError(401, 'Unauthorized');

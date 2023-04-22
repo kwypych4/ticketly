@@ -1,4 +1,4 @@
-import { Role } from './role.types';
+export type UserRoles = 'admin' | 'engineer' | 'user';
 
 export type UserType = {
   username: string;
@@ -7,5 +7,6 @@ export type UserType = {
   lastName: string;
   department: string;
   position: string;
-  role: Role['name'];
+  role: UserRoles;
+  isThemeDark?: boolean;
 };

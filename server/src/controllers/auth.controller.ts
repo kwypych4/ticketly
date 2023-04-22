@@ -1,3 +1,4 @@
+import { roles } from 'data';
 import { HttpError } from 'error';
 import { Request } from 'express';
 import { RefreshTokenSchema, UserSchema } from 'models';
@@ -24,6 +25,9 @@ type RegisterResponse = {
 };
 
 const register = errorHandler<RegisterRequest, RegisterResponse>(async (req, _) => {
+  if (!roles.includes(req.body?.role))
+    throw new HttpError(500, `User can only have 'admin' or 'user' or 'engineer' role.`);
+
   const userDocument = new UserSchema<UserType>({
     username: req.body?.username,
     password: await hashPassword(req.body?.password),
@@ -38,7 +42,11 @@ const register = errorHandler<RegisterRequest, RegisterResponse>(async (req, _) 
     owner: userDocument.id,
   });
 
-  const accessToken = createAccessToken(userDocument.id);
+  const accessToken = createAccessToken({
+    userId: userDocument.id,
+    role: req.body.role,
+    isThemeDark: req.body?.isThemeDark || true,
+  });
   const refreshToken = createRefreshToken(userDocument.id, refreshTokenDocument.id);
 
   await userDocument.save();
@@ -82,7 +90,11 @@ const login = errorHandler<LoginRequest, LoginResponse>(async (req, _) => {
 
   await refreshTokenDocument.save();
 
-  const accessToken = createAccessToken(userDocument.id);
+  const accessToken = createAccessToken({
+    userId: userDocument.id,
+    role: userDocument.role,
+    isThemeDark: userDocument.isThemeDark || true,
+  });
   const refreshToken = createRefreshToken(userDocument.id, refreshTokenDocument.id);
 
   req.session.userId = userDocument.id;
@@ -141,13 +153,22 @@ const newRefreshToken = errorHandler<TokenRequest, TokenResponse>(async (req, _)
   const refreshTokenDocument = new RefreshTokenSchema<RefreshTokenType>({
     owner: currentRefreshToken.userId,
   });
+  const userDocument = await UserSchema.findOne({
+    _id: currentRefreshToken.userId,
+  });
+
+  if (!userDocument) throw new HttpError(401, 'Unauthorized');
 
   await refreshTokenDocument.save();
   await RefreshTokenSchema.deleteOne({ _id: currentRefreshToken.tokenId });
 
   const refreshToken = createRefreshToken(currentRefreshToken.userId, refreshTokenDocument.id);
-  const accessToken = createAccessToken(currentRefreshToken.userId);
 
+  const accessToken = createAccessToken({
+    userId: currentRefreshToken.userId,
+    role: userDocument.role,
+    isThemeDark: userDocument.isThemeDark || true,
+  });
   return {
     uid: currentRefreshToken.userId,
     accessToken,
@@ -158,7 +179,19 @@ const newRefreshToken = errorHandler<TokenRequest, TokenResponse>(async (req, _)
 const newAccessToken = errorHandler<TokenRequest, TokenResponse>(async (req, _) => {
   const refreshToken = await validateRefreshToken(req.body?.refreshToken);
   if (!refreshToken) throw new HttpError(401, 'Unauthorized');
-  const accessToken = createAccessToken(refreshToken.userId);
+
+  const userDocument = await UserSchema.findOne({
+    _id: refreshToken.userId,
+  });
+
+  if (!userDocument) throw new HttpError(401, 'Unauthorized');
+
+  const accessToken = createAccessToken({
+    userId: refreshToken.userId,
+    role: userDocument.role,
+    isThemeDark: userDocument.isThemeDark || true,
+  });
+
   return {
     uid: refreshToken.userId,
     accessToken,
