@@ -1,10 +1,13 @@
 import { Outlet } from 'react-router-dom';
 
+import { SideMenu } from './components';
+import { Wrapper } from './logged.styled';
+
 export const LoggedLayout = () => {
   return (
-    <div>
-      <h2>Logged layout</h2>
+    <Wrapper>
+      <SideMenu />
       <Outlet />
-    </div>
+    </Wrapper>
   );
 };

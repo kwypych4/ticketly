@@ -6,7 +6,6 @@ module.exports = {
   extends: [
     'airbnb',
     'plugin:react/recommended',
-
     'airbnb-typescript',
     'airbnb/hooks',
     'plugin:@typescript-eslint/recommended',
@@ -40,7 +39,7 @@ module.exports = {
     'react/function-component-definition': 0,
     '@typescript-eslint/no-unused-vars': 0,
     'react/require-default-props': 0,
-    'eslint import/no-absolute-path': 0,
+    'import/no-cycle': 0,
   },
   settings: {
     'import/resolver': {

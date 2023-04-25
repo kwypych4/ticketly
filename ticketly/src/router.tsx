@@ -1,5 +1,5 @@
-import { LoggedLayout } from 'layouts/app/logged';
-import { Homepage } from 'pages/app';
+import { LoggedLayout } from 'layouts';
+import { Homepage } from 'pages';
 import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 import { appRoutes } from 'urls';
 

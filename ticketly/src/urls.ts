@@ -1,6 +1,6 @@
 export const appUrls = {
   app: {
-    base: '/',
+    base: '',
     pages: {
       homepage: '',
       users: 'users',
