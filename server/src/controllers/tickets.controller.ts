@@ -21,6 +21,7 @@ type TicketsRequest = {
 } & Request;
 
 type TicketsResponse = {
+  id: string | undefined;
   ownerId: UserIdType;
   ownerName: string;
   title: string;
@@ -80,11 +81,12 @@ const getAllTickets = errorHandler<TicketsRequest, TicketsResponse>(async (req, 
   if (!tickets) throw new HttpError(400, 'Ticket not found');
 
   const response = await Promise.all(
-    tickets.map(async ({ owner, engineerId, title, timeSpent, status, created, updated, finished }) => {
+    tickets.map(async ({ _id, owner, engineerId, title, timeSpent, status, created, updated, finished }) => {
       const ticketOwner = await UserSchema.findOne<UserType>({ _id: owner });
       const assignedEngineer = await UserSchema.findOne<UserType>({ _id: engineerId });
 
       return {
+        id: _id?.toString(),
         ownerId: owner,
         ownerName: `${ticketOwner?.firstName} ${ticketOwner?.lastName}`,
         title,
