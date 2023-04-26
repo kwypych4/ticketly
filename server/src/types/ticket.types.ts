@@ -6,7 +6,7 @@ export type StatusType = 'new' | 'in progress' | 'blocked' | 'finished';
 export type TicketType = {
   owner: UserIdType;
   categoryId: string;
-  engineerId: string;
+  engineerId: UserIdType;
   priority: number;
   title: string;
   estTime: number;

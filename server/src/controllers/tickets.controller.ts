@@ -2,9 +2,9 @@ import { ticketStatus } from 'data/ticket-status.data';
 import { HttpError } from 'error';
 import { Request } from 'express';
 import fileUpload from 'express-fileupload';
-import { TicketSchema } from 'models';
+import { TicketSchema, UserSchema } from 'models';
 import moment from 'moment';
-import { AttachmentType, StatusType, TicketType, UserIdType } from 'types';
+import { AttachmentType, StatusType, TicketType, UserIdType, UserType } from 'types';
 import { errorHandler, slugify } from 'utils';
 
 type TicketsRequest = {
@@ -20,9 +20,20 @@ type TicketsRequest = {
   };
 } & Request;
 
-type TicketsResponse = TicketType[];
+type TicketsResponse = {
+  ownerId: UserIdType;
+  ownerName: string;
+  title: string;
+  engineerId: UserIdType;
+  engineer: string;
+  timeSpent: number | undefined;
+  status: StatusType;
+  created: number | undefined;
+  updated: number | undefined;
+  finished: number | undefined;
+}[];
 
-const getTicket = errorHandler<TicketsRequest, TicketsResponse>(async (req, _) => {
+const getAllTickets = errorHandler<TicketsRequest, TicketsResponse>(async (req, _) => {
   const limit = Number(req.query.limit) || 25;
   const page = Number(req.query.page) || 1;
   const {
@@ -62,12 +73,33 @@ const getTicket = errorHandler<TicketsRequest, TicketsResponse>(async (req, _) =
     ...(title && { $text: { $search: title } }),
   };
 
-  const ticket = await TicketSchema.find(queryCondition)
+  const tickets = await TicketSchema.find<TicketType>(queryCondition)
     .limit(limit)
     .skip((page - 1) * limit);
 
-  if (!ticket) throw new HttpError(400, 'Ticket not found');
-  return ticket;
+  if (!tickets) throw new HttpError(400, 'Ticket not found');
+
+  const response = await Promise.all(
+    tickets.map(async ({ owner, engineerId, title, timeSpent, status, created, updated, finished }) => {
+      const ticketOwner = await UserSchema.findOne<UserType>({ _id: owner });
+      const assignedEngineer = await UserSchema.findOne<UserType>({ _id: engineerId });
+
+      return {
+        ownerId: owner,
+        ownerName: `${ticketOwner?.firstName} ${ticketOwner?.lastName}`,
+        title,
+        engineerId,
+        engineer: `${assignedEngineer?.firstName} ${assignedEngineer?.lastName}`,
+        timeSpent,
+        status,
+        created,
+        updated,
+        finished,
+      };
+    })
+  );
+
+  return response;
 });
 
 type OneTicketRequest = Request;
@@ -191,7 +223,7 @@ const updateTicket = errorHandler<UpdateTicketRequest, UpdateTicketResponse>(asy
 });
 
 export const tickets = {
-  getTicket,
+  getAllTickets,
   createTicket,
   getOneTicket,
   deleteTicket,

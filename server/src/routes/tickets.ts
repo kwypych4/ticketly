@@ -4,7 +4,7 @@ import { uploadFile } from 'middlewares';
 
 const router = express.Router();
 
-router.get('/', tickets.getTicket);
+router.get('/', tickets.getAllTickets);
 
 router.get('/:id', tickets.getOneTicket);
 

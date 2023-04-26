@@ -8,7 +8,7 @@ import { usersRouter } from './users';
 
 const router = express.Router();
 
-router.use('/tickets', verifySession, verifyAccessToken, ticketsRouter);
+router.use('/tickets', ticketsRouter);
 router.use('/comments', verifySession, verifyAccessToken, commentsRouter);
 router.use('/users', usersRouter);
 router.use('/auth', authRouter);
