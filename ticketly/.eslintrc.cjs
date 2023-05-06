@@ -38,6 +38,7 @@ module.exports = {
     'import/prefer-default-export': 0,
     'react/function-component-definition': 0,
     '@typescript-eslint/no-unused-vars': 0,
+    '@typescript-eslint/no-explicit-any': 0,
     'react/require-default-props': 0,
     'import/no-cycle': 0,
   },
