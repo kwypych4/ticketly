@@ -139,14 +139,20 @@ const getOneTicket = errorHandler<OneTicketRequest, OneTicketResponse>(async (re
   const ticket = await TicketSchema.findOne<TicketType>({ _id: req.params.id });
 
   if (!ticket) throw new HttpError(400, 'Ticket not found');
+
+  const engineer = await UserSchema.findOne<UserType>({ _id: ticket.engineerId });
+  const owner = await UserSchema.findOne<UserType>({ _id: ticket.owner });
+
   return {
     categoryId: ticket.categoryId,
     finished: ticket.finished,
     created: ticket.created,
     updated: ticket.updated,
     engineerId: ticket.engineerId,
+    engineerName: `${engineer?.firstName} ${engineer?.lastName}`,
     estTime: ticket.estTime,
     owner: ticket.owner,
+    ownerName: `${owner?.firstName} ${owner?.lastName}`,
     priority: ticket.priority,
     title: ticket.title,
     description: ticket.description,
