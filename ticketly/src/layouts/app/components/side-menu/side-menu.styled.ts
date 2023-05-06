@@ -2,10 +2,14 @@ import styled from 'styled-components';
 import { colors } from 'styles/colors';
 
 export const Wrapper = styled.div`
+  position: sticky;
+  top: 0;
+  left: 0;
   display: flex;
   flex-direction: column;
   min-width: 220px;
   width: 280px;
+  height: 100vh;
   background-color: ${colors.white};
 `;
 export const MenuList = styled.ul`

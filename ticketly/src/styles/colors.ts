@@ -4,4 +4,5 @@ export const colors = {
   pressAgent: '#5f6b7a',
   whiteSolid: '#f5f6fa',
   ghostlyTuna: '#e2e6ee',
+  trappedDarkness: '#101c31',
 };
