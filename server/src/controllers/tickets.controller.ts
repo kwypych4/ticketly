@@ -4,7 +4,7 @@ import { Request } from 'express';
 import fileUpload from 'express-fileupload';
 import { TicketSchema, UserSchema } from 'models';
 import moment from 'moment';
-import { AttachmentType, StatusType, TicketType, UserIdType, UserType } from 'types';
+import { AttachmentType, ResponseWithPagination, StatusType, TicketType, UserIdType, UserType } from 'types';
 import { errorHandler, slugify } from 'utils';
 
 type TicketsRequest = {
@@ -20,23 +20,26 @@ type TicketsRequest = {
   };
 } & Request;
 
-type TicketsResponse = {
-  id: string | undefined;
-  ownerId: UserIdType;
-  ownerName: string;
-  title: string;
-  engineerId: UserIdType;
-  engineer: string;
-  timeSpent: number | undefined;
-  status: StatusType;
-  created: number | undefined;
-  updated: number | undefined;
-  finished: number | undefined;
-}[];
+type TicketsResponse = ResponseWithPagination<
+  {
+    id: string | undefined;
+    ownerId: UserIdType;
+    ownerName: string;
+    title: string;
+    engineerId: UserIdType;
+    engineer: string;
+    timeSpent: number | undefined;
+    status: StatusType;
+    created: number | undefined;
+    updated: number | undefined;
+    finished: number | undefined;
+  }[]
+>;
 
 const getAllTickets = errorHandler<TicketsRequest, TicketsResponse>(async (req, _) => {
   const limit = Number(req.query.limit) || 25;
   const page = Number(req.query.page) || 1;
+  const totalElements = await TicketSchema.countDocuments({});
   const {
     owner,
     engineer,
@@ -80,7 +83,7 @@ const getAllTickets = errorHandler<TicketsRequest, TicketsResponse>(async (req, 
 
   if (!tickets) throw new HttpError(400, 'Ticket not found');
 
-  const response = await Promise.all(
+  const data = await Promise.all(
     tickets.map(async ({ _id, owner, engineerId, title, timeSpent, status, created, updated, finished }) => {
       const ticketOwner = await UserSchema.findOne<UserType>({ _id: owner });
       const assignedEngineer = await UserSchema.findOne<UserType>({ _id: engineerId });
@@ -101,7 +104,31 @@ const getAllTickets = errorHandler<TicketsRequest, TicketsResponse>(async (req, 
     })
   );
 
-  return response;
+  return {
+    pagination: {
+      totalElements,
+      limit,
+      page,
+    },
+    data,
+  };
+});
+
+const getTicketFilters = errorHandler<any, any>(async (req, res) => {
+  const statuses = await TicketSchema.distinct<TicketType>('status');
+  const engineers = await Promise.all(
+    (
+      await TicketSchema.distinct('engineerId')
+    ).map(async (id) => {
+      const assignedEngineer = await UserSchema.findOne<UserType>({ _id: id });
+
+      const returnObject = {
+        displayValue: `${assignedEngineer?.firstName} ${assignedEngineer?.lastName}`,
+        id,
+      };
+      return returnObject;
+    })
+  );
 });
 
 type OneTicketRequest = Request;
@@ -122,6 +149,7 @@ const getOneTicket = errorHandler<OneTicketRequest, OneTicketResponse>(async (re
     owner: ticket.owner,
     priority: ticket.priority,
     title: ticket.title,
+    description: ticket.description,
     timeSpent: ticket.timeSpent,
     attachments: ticket.attachments,
     status: ticket.status,
@@ -144,6 +172,7 @@ const createTicket = errorHandler<CreateTicketRequest, CreateTicketResponse>(asy
     priority: req.body?.priority,
     title: req.body?.title,
     estTime: req.body?.estTime,
+    status: req.body?.status,
   });
 
   if (req.files) {
@@ -226,6 +255,7 @@ const updateTicket = errorHandler<UpdateTicketRequest, UpdateTicketResponse>(asy
 
 export const tickets = {
   getAllTickets,
+  getTicketFilters,
   createTicket,
   getOneTicket,
   deleteTicket,

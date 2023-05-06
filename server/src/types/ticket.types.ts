@@ -10,6 +10,7 @@ export type TicketType = {
   engineerId: UserIdType;
   priority: number;
   title: string;
+  description: string;
   estTime: number;
   created?: number;
   updated?: number;

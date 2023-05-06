@@ -25,6 +25,11 @@ const ticket = new Schema<TicketType>({
     required: true,
     index: 'text',
   },
+  description: {
+    type: String,
+    required: true,
+    index: 'text',
+  },
   estTime: {
     type: Number,
     required: true,
