@@ -1,8 +1,7 @@
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { NavLink } from 'react-router-dom';
-
-import { TicketsListTypes, TicketsTableProps } from '.';
+import { TicketsListTypes, TicketsTableProps } from 'types';
 
 export const columns: ColumnsType<TicketsListTypes> = [
   {

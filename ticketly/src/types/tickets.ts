@@ -1,4 +1,4 @@
-import { TableProps } from 'types/table';
+import { TableProps } from 'types';
 
 export type TicketsListTypes = {
   id: string;
@@ -15,3 +15,7 @@ export type TicketsListTypes = {
 };
 
 export type TicketsTableProps = TableProps<TicketsListTypes>;
+
+export type TicketDetailsTypes = {
+  id: string;
+};
