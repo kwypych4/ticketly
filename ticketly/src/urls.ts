@@ -4,7 +4,10 @@ export const appUrls = {
     pages: {
       homepage: '',
       users: 'users',
-      tickets: 'tickets',
+      tickets: {
+        base: 'tickets',
+        details: 'tickets/:ticketId',
+      },
       settings: 'settings',
     },
   },
@@ -20,7 +23,16 @@ export const appRoutes = {
   app: {
     homepage: `${appUrls.app.base}/${appUrls.app.pages.homepage}`,
     users: `${appUrls.app.base}/${appUrls.app.pages.users}`,
-    tickets: `${appUrls.app.base}/${appUrls.app.pages.tickets}`,
+    tickets: {
+      index: `${appUrls.app.base}/${appUrls.app.pages.tickets.base}`,
+      details: `${appUrls.app.base}/${appUrls.app.pages.tickets.details}`,
+    },
     settings: `${appUrls.app.base}/${appUrls.app.pages.settings}`,
+  },
+};
+
+export const apiUrls = {
+  tickets: {
+    index: 'tickets',
   },
 };
