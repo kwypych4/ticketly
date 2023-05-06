@@ -31,8 +31,11 @@ export const appRoutes = {
   },
 };
 
+const url = (base: string) => (details?: string | number) => `${base}${details ? `/${details}` : ''}`;
+
 export const apiUrls = {
   tickets: {
-    index: 'tickets',
+    index: url('tickets'),
+    details: url('tickets'),
   },
 };
