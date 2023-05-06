@@ -114,21 +114,64 @@ const getAllTickets = errorHandler<TicketsRequest, TicketsResponse>(async (req, 
   };
 });
 
-const getTicketFilters = errorHandler<any, any>(async (req, res) => {
-  const statuses = await TicketSchema.distinct<TicketType>('status');
-  const engineers = await Promise.all(
+type TicketFiltersRequest = {
+  query: {
+    distinct: 'true' | 'false';
+  };
+} & Request;
+
+type TicketFiltersResponse = {
+  statuses: {
+    label: string;
+    value: string;
+  }[];
+  engineers: {
+    label: string;
+    value: string;
+  }[];
+};
+
+const getTicketFilters = errorHandler<TicketFiltersRequest, TicketFiltersResponse>(async (req, __) => {
+  const statusesDistinct = await Promise.all(
+    (
+      await TicketSchema.distinct('status')
+    ).map(async (status: string) => {
+      const returnObject = {
+        label: status,
+        value: status,
+      };
+      return returnObject;
+    })
+  );
+
+  const engineersDistinct = await Promise.all(
     (
       await TicketSchema.distinct('engineerId')
     ).map(async (id) => {
       const assignedEngineer = await UserSchema.findOne<UserType>({ _id: id });
 
       const returnObject = {
-        displayValue: `${assignedEngineer?.firstName} ${assignedEngineer?.lastName}`,
-        id,
+        label: `${assignedEngineer?.firstName} ${assignedEngineer?.lastName}`,
+        value: id,
       };
       return returnObject;
     })
   );
+
+  const statuses = ticketStatus.map((status: string) => ({
+    label: status,
+    value: status,
+  }));
+
+  const engineers = (await UserSchema.find<UserType>({ role: 'engineer' })).map(({ _id, firstName, lastName }) => ({
+    label: `${firstName} ${lastName}`,
+    value: _id ? _id.toString() : '22',
+  }));
+  return {
+    ...(req.query.distinct === 'true'
+      ? { statuses: statusesDistinct, engineers: engineersDistinct }
+      : { statuses, engineers }),
+  };
 });
 
 type OneTicketRequest = Request;
