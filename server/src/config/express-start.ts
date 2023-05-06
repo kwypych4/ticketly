@@ -1,4 +1,5 @@
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import express, { Express } from 'express';
 import fileUpload from 'express-fileupload';
 import session from 'express-session';
@@ -16,6 +17,8 @@ export const expressStart = () => {
       extended: true,
     })
   );
+
+  app.use(cors());
 
   app.use(
     session({
