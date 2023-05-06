@@ -1,3 +1,12 @@
+import { PageContent, PageTitle, PageWrapper } from 'styles';
+
 export const Homepage = () => {
-  return <div>Homepage</div>;
+  return (
+    <PageWrapper>
+      <PageTitle>
+        <h2>Dashboard</h2>
+      </PageTitle>
+      <PageContent />
+    </PageWrapper>
+  );
 };
