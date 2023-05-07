@@ -24,7 +24,6 @@ const getComments = errorHandler<CommentsRequest, CommentsResponse>(async (req, 
   const data = await Promise.all(
     comments.map(async ({ _id, ownerId, created, updated, content, ticket, attachments }) => {
       const commentOwner = await UserSchema.findOne<UserType>({ _id: ownerId });
-
       return {
         id: _id?.toString(),
         ownerId,
