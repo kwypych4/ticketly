@@ -1,9 +1,9 @@
 import { HttpError } from 'error';
 import { Request } from 'express';
 import fileUpload from 'express-fileupload';
-import { CommentSchema } from 'models';
+import { CommentSchema, UserSchema } from 'models';
 import moment from 'moment';
-import { AttachmentType, CommentType } from 'types';
+import { AttachmentType, CommentType, UserType } from 'types';
 import { errorHandler, slugify } from 'utils';
 
 type CommentsRequest = Request;
@@ -14,13 +14,31 @@ const getComments = errorHandler<CommentsRequest, CommentsResponse>(async (req, 
   const limit = Number(req.query.limit) || 25;
   const page = Number(req.query.page) || 1;
 
-  const comments = await CommentSchema.find({ ticket: req.params.ticketId })
+  const comments = await CommentSchema.find<CommentType>({ ticket: req.params.ticketId })
     .limit(limit)
     .skip((page - 1) * limit)
     .sort({ created: -1 });
 
   if (!comments) throw new HttpError(400, 'There are no comments for this ticket');
-  return comments;
+
+  const data = await Promise.all(
+    comments.map(async ({ _id, ownerId, created, updated, content, ticket, attachments }) => {
+      const commentOwner = await UserSchema.findOne<UserType>({ _id: ownerId });
+
+      return {
+        id: _id?.toString(),
+        ownerId,
+        ownerName: `${commentOwner?.firstName} ${commentOwner?.lastName}`,
+        created,
+        updated,
+        content,
+        ticket,
+        attachments,
+      };
+    })
+  );
+
+  return data;
 });
 
 type CreateCommentRequest = {

@@ -3,7 +3,7 @@ import { model, Schema } from 'mongoose';
 import { AttachmentSchemaType, CommentType } from 'types';
 
 const comment = new Schema<CommentType>({
-  owner: {
+  ownerId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
