@@ -1,6 +1,9 @@
 import { createGlobalStyle } from 'styled-components';
 
+import { button } from './components';
+
 export const GlobalStyle = createGlobalStyle` 
+
 
 body {
     margin: 0;
@@ -9,4 +12,6 @@ body {
     box-sizing: border-box;
     width: 100%;
   }
+
+  ${button}
 `;
