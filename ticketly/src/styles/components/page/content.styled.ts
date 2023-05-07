@@ -17,6 +17,7 @@ export const PageItem = styled.div<PageItemProps>`
   width: ${({ isHalf }) => (isHalf ? `calc(50% - ${gap / 2}px)` : `100%`)};
   border-radius: 20px;
   background-color: ${colors.white};
+  padding: 12px;
 
   &:nth-of-type(odd) {
     margin-right: ${({ isHalf }) => (isHalf ? `${gap}px` : 'unset')};

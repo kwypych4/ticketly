@@ -1,8 +1,7 @@
 import { TableProps } from 'antd';
 import { cloneElement, Dispatch, SetStateAction } from 'react';
 import { PageItem } from 'styles';
-import { RequestParamsType } from 'types';
-import { WithPaginationTableType } from 'types/table';
+import { RequestParamsType, WithPaginationTableType } from 'types';
 
 type TableWrapperProps = {
   children: JSX.Element;

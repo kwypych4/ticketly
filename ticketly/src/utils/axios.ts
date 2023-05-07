@@ -10,10 +10,14 @@ export const axiosInstance = axios.create({
 export const request = <T, Y>(
   url: string,
   method: 'GET' | 'POST' | 'PATCH' | 'DELETE',
-  params?: RequestParamsType
+  params?: RequestParamsType,
+  body?: RequestParamsType
 ): Promise<AxiosResponse<T, Y>> =>
   axiosInstance({
     method,
     url,
     params,
+    data: {
+      ...body,
+    },
   });

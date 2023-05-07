@@ -16,6 +16,33 @@ export type TicketsListTypes = {
 
 export type TicketsTableProps = TableProps<TicketsListTypes>;
 
+type AttachmentType = { type: string; path: string; title: string }[];
+
 export type TicketDetailsTypes = {
-  id: string;
+  owner: string;
+  categoryId: string;
+  engineerId: string;
+  ownerName: string;
+  engineerName: string;
+  priority: number;
+  title: string;
+  description: string;
+  estTime: number;
+  created?: number;
+  updated?: number;
+  finished?: number;
+  timeSpent?: number;
+  status: string;
+  attachments?: AttachmentType;
+};
+
+export type TicketFiltersTypes = {
+  statuses: {
+    label: string;
+    value: string;
+  }[];
+  engineers: {
+    label: string;
+    value: string;
+  }[];
 };

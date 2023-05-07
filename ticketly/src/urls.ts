@@ -37,5 +37,9 @@ export const apiUrls = {
   tickets: {
     index: url('tickets'),
     details: url('tickets'),
+    filters: url('tickets/filters'),
+  },
+  comments: {
+    index: url('comments'),
   },
 };

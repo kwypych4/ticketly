@@ -11,7 +11,7 @@ export const menuElements = [
   {
     id: 1,
     title: 'Tickets',
-    path: appRoutes.app.tickets,
+    path: appRoutes.app.tickets.index,
     icon: faBriefcase,
   },
   {
