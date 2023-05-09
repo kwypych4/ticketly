@@ -17,6 +17,7 @@ export const CommentsTitle = styled.div`
   align-items: center;
   button {
     margin-left: auto;
+    margin-right: 30px;
   }
 `;
 
