@@ -12,7 +12,7 @@ export const appUrls = {
     },
   },
   auth: {
-    base: 'auth',
+    base: '',
     pages: {
       login: 'login',
     },
@@ -29,11 +29,19 @@ export const appRoutes = {
     },
     settings: `${appUrls.app.base}/${appUrls.app.pages.settings}`,
   },
+  auth: {
+    login: `${appUrls.auth.base}/${appUrls.auth.pages.login}`,
+  },
 };
 
 const url = (base: string) => (details?: string | number) => `${base}${details ? `/${details}` : ''}`;
 
 export const apiUrls = {
+  auth: {
+    login: url('auth/login'),
+    logout: url('auth/logout'),
+    accessToken: url('auth/access_token'),
+  },
   tickets: {
     index: url('tickets'),
     details: url('tickets'),
