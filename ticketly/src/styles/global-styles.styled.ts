@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
-import { button } from './components';
+import { button, form } from './components';
 
 export const GlobalStyle = createGlobalStyle` 
 
@@ -13,5 +13,9 @@ body {
     width: 100%;
   }
 
+textarea {
+  resize: none;
+}
   ${button}
+  ${form}
 `;

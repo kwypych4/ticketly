@@ -10,7 +10,6 @@ export const button = css`
       margin-right: 6px;
     }
 
-    margin-right: 30px;
     color: ${colors.trappedDarkness};
     background-color: ${colors.ghostlyTuna};
 
