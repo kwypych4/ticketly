@@ -39,6 +39,7 @@ module.exports = {
     'react/function-component-definition': 0,
     '@typescript-eslint/no-unused-vars': 0,
     '@typescript-eslint/no-explicit-any': 0,
+    '@typescript-eslint/naming-convention': 0,
     'react/require-default-props': 0,
     'import/no-cycle': 0,
   },
