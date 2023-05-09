@@ -17,6 +17,6 @@ export const verifyAccessToken = errorHandler(async (req: Request, res: Response
     req.role = decodedToken.role;
     next();
   } catch (error) {
-    throw new HttpError(401, 'Unauthorized');
+    throw new HttpError(401, 'Unauthorized - the access token has expired!');
   }
 });
