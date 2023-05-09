@@ -7,8 +7,9 @@ import { ticketsRouter } from './tickets';
 import { usersRouter } from './users';
 
 const router = express.Router();
-
-router.use('/tickets', ticketsRouter);
+// TODO: set proper middlewares
+// router.use('/tickets', verifySession, ticketsRouter);
+router.use('/tickets', verifySession, verifyAccessToken, ticketsRouter);
 // router.use('/comments', verifySession, verifyAccessToken, commentsRouter);
 router.use('/comments', commentsRouter);
 router.use('/users', usersRouter);
