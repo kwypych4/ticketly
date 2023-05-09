@@ -1,3 +1,4 @@
+import { environment } from 'config';
 import { roles } from 'data';
 import { HttpError } from 'error';
 import { Request } from 'express';
@@ -12,6 +13,7 @@ import {
   hashPassword,
   validateRefreshToken,
 } from 'utils';
+import { cookiesParser } from 'utils/cookies-parser';
 
 type RegisterRequest = { body: UserType };
 
@@ -73,14 +75,20 @@ type LoginResponse = {
   refreshToken: string;
 };
 
-const login = errorHandler<LoginRequest, LoginResponse>(async (req, _) => {
+const login = errorHandler<LoginRequest, LoginResponse>(async (req, res) => {
+  // TODO: Improve login and check login
+  const userParams = req.body?.username ? { username: req.body.username } : { _id: req.session.userId };
+
   const userDocument = await UserSchema.findOne({
-    username: req.body?.username,
+    ...userParams,
   }).select('+password');
 
-  const isLoginSuccess = userDocument && (await comparePassword(req.body?.password, userDocument.password));
+  const isLoginSuccess = userDocument && (await comparePassword(req.body?.password || '', userDocument.password));
+  const isUserLogged = userDocument && Boolean(req.session.userId);
 
-  if (!isLoginSuccess) {
+  if (!isUserLogged && (!req.body?.username || !req.body?.password)) throw new HttpError(403, 'You are not logged in!');
+
+  if (!isLoginSuccess && !isUserLogged) {
     throw new HttpError(401, 'Wrong username or password');
   }
 
@@ -98,7 +106,13 @@ const login = errorHandler<LoginRequest, LoginResponse>(async (req, _) => {
   const refreshToken = createRefreshToken(userDocument.id, refreshTokenDocument.id);
 
   req.session.userId = userDocument.id;
+  const refreshTokenExpDate = Number((environment.refreshTokenExpTime as string).split(/(\d+)/)[1]);
 
+  res.cookie('jwt', refreshToken, {
+    httpOnly: false,
+    secure: false,
+    maxAge: 1000 * 60 * 60 * 24 * refreshTokenExpDate,
+  });
   return {
     username: userDocument?.username,
     uid: userDocument?.id,
@@ -137,7 +151,7 @@ type TokenRequest = {
   body: {
     refreshToken: string;
   };
-};
+} & Request;
 
 type TokenResponse = {
   uid: UserIdType;
@@ -176,8 +190,19 @@ const newRefreshToken = errorHandler<TokenRequest, TokenResponse>(async (req, _)
   };
 });
 
-const newAccessToken = errorHandler<TokenRequest, TokenResponse>(async (req, _) => {
-  const refreshToken = await validateRefreshToken(req.body?.refreshToken);
+type NewTokenRequest = Request;
+
+type NewTokenResponse = {
+  uid: UserIdType;
+  accessToken: string;
+  refreshToken: string;
+};
+
+const newAccessToken = errorHandler<NewTokenRequest, NewTokenResponse>(async (req) => {
+  const cookies = cookiesParser(req);
+  const refreshTokenCookie = 'jwt' in cookies ? cookies.jwt : '';
+
+  const refreshToken = await validateRefreshToken(refreshTokenCookie as string);
   if (!refreshToken) throw new HttpError(401, 'Unauthorized');
 
   const userDocument = await UserSchema.findOne({
@@ -195,7 +220,7 @@ const newAccessToken = errorHandler<TokenRequest, TokenResponse>(async (req, _) 
   return {
     uid: refreshToken.userId,
     accessToken,
-    refreshToken: req.body.refreshToken,
+    refreshToken: refreshTokenCookie as string,
   };
 });
 
