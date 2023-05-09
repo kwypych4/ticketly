@@ -30,10 +30,5 @@ export const TableWrapper = ({ children, setOptions, data }: TableWrapperProps) 
     pagination: data?.pagination,
   });
 
-  return (
-    <PageItem>
-      <h3>hello</h3>
-      {childrenWithProps}
-    </PageItem>
-  );
+  return <PageItem>{childrenWithProps}</PageItem>;
 };
