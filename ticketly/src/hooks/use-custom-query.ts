@@ -1,5 +1,6 @@
 import { AxiosError } from 'axios';
 import { QueryFunction, QueryKey, useQuery, UseQueryOptions, UseQueryResult } from 'react-query';
+import { useAuthStore } from 'store';
 
 export const useCustomQuery = <QueryReturnType>(
   queryKey: QueryKey,
@@ -13,9 +14,10 @@ export const useCustomQuery = <QueryReturnType>(
       }
     },
     onError: (error) => {
-      // TODO: upgrade error handling
+      console.log('error', error);
+      // TODO: upgrade error handling\
       if (error.response?.status === 403) {
-        // setIsLogged({ isLogged: false, accessToken: '' });
+        useAuthStore.setState({ isLogged: false, accessToken: '' });
       }
 
       if (options?.onError) {

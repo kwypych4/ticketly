@@ -20,18 +20,23 @@ axiosInstance.interceptors.response.use(
   async (error: AxiosError<{ error: string }>) => {
     const { accessToken } = useAuthStore.getState();
 
-    if (
-      error?.response?.status === 401 &&
-      (!accessToken || error.response?.data.error === 'Unauthorized - the access token has expired!')
-    ) {
-      try {
-        const accessTokenQuery = await refreshAccessToken();
-        useAuthStore.setState({ accessToken: accessTokenQuery.accessToken });
-      } catch (error) {
-        alert('Nie można pobrać refresh tokena');
-        useAuthStore.setState({ isLogged: false });
+    try {
+      if (
+        error?.response?.status === 401 &&
+        (!accessToken || error.response?.data.error === 'Unauthorized - the access token has expired!')
+      ) {
+        try {
+          const accessTokenQuery = await refreshAccessToken();
+          useAuthStore.setState({ accessToken: accessTokenQuery.accessToken });
+        } catch (error) {
+          alert('Nie można pobrać refresh tokena');
+          useAuthStore.setState({ isLogged: false });
+        }
       }
+    } catch (error) {
+      Promise.reject(error);
     }
+    return Promise.reject(error);
   }
 );
 

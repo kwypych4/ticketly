@@ -14,7 +14,8 @@ import { TicketForm } from './components';
 export const TicketsPage = () => {
   const [options, setOptions] = useState<RequestParamsType>();
   const [showModal, setShowModal] = useState(false);
-  const { data } = useCustomQuery(['tickets', options], () => api.tickets.list.fetch(options));
+  const ticketsListQuery = useCustomQuery(['tickets', options], () => api.tickets.list.fetch(options));
+
   const [form] = Form.useForm();
   const token = useAuthStore((state) => state.accessToken);
   return (
@@ -27,7 +28,7 @@ export const TicketsPage = () => {
         </button>
       </PageTitle>
       <PageContent>
-        <TableWrapper setOptions={setOptions} data={data}>
+        <TableWrapper setOptions={setOptions} data={ticketsListQuery.data}>
           <TicketsTable />
         </TableWrapper>
       </PageContent>
