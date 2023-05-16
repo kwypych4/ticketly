@@ -51,6 +51,8 @@ const getAllTickets = errorHandler<TicketsRequest, TicketsResponse>(async (req, 
     finished_date: finishedDate,
   } = req.query;
 
+  const displayRestrictedData = req.role === 'user';
+
   const queryCondition = {
     ...(createdDate && {
       created: {
@@ -70,7 +72,7 @@ const getAllTickets = errorHandler<TicketsRequest, TicketsResponse>(async (req, 
         $lt: moment.unix(finishedDate[1]).toISOString(),
       },
     }),
-    ...(owner && { owner }),
+    ...(displayRestrictedData ? { owner: req.session.userId } : owner && { owner }),
     ...(engineer && { engineer }),
     ...(priority && { priority }),
     ...(categoryId && { categoryId }),
@@ -81,28 +83,28 @@ const getAllTickets = errorHandler<TicketsRequest, TicketsResponse>(async (req, 
     .limit(limit)
     .skip((page - 1) * limit);
 
-  if (!tickets) throw new HttpError(400, 'Ticket not found');
+  const data = tickets
+    ? await Promise.all(
+        tickets.map(async ({ _id, owner, engineerId, title, timeSpent, status, created, updated, finished }) => {
+          const ticketOwner = await UserSchema.findOne<UserType>({ _id: owner });
+          const assignedEngineer = await UserSchema.findOne<UserType>({ _id: engineerId });
 
-  const data = await Promise.all(
-    tickets.map(async ({ _id, owner, engineerId, title, timeSpent, status, created, updated, finished }) => {
-      const ticketOwner = await UserSchema.findOne<UserType>({ _id: owner });
-      const assignedEngineer = await UserSchema.findOne<UserType>({ _id: engineerId });
-
-      return {
-        id: _id?.toString(),
-        ownerId: owner,
-        ownerName: `${ticketOwner?.firstName} ${ticketOwner?.lastName}`,
-        title,
-        engineerId,
-        engineer: `${assignedEngineer?.firstName} ${assignedEngineer?.lastName}`,
-        timeSpent,
-        status,
-        created,
-        updated,
-        finished,
-      };
-    })
-  );
+          return {
+            id: _id?.toString(),
+            ownerId: owner,
+            ownerName: `${ticketOwner?.firstName} ${ticketOwner?.lastName}`,
+            title,
+            engineerId,
+            engineer: `${assignedEngineer?.firstName} ${assignedEngineer?.lastName}`,
+            timeSpent,
+            status,
+            created,
+            updated,
+            finished,
+          };
+        })
+      )
+    : [];
 
   return {
     pagination: {
