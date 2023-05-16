@@ -15,7 +15,8 @@ export const verifyAccessToken = errorHandler(async (req: Request, res: Response
     const decodedToken = jwt.verify(token, environment.secretAccessToken) as JwtType;
     req.userId = decodedToken.userId;
     req.role = decodedToken.role;
-    next();
+    if (req.userId === req.session.userId) next();
+    else throw new HttpError(401);
   } catch (error) {
     throw new HttpError(401, 'Unauthorized - the access token has expired!');
   }
