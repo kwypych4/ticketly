@@ -17,6 +17,13 @@ export const appUrls = {
       login: 'login',
     },
   },
+  error: {
+    base: '',
+    pages: {
+      notFound: '*',
+      forbidden: 'forbidden',
+    },
+  },
 };
 
 export const appRoutes = {
@@ -32,6 +39,10 @@ export const appRoutes = {
   auth: {
     login: `${appUrls.auth.base}/${appUrls.auth.pages.login}`,
   },
+  error: {
+    notFound: `${appUrls.error.base}/${appUrls.error.pages.notFound}`,
+    forbidden: `${appUrls.error.base}/${appUrls.error.pages.forbidden}`,
+  },
 };
 
 const url = (base: string) => (details?: string | number) => `${base}${details ? `/${details}` : ''}`;
@@ -40,6 +51,7 @@ export const apiUrls = {
   auth: {
     login: url('auth/login'),
     logout: url('auth/logout'),
+    logoutAll: url('auth/logout_all'),
     accessToken: url('auth/access_token'),
   },
   tickets: {
