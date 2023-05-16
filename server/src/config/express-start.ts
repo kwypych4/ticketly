@@ -27,7 +27,7 @@ export const expressStart = () => {
 
   app.use(
     session({
-      name: 'ticketly.sid',
+      name: 'sid',
       secret: environment.sessionSecret,
       resave: false,
       saveUninitialized: false,
