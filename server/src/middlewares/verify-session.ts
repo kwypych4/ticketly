@@ -4,7 +4,7 @@ import { UserSchema } from 'models';
 import { errorHandler } from 'utils';
 
 export const verifySession = errorHandler(async (req: Request, res: Response, next: NextFunction) => {
-  if (!req.session || !req.session.userId) throw new HttpError(403, 'You are not logged in!');
+  if (!req.session || !req.session.userId) throw new HttpError(401, 'You are not logged in!');
 
   try {
     const user = await UserSchema.findOne({ _id: req.session.userId });
