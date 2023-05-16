@@ -29,7 +29,6 @@ axiosInstance.interceptors.response.use(
           const accessTokenQuery = await refreshAccessToken();
           useAuthStore.setState({ accessToken: accessTokenQuery.accessToken });
         } catch (error) {
-          alert('Nie można pobrać refresh tokena');
           useAuthStore.setState({ isLogged: false });
         }
       }
