@@ -16,6 +16,7 @@ export const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
     },
     staleTime: Infinity,
     retry: false,
+    enabled: !isLogged,
   });
 
   if (isLoggedQuery.isLoading) return <div>Loading</div>;

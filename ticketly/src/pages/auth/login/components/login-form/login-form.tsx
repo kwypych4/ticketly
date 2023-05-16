@@ -1,6 +1,6 @@
 import { faUnlockKeyhole } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Form, Input } from 'antd';
+import { App, Form, Input } from 'antd';
 import { api } from 'api';
 import { AxiosError } from 'axios';
 import { useMutation } from 'react-query';
@@ -13,6 +13,7 @@ import { FormInputs } from './login-form.types';
 export const LoginForm = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const { notification } = App.useApp();
   const mutateLogin = useMutation({
     mutationFn: ({ username, password }: { username: string; password: string }) =>
       api.auth.login({ username, password }),
@@ -21,7 +22,7 @@ export const LoginForm = () => {
       navigate('/');
     },
     onError: (error: AxiosError<{ error: string }>) => {
-      console.log(error.response?.data.error);
+      notification.error({ message: error.response?.data.error });
     },
   });
 
@@ -42,7 +43,7 @@ export const LoginForm = () => {
       <Form.Item name={FormInputs.password} rules={validationSchema[FormInputs.password]} label='Password'>
         <Input type='password' />
       </Form.Item>
-      <button onClick={form.submit}>
+      <button>
         <FontAwesomeIcon icon={faUnlockKeyhole} />
         Login
       </button>

@@ -5,7 +5,6 @@ import { api } from 'api';
 import { TableWrapper, TicketsTable } from 'components';
 import { useCustomQuery } from 'hooks/use-custom-query';
 import { useState } from 'react';
-import { useAuthStore } from 'store';
 import { PageContent, PageTitle, PageWrapper } from 'styles';
 import { RequestParamsType } from 'types';
 
@@ -17,11 +16,10 @@ export const TicketsPage = () => {
   const ticketsListQuery = useCustomQuery(['tickets', options], () => api.tickets.list.fetch(options));
 
   const [form] = Form.useForm();
-  const token = useAuthStore((state) => state.accessToken);
   return (
     <PageWrapper>
       <PageTitle>
-        <h2>Tickets, {token}</h2>
+        <h2>Tickets</h2>
         <button onClick={() => setShowModal(true)}>
           <FontAwesomeIcon icon={faPlus} />
           Add new ticket
