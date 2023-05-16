@@ -20,6 +20,20 @@ export const login = async ({ username, password }: LoginProps): LoginReturn => 
   return data;
 };
 
+type LogoutResponse = { success: boolean };
+type LogoutRequest = object;
+type LogoutReturn = Promise<LogoutResponse>;
+type LogoutProps = {
+  logoutFromAllDevices?: boolean;
+} & LogoutRequest;
+
+export const logout = async ({ logoutFromAllDevices }: LogoutProps): LogoutReturn => {
+  const url = logoutFromAllDevices ? apiUrls.auth.logoutAll() : apiUrls.auth.logout();
+  const { data } = await request<LogoutResponse, LogoutRequest>(url, 'GET');
+
+  return data;
+};
+
 export const checkLogin = async (): LoginReturn => {
   const { data } = await request<LoginResponse, LoginRequest>(apiUrls.auth.login(), 'GET');
 

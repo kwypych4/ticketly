@@ -12,6 +12,7 @@ export const Container = styled.div`
     height: 100%;
     font-weight: 500;
     color: ${colors.pressAgent};
+    cursor: pointer;
 
     .ant-avatar {
       margin: 0 10px 0 15px;
