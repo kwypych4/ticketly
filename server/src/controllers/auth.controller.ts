@@ -2,6 +2,7 @@ import { environment } from 'config';
 import { roles } from 'data';
 import { HttpError } from 'error';
 import { Request } from 'express';
+import { logger } from 'logger';
 import { RefreshTokenSchema, UserSchema } from 'models';
 import { Schema } from 'mongoose';
 import { RefreshTokenType, UserIdType, UserType } from 'types';
@@ -11,6 +12,7 @@ import {
   createRefreshToken,
   errorHandler,
   hashPassword,
+  removeAllUserSessions,
   validateRefreshToken,
 } from 'utils';
 import { cookiesParser } from 'utils/cookies-parser';
@@ -72,24 +74,17 @@ type LoginResponse = {
   username: string;
   uid: string;
   accessToken: string;
-  refreshToken: string;
 };
 
 const login = errorHandler<LoginRequest, LoginResponse>(async (req, res) => {
-  // TODO: Improve login and check login
-  const userParams = req.body?.username ? { username: req.body.username } : { _id: req.session.userId };
-
   const userDocument = await UserSchema.findOne({
-    ...userParams,
+    username: req.body.username,
   }).select('+password');
 
   const isLoginSuccess = userDocument && (await comparePassword(req.body?.password || '', userDocument.password));
-  const isUserLogged = userDocument && Boolean(req.session.userId);
 
-  if (!isUserLogged && (!req.body?.username || !req.body?.password)) throw new HttpError(403, 'You are not logged in!');
-
-  if (!isLoginSuccess && !isUserLogged) {
-    throw new HttpError(401, 'Wrong username or password');
+  if (!isLoginSuccess) {
+    throw new HttpError(403, 'Wrong username or password!');
   }
 
   const refreshTokenDocument = new RefreshTokenSchema<RefreshTokenType>({
@@ -109,7 +104,7 @@ const login = errorHandler<LoginRequest, LoginResponse>(async (req, res) => {
   const refreshTokenExpDate = Number((environment.refreshTokenExpTime as string).split(/(\d+)/)[1]);
 
   res.cookie('jwt', refreshToken, {
-    httpOnly: false,
+    httpOnly: true,
     secure: false,
     maxAge: 1000 * 60 * 60 * 24 * refreshTokenExpDate,
   });
@@ -117,7 +112,28 @@ const login = errorHandler<LoginRequest, LoginResponse>(async (req, res) => {
     username: userDocument?.username,
     uid: userDocument?.id,
     accessToken,
-    refreshToken,
+  };
+});
+
+const checkLogin = errorHandler<LoginRequest, LoginResponse>(async (req, _) => {
+  const userDocument = await UserSchema.findOne({
+    _id: req.session.userId,
+  });
+
+  const isUserLogged = userDocument && Boolean(req.session.userId);
+
+  if (!isUserLogged) throw new HttpError(403, 'Your session has expired!');
+
+  const accessToken = createAccessToken({
+    userId: userDocument.id,
+    role: userDocument.role,
+    isThemeDark: userDocument.isThemeDark || true,
+  });
+
+  return {
+    username: userDocument?.username,
+    uid: userDocument?.id,
+    accessToken,
   };
 });
 
@@ -131,18 +147,45 @@ type LogoutResponse = {
   success: boolean;
 };
 
-const logout = errorHandler<LogoutRequest, LogoutResponse>(async (req, _) => {
-  const refreshToken = await validateRefreshToken(req.body?.refreshToken);
-  if (!refreshToken) throw new HttpError(401, 'Unauthorized');
-  await RefreshTokenSchema.deleteOne({ _id: refreshToken.tokenId });
-  delete req.session.userId;
+const logout = errorHandler<LogoutRequest, LogoutResponse>(async (req, res) => {
+  const cookies = cookiesParser(req);
+  const refreshTokenCookie = 'jwt' in cookies ? cookies.jwt : '';
+
+  const refreshToken = await validateRefreshToken(refreshTokenCookie as string);
+  if (refreshToken) await RefreshTokenSchema.deleteOne({ _id: refreshToken.tokenId });
+
+  if (cookies)
+    Object.keys(cookies).map((cookie) => {
+      res.clearCookie(cookie);
+      return true;
+    });
+
+  req.session.destroy((error) => {
+    if (error) logger.error(error);
+  });
+
   return { success: true };
 });
 
-const logoutAll = errorHandler<LogoutRequest, LogoutResponse>(async (req, _) => {
-  const refreshToken = await validateRefreshToken(req.body?.refreshToken);
-  if (!refreshToken) throw new HttpError(401, 'Unauthorized');
-  await RefreshTokenSchema.deleteMany({ owner: refreshToken.userId });
+const logoutAll = errorHandler<LogoutRequest, LogoutResponse>(async (req, res) => {
+  const cookies = cookiesParser(req);
+  const refreshTokenCookie = 'jwt' in cookies ? cookies.jwt : '';
+
+  const refreshToken = await validateRefreshToken(refreshTokenCookie as string);
+
+  removeAllUserSessions(req, refreshToken);
+
+  if (refreshToken) await RefreshTokenSchema.deleteMany({ owner: refreshToken.userId });
+
+  if (cookies)
+    Object.keys(cookies).map((cookie) => {
+      res.clearCookie(cookie);
+      return true;
+    });
+
+  req.session.destroy((error) => {
+    if (error) logger.error(error);
+  });
 
   return { success: true };
 });
@@ -160,7 +203,10 @@ type TokenResponse = {
 };
 
 const newRefreshToken = errorHandler<TokenRequest, TokenResponse>(async (req, _) => {
-  const currentRefreshToken = await validateRefreshToken(req.body?.refreshToken);
+  const cookies = cookiesParser(req);
+  const refreshTokenCookie = 'jwt' in cookies ? cookies.jwt : '';
+
+  const currentRefreshToken = await validateRefreshToken(refreshTokenCookie as string);
 
   if (!currentRefreshToken) throw new HttpError(401, 'Unauthorized');
 
@@ -226,6 +272,7 @@ const newAccessToken = errorHandler<NewTokenRequest, NewTokenResponse>(async (re
 
 export const auth = {
   login,
+  checkLogin,
   logout,
   logoutAll,
   register,
