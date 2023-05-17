@@ -1,34 +1,31 @@
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { App, Avatar, Dropdown } from 'antd';
+import { Avatar, Dropdown } from 'antd';
 import { api } from 'api';
-import { useMutation } from 'react-query';
+import { useCustomMutation } from 'hooks/use-custom-mutation';
 import { useAuthStore } from 'store';
 
 import { Container } from '.';
 
 export const UserSection = () => {
-  const { notification } = App.useApp();
-  const logoutMutation = useMutation('logout', () => api.auth.logout({ logoutFromAllDevices: false }), {
+  const logoutMutation = useCustomMutation(api.auth.logout, {
+    mutationKey: 'logout',
+    message: {
+      onError: 'Something went wrong! Please, contact with out IT support.',
+      onSuccess: 'You have been successfully logged out!',
+    },
     onSuccess: () => {
       useAuthStore.setState({ isLogged: false, accessToken: '' });
-      notification.success({ message: 'You have been successfully logged out!' });
-    },
-    onError: (error) => {
-      notification.success({
-        message: `Something went wrong! Please, contact with out IT support and give them this error message: ${error}`,
-      });
     },
   });
-  const logoutAllMutation = useMutation('logoutAll', () => api.auth.logout({ logoutFromAllDevices: true }), {
+  const logoutAllMutation = useCustomMutation(() => api.auth.logout({ logoutFromAllDevices: true }), {
+    mutationKey: 'logoutAll',
+    message: {
+      onError: 'Something went wrong! Please, contact with out IT support.',
+      onSuccess: 'You have been successfully logged out from all devices!!',
+    },
     onSuccess: () => {
       useAuthStore.setState({ isLogged: false, accessToken: '' });
-      notification.success({ message: 'You have been successfully logged out from all devices!' });
-    },
-    onError: (error) => {
-      notification.success({
-        message: `Something went wrong! Please, contact with out IT support and give them this error message: ${error}`,
-      });
     },
   });
 
@@ -41,7 +38,7 @@ export const UserSection = () => {
             {
               label: 'Logout',
               key: '0',
-              onClick: () => logoutMutation.mutateAsync(),
+              onClick: () => logoutMutation.mutateAsync({ logoutFromAllDevices: false }),
             },
             {
               label: 'Logout from all devices',

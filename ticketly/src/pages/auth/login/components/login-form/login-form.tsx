@@ -3,9 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { App, Form, Input } from 'antd';
 import { api } from 'api';
 import { AxiosError } from 'axios';
-import { useMutation } from 'react-query';
+import { useCustomMutation } from 'hooks/use-custom-mutation';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from 'store';
+import { useAuthStore, useUserStore } from 'store';
 
 import { validationSchema } from './login-form.schema';
 import { FormInputs } from './login-form.types';
@@ -14,11 +14,10 @@ export const LoginForm = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const { notification } = App.useApp();
-  const mutateLogin = useMutation({
-    mutationFn: ({ username, password }: { username: string; password: string }) =>
-      api.auth.login({ username, password }),
-    onSuccess: ({ accessToken }) => {
+  const mutateLogin = useCustomMutation(api.auth.login, {
+    onSuccess: ({ accessToken, uid, username }) => {
       useAuthStore.setState({ isLogged: true, accessToken });
+      useUserStore.setState({ userId: uid, username });
       navigate('/');
     },
     onError: (error: AxiosError<{ error: string }>) => {
