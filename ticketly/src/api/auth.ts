@@ -1,7 +1,7 @@
 import { apiUrls } from 'urls';
 import { request } from 'utils/axios';
 
-type LoginResponse = { username: string; uid: string; accessToken: string; refreshToken: string };
+type LoginResponse = { username: string; uid: string; accessToken: string };
 type LoginRequest = object;
 type LoginReturn = Promise<LoginResponse>;
 type LoginProps = {
