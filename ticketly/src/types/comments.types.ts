@@ -10,3 +10,7 @@ export type CommentsListTypes = {
   updated?: number;
   attachments?: AttachmentType;
 };
+
+export type AddCommentResponseType = {
+  success: boolean;
+};

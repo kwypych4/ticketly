@@ -1,4 +1,4 @@
-import { CommentsListTypes } from 'types';
+import { AddCommentResponseType, CommentsListTypes } from 'types';
 import { apiUrls } from 'urls';
 import { request } from 'utils/axios';
 
@@ -14,4 +14,35 @@ const fetchList = async ({ ticketId }: CommentsListProps): CommentsListReturn =>
 
 export const list = {
   fetch: fetchList,
+};
+
+type AddCommentResponse = AddCommentResponseType;
+type AddCommentRequest = {
+  timeSpent: number;
+  content: string;
+  attachments?: any;
+};
+type AddCommentReturn = Promise<AddCommentResponse>;
+type AddCommentProps = { ticketId: string } & AddCommentRequest;
+
+const addComment = async ({ ticketId, timeSpent, content, attachments }: AddCommentProps): AddCommentReturn => {
+  const body = {
+    timeSpent,
+    content,
+    ...(attachments && { attachments }),
+  };
+
+  const { data } = await request<AddCommentResponse, AddCommentRequest>(
+    apiUrls.comments.index(ticketId),
+    'POST',
+    {},
+    body,
+    Boolean(attachments)
+  );
+
+  return data;
+};
+
+export const add = {
+  post: addComment,
 };
