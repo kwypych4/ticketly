@@ -1,9 +1,9 @@
 import { HttpError } from 'error';
 import { Request } from 'express';
 import fileUpload from 'express-fileupload';
-import { CommentSchema, UserSchema } from 'models';
+import { CommentSchema, TicketSchema, UserSchema } from 'models';
 import moment from 'moment';
-import { AttachmentType, CommentType, UserType } from 'types';
+import { AttachmentType, CommentType, TicketType, UserType } from 'types';
 import { errorHandler, slugify } from 'utils';
 
 type CommentsRequest = Request;
@@ -41,7 +41,7 @@ const getComments = errorHandler<CommentsRequest, CommentsResponse>(async (req, 
 });
 
 type CreateCommentRequest = {
-  body: Omit<CommentType, 'attachments'>;
+  body: Omit<CommentType, 'attachments'> & Pick<TicketType, 'timeSpent'>;
 } & Request;
 
 type CreateCommentResponse = {
@@ -50,9 +50,10 @@ type CreateCommentResponse = {
 
 const createComment = errorHandler<CreateCommentRequest, CreateCommentResponse>(async (req, _) => {
   const comment = new CommentSchema({
-    owner: req.session?.userId,
+    ownerId: req.session?.userId,
     ticket: req.params.ticketId,
-    content: req.body.content,
+    content: req.body?.content,
+    created: moment().toISOString(),
   });
 
   if (req.files) {
@@ -78,6 +79,7 @@ const createComment = errorHandler<CreateCommentRequest, CreateCommentResponse>(
     }
   }
 
+  await TicketSchema.updateOne<TicketType>({ _id: req.params.ticketId }, { $inc: { timeSpent: req.body?.timeSpent } });
   await comment.save();
 
   return { success: true };
