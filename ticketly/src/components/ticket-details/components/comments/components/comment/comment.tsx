@@ -12,8 +12,8 @@ export const Comment = ({ commentData }: CommentProps) => {
   return (
     <CommentWrapper>
       <CommentTitle>
-        {ownerName}, {moment(created).format('DD.MM.YYYY HH:MM')}{' '}
-        {updated !== created || <span>(updated: {moment(updated).format('DD.MM.YYYY HH:MM')})</span>}
+        {ownerName}, {moment(created).format('DD.MM.YYYY HH:mm')}{' '}
+        {updated !== created || <span>(updated: {moment(updated).format('DD.MM.YYYY HH:mm')})</span>}
       </CommentTitle>
       <CommentContent>{content}</CommentContent>
       {attachments && (
