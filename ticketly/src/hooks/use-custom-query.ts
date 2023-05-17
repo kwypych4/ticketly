@@ -1,19 +1,41 @@
 import { App } from 'antd';
 import { AxiosError } from 'axios';
-import { QueryFunction, QueryKey, useQuery, UseQueryOptions, UseQueryResult } from 'react-query';
+import { QueryFunction, useQuery, useQueryClient, UseQueryOptions, UseQueryResult } from 'react-query';
 import { useAuthStore } from 'store';
+import { QueryKeys } from 'types';
+
+type TCustomQueryOptions = {
+  message?: {
+    onSuccess?: string;
+    onError?: string;
+  };
+  invalidateQueryKey?: Array<QueryKeys>;
+  mutationKey?: TQueryKey;
+};
+type TQueryKey = [QueryKeys, any?] | QueryKeys;
+type TQueryFunction<T> = QueryFunction<T, TQueryKey>;
+type TQueryError = AxiosError<{ error: string }>;
+type TQueryOptions<T> = UseQueryOptions<T, TQueryError, T, TQueryKey> & TCustomQueryOptions;
+type TQueryResult<T> = UseQueryResult<T, TQueryError>;
 
 export const useCustomQuery = <QueryReturnType>(
-  queryKey: QueryKey,
-  queryFn: QueryFunction<QueryReturnType, QueryKey>,
-  options?: UseQueryOptions<QueryReturnType, AxiosError<{ error: string }>>
-): UseQueryResult<QueryReturnType, AxiosError> => {
+  queryKey: TQueryKey,
+  queryFn: TQueryFunction<QueryReturnType>,
+  options?: TQueryOptions<QueryReturnType>
+): TQueryResult<QueryReturnType> => {
   const { notification } = App.useApp();
+  const queryClient = useQueryClient();
 
   return useQuery(queryKey, queryFn, {
     onSuccess: (success) => {
       if (options?.onSuccess) {
         options?.onSuccess(success);
+      }
+      if (options?.invalidateQueryKey) {
+        queryClient.invalidateQueries({ queryKey: options?.invalidateQueryKey });
+      }
+      if (options?.message?.onSuccess) {
+        notification.success({ message: options.message.onSuccess });
       }
     },
     onError: (error) => {
@@ -30,9 +52,13 @@ export const useCustomQuery = <QueryReturnType>(
       if (options?.onError) {
         options?.onError(error);
       }
+      if (options?.invalidateQueryKey) {
+        queryClient.invalidateQueries({ queryKey: options.invalidateQueryKey });
+      }
+      if (options?.message?.onError) {
+        notification.error({ message: options.message.onError });
+      }
     },
     retry: false,
-
-    ...options,
   });
 };
