@@ -43,7 +43,8 @@ export const request = <T, Y>(
   url: string,
   method: 'GET' | 'POST' | 'PATCH' | 'DELETE',
   params?: RequestParamsType,
-  body?: RequestParamsType
+  data?: RequestParamsType,
+  withAttachments?: boolean
 ): Promise<AxiosResponse<T, Y>> => {
   const { accessToken } = useAuthStore.getState();
 
@@ -51,11 +52,11 @@ export const request = <T, Y>(
     method,
     url,
     params,
-    data: {
-      ...body,
-    },
+    data,
     headers: {
       ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
+      ...(withAttachments && { 'Content-Type': 'multipart/form-data' }),
     },
+    formSerializer: { indexes: null },
   });
 };
