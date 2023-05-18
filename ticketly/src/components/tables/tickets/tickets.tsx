@@ -2,6 +2,7 @@ import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { NavLink } from 'react-router-dom';
 import { TicketsListTypes, TicketsTableProps } from 'types';
+import { convertMinutes } from 'utils';
 
 export const columns: ColumnsType<TicketsListTypes> = [
   {
@@ -19,16 +20,25 @@ export const columns: ColumnsType<TicketsListTypes> = [
     title: 'Assigned To',
     dataIndex: 'engineer',
     key: 'engineer',
+    render: (text) => {
+      if (text) return text;
+
+      return 'Not assigned';
+    },
   },
   {
     title: 'Time spent',
     dataIndex: 'timeSpent',
     key: 'timeSpent',
+    render: (text) => convertMinutes(text),
   },
   {
     title: 'Status',
     dataIndex: 'status',
     key: 'status',
+    render: (text) => {
+      return `${String(text)[0].toLocaleUpperCase()}${String(text).slice(1)}`;
+    },
   },
 ];
 
@@ -39,7 +49,6 @@ export const TicketsTable = ({ setOptions, data, pagination }: TicketsTableProps
       dataSource={data}
       rowKey='id'
       pagination={{
-        defaultPageSize: 25,
         total: pagination?.totalElements,
       }}
       onChange={setOptions}
