@@ -1,67 +1,18 @@
 import { environment } from 'config';
-import { roles } from 'data';
 import { HttpError } from 'error';
 import { Request } from 'express';
 import { logger } from 'logger';
 import { RefreshTokenSchema, UserSchema } from 'models';
-import { Schema } from 'mongoose';
-import { RefreshTokenType, UserIdType, UserType } from 'types';
+import { RefreshTokenType, UserIdType } from 'types';
 import {
   comparePassword,
   createAccessToken,
   createRefreshToken,
   errorHandler,
-  hashPassword,
   removeAllUserSessions,
   validateRefreshToken,
 } from 'utils';
 import { cookiesParser } from 'utils/cookies-parser';
-
-type RegisterRequest = { body: UserType };
-
-type RegisterResponse = {
-  id: {
-    type: Schema.Types.ObjectId;
-    ref: string;
-  };
-  accessToken: string;
-  refreshToken: string;
-};
-
-const register = errorHandler<RegisterRequest, RegisterResponse>(async (req, _) => {
-  if (!roles.includes(req.body?.role))
-    throw new HttpError(500, `User can only have 'admin' or 'user' or 'engineer' role.`);
-
-  const userDocument = new UserSchema<UserType>({
-    username: req.body?.username,
-    password: await hashPassword(req.body?.password),
-    firstName: req.body?.firstName,
-    lastName: req.body?.lastName,
-    department: req.body?.department,
-    position: req.body?.position,
-    role: req.body?.role,
-  });
-
-  const refreshTokenDocument = new RefreshTokenSchema<RefreshTokenType>({
-    owner: userDocument.id,
-  });
-
-  const accessToken = createAccessToken({
-    userId: userDocument.id,
-    role: req.body.role,
-    isThemeDark: req.body?.isThemeDark || true,
-  });
-  const refreshToken = createRefreshToken(userDocument.id, refreshTokenDocument.id);
-
-  await userDocument.save();
-  await refreshTokenDocument.save();
-
-  return {
-    id: userDocument.id,
-    accessToken,
-    refreshToken,
-  };
-});
 
 type LoginRequest = {
   body: {
@@ -173,7 +124,7 @@ const logoutAll = errorHandler<LogoutRequest, LogoutResponse>(async (req, res) =
 
   const refreshToken = await validateRefreshToken(refreshTokenCookie as string);
 
-  removeAllUserSessions(req, refreshToken);
+  removeAllUserSessions({ req, refreshToken });
 
   if (refreshToken) await RefreshTokenSchema.deleteMany({ owner: refreshToken.userId });
 
@@ -275,7 +226,6 @@ export const auth = {
   checkLogin,
   logout,
   logoutAll,
-  register,
   newRefreshToken,
   newAccessToken,
 };
