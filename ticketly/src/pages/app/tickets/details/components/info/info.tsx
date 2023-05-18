@@ -1,5 +1,6 @@
 import { Image, Select } from 'antd';
 import moment from 'moment';
+import { apiUrls } from 'urls';
 import { convertMinutes } from 'utils';
 
 import { InfoProps, InfoWrapper } from '.';
@@ -69,11 +70,7 @@ export const Info = ({ data, filters, mutateTicket }: InfoProps) => {
         <div>
           <span>Attachments:</span>
           {data.attachments?.map((attachment) => (
-            <Image
-              key={attachment.title}
-              width={100}
-              src='https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-            />
+            <Image key={attachment.title} width={100} src={apiUrls.attachments.index(attachment.path)} />
           ))}
         </div>
       )}

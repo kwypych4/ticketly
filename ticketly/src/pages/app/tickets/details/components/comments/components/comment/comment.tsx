@@ -5,6 +5,7 @@ import { api } from 'api';
 import { useCustomMutation } from 'hooks/use-custom-mutation';
 import moment from 'moment';
 import { useState } from 'react';
+import { apiUrls } from 'urls';
 
 import { ModifyCommentForm } from '../../../modify-comment-form';
 import { CommentAttachments, CommentButtons, CommentContent, CommentProps, CommentTitle, CommentWrapper } from '.';
@@ -38,11 +39,7 @@ export const Comment = ({ commentData }: CommentProps) => {
       {attachments && (
         <CommentAttachments>
           {attachments.map((attachment) => (
-            <Image
-              key={attachment.title}
-              width={50}
-              src='https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-            />
+            <Image key={attachment.title} width={50} src={apiUrls.attachments.index(attachment.path)} />
           ))}
         </CommentAttachments>
       )}
