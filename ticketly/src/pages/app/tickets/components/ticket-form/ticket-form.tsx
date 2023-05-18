@@ -10,6 +10,9 @@ import { FormInputs, TicketFormProps, validationSchema } from '.';
 export const TicketForm = ({ form, setShowModal }: TicketFormProps) => {
   const createTicketMutation = useCustomMutation(api.tickets.modify.post, {
     invalidateQueryKey: ['ticketList'],
+    onSuccess: () => {
+      setShowModal(false);
+    },
     message: {
       onSuccess: 'Ticket has been added!',
       useResponseErrorMessage: true,
@@ -31,7 +34,6 @@ export const TicketForm = ({ form, setShowModal }: TicketFormProps) => {
       ...(files && { attachments: [...files] }),
     };
     createTicketMutation.mutateAsync({ ...payload });
-    setShowModal(false);
   };
 
   return (

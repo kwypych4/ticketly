@@ -21,7 +21,10 @@ export const AddCommentForm = ({ form, setShowModal }: AddCommentFormProps) => {
     invalidateQueryKey: ['ticketComments', 'ticketDetails', 'ticketFilters'],
     message: {
       onSuccess: 'Comment has been added!',
-      onError: 'Occured an error while adding a comment!',
+      useResponseErrorMessage: true,
+    },
+    onSuccess: () => {
+      setShowModal(false);
     },
   });
 
@@ -34,7 +37,6 @@ export const AddCommentForm = ({ form, setShowModal }: AddCommentFormProps) => {
       ticketId: ticketId as string,
     };
     mutateAddComment.mutateAsync({ ...payload });
-    setShowModal(false);
   };
 
   return (
