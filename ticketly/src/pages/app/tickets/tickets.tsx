@@ -11,7 +11,7 @@ import { RequestParamsType } from 'types';
 import { TicketForm } from './components';
 
 export const TicketsPage = () => {
-  const [options, setOptions] = useState<RequestParamsType>();
+  const [options, setOptions] = useState<RequestParamsType>({ page: 1, limit: 13 });
   const [showModal, setShowModal] = useState(false);
   const ticketsListQuery = useCustomQuery(['ticketList', options], () => api.tickets.list.fetch(options));
   const [form] = Form.useForm();
@@ -30,7 +30,7 @@ export const TicketsPage = () => {
         </TableWrapper>
       </PageContent>
       <Modal title='Create new ticket' open={showModal} onOk={() => form.submit()} onCancel={() => setShowModal(false)}>
-        <TicketForm form={form} />
+        <TicketForm setShowModal={setShowModal} form={form} />
       </Modal>
     </PageWrapper>
   );
