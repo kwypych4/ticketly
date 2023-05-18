@@ -235,7 +235,7 @@ const createTicket = errorHandler<CreateTicketRequest, CreateTicketResponse>(asy
       files.map((file) =>
         names.push({
           type: file.mimetype,
-          path: `/attachments/${file.md5 + file.size + slugify(file.name)}`,
+          path: file.md5 + file.size + slugify(file.name),
           title: file.name,
         })
       );
@@ -244,9 +244,7 @@ const createTicket = errorHandler<CreateTicketRequest, CreateTicketResponse>(asy
     } else {
       const file = req.files.attachments as fileUpload.UploadedFile;
 
-      ticket.attachments = [
-        { type: file.mimetype, path: `/attachments/${file.md5 + file.size + slugify(file.name)}`, title: file.name },
-      ];
+      ticket.attachments = [{ type: file.mimetype, path: file.md5 + file.size + slugify(file.name), title: file.name }];
     }
   }
 
