@@ -3,12 +3,10 @@ import { AxiosError } from 'axios';
 import { QueryFunction, useQuery, useQueryClient, UseQueryOptions, UseQueryResult } from 'react-query';
 import { useAuthStore } from 'store';
 import { QueryKeys } from 'types';
+import { MessagesTypes } from 'types/query-message.types';
 
 type TCustomQueryOptions = {
-  message?: {
-    onSuccess?: string;
-    onError?: string;
-  };
+  message?: MessagesTypes;
   invalidateQueryKey?: Array<QueryKeys>;
   mutationKey?: TQueryKey;
 };
@@ -57,6 +55,9 @@ export const useCustomQuery = <QueryReturnType>(
       }
       if (options?.message?.onError) {
         notification.error({ message: options.message.onError });
+      }
+      if (options?.message?.useResponseErrorMessage) {
+        notification.error({ message: error.response?.data.error });
       }
     },
     retry: false,

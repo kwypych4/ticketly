@@ -2,12 +2,10 @@ import { App } from 'antd';
 import { AxiosError } from 'axios';
 import { MutationFunction, useMutation, UseMutationOptions, UseMutationResult, useQueryClient } from 'react-query';
 import { MutationKeys, QueryKeys } from 'types';
+import { MessagesTypes } from 'types/query-message.types';
 
 type TCustomQueryOptions = {
-  message?: {
-    onSuccess?: string;
-    onError?: string;
-  };
+  message?: MessagesTypes;
   invalidateQueryKey?: TQueryKeys;
   mutationKey?: TMutationKey;
 };
@@ -56,6 +54,9 @@ export const useCustomMutation = <QueryReturnType, QueryRequestType = void>(
       }
       if (options?.message?.onError) {
         notification.error({ message: options.message.onError });
+      }
+      if (options?.message?.useResponseErrorMessage) {
+        notification.error({ message: error.response?.data.error });
       }
     },
   });
