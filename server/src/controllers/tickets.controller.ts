@@ -81,13 +81,14 @@ const getAllTickets = errorHandler<TicketsRequest, TicketsResponse>(async (req, 
 
   const tickets = await TicketSchema.find<TicketType>(queryCondition)
     .limit(limit)
-    .skip((page - 1) * limit);
+    .skip((page - 1) * limit)
+    .sort({ created: 'desc' });
 
   const data = tickets
     ? await Promise.all(
         tickets.map(async ({ _id, owner, engineerId, title, timeSpent, status, created, updated, finished }) => {
           const ticketOwner = await UserSchema.findOne<UserType>({ _id: owner });
-          const assignedEngineer = await UserSchema.findOne<UserType>({ _id: engineerId });
+          const assignedEngineer = engineerId && (await UserSchema.findOne<UserType>({ _id: engineerId }));
 
           return {
             id: _id?.toString(),
@@ -95,7 +96,7 @@ const getAllTickets = errorHandler<TicketsRequest, TicketsResponse>(async (req, 
             ownerName: `${ticketOwner?.firstName} ${ticketOwner?.lastName}`,
             title,
             engineerId,
-            engineer: `${assignedEngineer?.firstName} ${assignedEngineer?.lastName}`,
+            ...(engineerId && { engineer: `${assignedEngineer?.firstName} ${assignedEngineer?.lastName}` }),
             timeSpent,
             status,
             created,
@@ -185,7 +186,7 @@ const getOneTicket = errorHandler<OneTicketRequest, OneTicketResponse>(async (re
 
   if (!ticket) throw new HttpError(400, 'Ticket not found');
 
-  const engineer = await UserSchema.findOne<UserType>({ _id: ticket.engineerId });
+  const engineer = ticket.engineerId && (await UserSchema.findOne<UserType>({ _id: ticket.engineerId }));
   const owner = await UserSchema.findOne<UserType>({ _id: ticket.owner });
 
   return {
@@ -194,7 +195,7 @@ const getOneTicket = errorHandler<OneTicketRequest, OneTicketResponse>(async (re
     created: ticket.created,
     updated: ticket.updated,
     engineerId: ticket.engineerId,
-    engineerName: `${engineer?.firstName} ${engineer?.lastName}`,
+    ...(engineer && { engineerName: `${engineer?.firstName} ${engineer?.lastName}` }),
     estTime: ticket.estTime,
     owner: ticket.owner,
     ownerName: `${owner?.firstName} ${owner?.lastName}`,
@@ -202,7 +203,7 @@ const getOneTicket = errorHandler<OneTicketRequest, OneTicketResponse>(async (re
     title: ticket.title,
     description: ticket.description,
     timeSpent: ticket.timeSpent,
-    attachments: ticket.attachments,
+    ...(ticket.attachments && ticket.attachments.length > 0 && { attachments: ticket.attachments }),
     status: ticket.status,
   };
 });
@@ -219,9 +220,9 @@ const createTicket = errorHandler<CreateTicketRequest, CreateTicketResponse>(asy
   const ticket = new TicketSchema({
     categoryId: req.body?.categoryId,
     owner: req.session?.userId,
-    engineerId: req.body?.engineerId,
     priority: req.body?.priority,
     title: req.body?.title,
+    description: req.body?.description,
     estTime: req.body?.estTime,
     status: req.body?.status,
   });
@@ -287,6 +288,7 @@ const updateTicket = errorHandler<UpdateTicketRequest, UpdateTicketResponse>(asy
   const updateParams = {
     $set: {
       updated: moment().toISOString(),
+      ...(status === 'finished' && { finished: moment().toISOString() }),
       ...(engineer && { engineerId: engineer }),
       ...(categoryId && { categoryId }),
       ...(priority && { priority }),
@@ -297,7 +299,7 @@ const updateTicket = errorHandler<UpdateTicketRequest, UpdateTicketResponse>(asy
 
   const ticket = await TicketSchema.updateOne<TicketType>({ _id: req.params.id }, updateParams);
 
-  if (!ticket) throw new HttpError(400, 'Ticket not found');
+  if (!ticket) throw new HttpError(404, 'Ticket not found');
 
   return {
     success: true,
