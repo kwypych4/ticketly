@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { TicketsListTypes, TicketsTableProps } from 'types';
 import { convertMinutes } from 'utils';
 
-export const columns: ColumnsType<TicketsListTypes> = [
+const columns: ColumnsType<TicketsListTypes> = [
   {
     title: 'Reporting user',
     dataIndex: 'ownerName',
