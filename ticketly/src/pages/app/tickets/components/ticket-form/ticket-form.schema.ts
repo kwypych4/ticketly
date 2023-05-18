@@ -14,7 +14,7 @@ export const validationSchema: ValidationSchema = {
       required: false,
       validator: (_, value) => {
         if (!value) return Promise.resolve();
-        return value.some((file: any) => file.size > 4 * 1024 * 1024) ? Promise.reject() : Promise.resolve();
+        return value.some((file: File) => file.size > 4 * 1024 * 1024) ? Promise.reject() : Promise.resolve();
       },
       message: 'File size cannot exceed 4MB!',
     },

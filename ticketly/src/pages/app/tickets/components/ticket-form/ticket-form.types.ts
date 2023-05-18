@@ -1,4 +1,5 @@
 import { FormInstance } from 'antd';
+import { Dispatch, SetStateAction } from 'react';
 
 export enum FormInputs {
   title = 'title',
@@ -9,9 +10,10 @@ export enum FormInputs {
 export type FormTypes = {
   [FormInputs.title]: string;
   [FormInputs.description]: string;
-  [FormInputs.attachments]: any;
+  [FormInputs.attachments]: File | File[];
 };
 
 export type TicketFormProps = {
   form: FormInstance<any>;
+  setShowModal: Dispatch<SetStateAction<boolean>>;
 };
