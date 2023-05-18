@@ -162,7 +162,7 @@ const getTicketFilters = errorHandler<TicketFiltersRequest, TicketFiltersRespons
   );
 
   const statuses = ticketStatus.map((status: string) => ({
-    label: status,
+    label: `${status[0].toLocaleUpperCase()}${status.slice(1)}`,
     value: status,
   }));
 
