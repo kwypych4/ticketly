@@ -3,7 +3,7 @@ import { HttpError } from 'error';
 import { Request } from 'express';
 import { RefreshTokenSchema, UserSchema } from 'models';
 import moment from 'moment';
-import { UserRoles, UserType } from 'types';
+import { ResponseWithPagination, UserRoles, UserType } from 'types';
 import { errorHandler, hashPassword } from 'utils';
 
 type UsersRequest = {
@@ -17,11 +17,22 @@ type UsersRequest = {
   };
 } & Request;
 
-type UsersResponse = UserType[];
+type UsersResponseObjType = {
+  id: string;
+  department: string;
+  name: string;
+  position: string;
+  role: string;
+  username: string;
+};
+type UsersResponse = ResponseWithPagination<UsersResponseObjType[]>;
 
 const getUsers = errorHandler<UsersRequest, UsersResponse>(async (req, _) => {
+  const totalElements = await UserSchema.countDocuments({});
+
   const limit = Number(req.query.limit) || 25;
   const page = Number(req.query.page) || 1;
+
   const { department, first_name: firstName, last_name: lastName, position, role, username } = req.query;
 
   const queryCondition = {
@@ -33,12 +44,27 @@ const getUsers = errorHandler<UsersRequest, UsersResponse>(async (req, _) => {
     ...(username && { $text: { $search: username } }),
   };
 
-  const users = await UserSchema.find(queryCondition)
+  const users = await UserSchema.find<UsersResponseObjType>(queryCondition, {
+    _id: 0,
+    id: '$_id',
+    department: 1,
+    name: { $concat: ['$firstName', ' ', '$lastName'] },
+    position: 1,
+    role: 1,
+    username: 1,
+  })
     .limit(limit)
     .skip((page - 1) * limit);
 
   if (!users) throw new HttpError(400, 'Users not found');
-  return users;
+  return {
+    pagination: {
+      totalElements,
+      limit,
+      page,
+    },
+    data: users,
+  };
 });
 
 type OneUserRequest = Request;
