@@ -3,10 +3,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useAuthStore } from 'store';
 import { RequestParamsType } from 'types';
 
-const baseURL = import.meta.env.DEV ? import.meta.env.VITE_APP_DEV_API_BASE : import.meta.env.VITE_APP_PROD_API_BASE;
-
 export const axiosInstance = axios.create({
-  baseURL,
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded',
     'Access-Control-Allow-Origin': 'true',
