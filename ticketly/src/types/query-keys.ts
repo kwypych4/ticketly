@@ -4,5 +4,6 @@ export type QueryKeys =
   | 'ticketFilters'
   | 'ticketComments'
   | 'checkLogin'
-  | 'usersList';
+  | 'usersList'
+  | 'userFilters';
 export type MutationKeys = 'logout' | 'logoutAll';
