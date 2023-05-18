@@ -35,6 +35,18 @@ export type TicketDetailsTypes = {
   status: string;
   attachments?: AttachmentType;
 };
+export type CreateTicketRequestTypes = {
+  categoryId: string;
+  priority: number;
+  title: string;
+  description: string;
+  estTime: number;
+  status: 'new';
+  attachments?: File | File[];
+};
+export type CreateTicketResponseTypes = {
+  success: boolean;
+};
 
 export type TicketFiltersTypes = {
   statuses: {
