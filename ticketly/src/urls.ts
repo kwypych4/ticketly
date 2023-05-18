@@ -66,4 +66,7 @@ export const apiUrls = {
   attachments: {
     index: url('attachments'),
   },
+  users: {
+    index: url('users'),
+  },
 };
