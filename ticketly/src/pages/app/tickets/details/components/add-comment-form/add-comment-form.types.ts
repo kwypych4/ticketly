@@ -13,7 +13,7 @@ export type FormTypes = {
   [FormInputs.attachments]: any;
 };
 
-export type TicketFormProps = {
+export type AddCommentFormProps = {
   form: FormInstance<any>;
   setShowModal: Dispatch<SetStateAction<boolean>>;
 };
