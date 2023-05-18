@@ -3,8 +3,8 @@ import { HttpError } from 'error';
 import { Request } from 'express';
 import { RefreshTokenSchema, UserSchema } from 'models';
 import moment from 'moment';
-import { ResponseWithPagination, UserRoles, UserType } from 'types';
-import { errorHandler, hashPassword } from 'utils';
+import { RefreshTokenType, ResponseWithPagination, UserIdType, UserRoles, UserType } from 'types';
+import { createAccessToken, createRefreshToken, errorHandler, hashPassword, removeAllUserSessions } from 'utils';
 
 type UsersRequest = {
   query: {
@@ -78,6 +78,72 @@ const getOneUser = errorHandler<OneUserRequest, OneUserResponse>(async (req, _) 
   return user;
 });
 
+type UsersFiltersRequest = Request;
+
+type UsersFiltersResponse = {
+  roles: {
+    label: string;
+    value: string;
+  }[];
+};
+
+const getUsersFilters = errorHandler<UsersFiltersRequest, UsersFiltersResponse>(async (_, __) => {
+  const rolesList = roles.map((role) => ({
+    label: role[0].toLocaleUpperCase() + role.slice(1),
+    value: role,
+  }));
+  return {
+    roles: rolesList,
+  };
+});
+
+type CreateUserRequest = { body: UserType };
+
+type CreateUserResponse = {
+  id: UserIdType;
+  accessToken: string;
+  refreshToken: string;
+};
+
+const createUser = errorHandler<CreateUserRequest, CreateUserResponse>(async (req, _) => {
+  if (!roles.includes(req.body?.role))
+    throw new HttpError(500, `User can only have 'admin' or 'user' or 'engineer' role.`);
+
+  const existingUser = await UserSchema.find({ username: req.body?.username }).limit(1);
+
+  if (existingUser.length > 0) throw new HttpError(409, 'User with provided username already exists.');
+
+  const userDocument = new UserSchema<UserType>({
+    username: req.body?.username,
+    password: await hashPassword(req.body?.password),
+    firstName: req.body?.firstName,
+    lastName: req.body?.lastName,
+    department: req.body?.department,
+    position: req.body?.position,
+    role: req.body?.role,
+  });
+
+  const refreshTokenDocument = new RefreshTokenSchema<RefreshTokenType>({
+    owner: userDocument.id,
+  });
+
+  const accessToken = createAccessToken({
+    userId: userDocument.id,
+    role: req.body.role,
+    isThemeDark: req.body?.isThemeDark || true,
+  });
+  const refreshToken = createRefreshToken(userDocument.id, refreshTokenDocument.id);
+
+  await userDocument.save();
+  await refreshTokenDocument.save();
+
+  return {
+    id: userDocument.id,
+    accessToken,
+    refreshToken,
+  };
+});
+
 type DeleteUserRequest = Request;
 
 type DeleteUserResponse = { success: boolean };
@@ -86,7 +152,7 @@ const deleteUser = errorHandler<DeleteUserRequest, DeleteUserResponse>(async (re
   await UserSchema.deleteOne({ _id: req.params.id });
   await RefreshTokenSchema.deleteMany({ owner: req.params.id });
 
-  delete req.session.userId;
+  removeAllUserSessions({ req, userId: req.params.id });
 
   return {
     success: true,
@@ -132,6 +198,8 @@ const updateUser = errorHandler<UpdateUserRequest, UpdateUserResponse>(async (re
 export const users = {
   getUsers,
   getOneUser,
+  getUsersFilters,
+  createUser,
   deleteUser,
   updateUser,
 };
