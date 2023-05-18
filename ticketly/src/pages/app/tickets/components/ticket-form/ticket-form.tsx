@@ -5,7 +5,8 @@ import { UploadChangeParam, UploadFile } from 'antd/es/upload';
 import { api } from 'api';
 import { useCustomMutation } from 'hooks/use-custom-mutation';
 
-import { FormInputs, TicketFormProps, validationSchema } from '.';
+import { validationSchema } from './ticket-form.schema';
+import { FormInputs, TicketFormProps } from './ticket-form.types';
 
 export const TicketForm = ({ form, setShowModal }: TicketFormProps) => {
   const createTicketMutation = useCustomMutation(api.tickets.modify.post, {
