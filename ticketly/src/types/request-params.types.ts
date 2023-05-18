@@ -9,5 +9,7 @@ export type RequestParamsType = {
     | FilterValue
     | Array<string | null | FilterValue | number | SorterResult<string> | SorterResult<string>[]>
     | SorterResult<string>
-    | SorterResult<string>[];
+    | SorterResult<string>[]
+    | File
+    | File[];
 };

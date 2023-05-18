@@ -14,3 +14,9 @@ export type CommentsListTypes = {
 export type AddCommentResponseType = {
   success: boolean;
 };
+export type DeleteCommentResponseType = {
+  success: boolean;
+};
+export type UpdateCommentResponseType = {
+  success: boolean;
+};
