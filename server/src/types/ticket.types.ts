@@ -9,7 +9,7 @@ export type TicketType = {
   ownerName: string;
   categoryId: string;
   engineerId: UserIdType;
-  engineerName: string;
+  engineerName?: string;
   priority: number;
   title: string;
   description: string;

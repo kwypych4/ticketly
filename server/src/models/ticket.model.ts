@@ -14,7 +14,7 @@ const ticket = new Schema<TicketType>({
   },
   engineerId: {
     type: String,
-    required: true,
+    required: false,
   },
   priority: {
     type: Number,

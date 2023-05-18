@@ -12,7 +12,7 @@ const router = express.Router();
 // router.use('/tickets', verifySession, ticketsRouter);
 router.use('/tickets', verifySession, verifyAccessToken, verifyRole(['user', 'engineer', 'admin']), ticketsRouter);
 // router.use('/comments', verifySession, verifyAccessToken, commentsRouter);
-router.use('/comments', commentsRouter);
+router.use('/comments', verifySession, verifyAccessToken, commentsRouter);
 router.use('/users', usersRouter);
 router.use('/auth', authRouter);
 
