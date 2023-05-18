@@ -12,6 +12,7 @@ export const PageTitle = styled.div`
     color: ${colors.trappedDarkness};
     font-size: 30px;
   }
+
   button {
     display: flex;
     margin-left: auto;
