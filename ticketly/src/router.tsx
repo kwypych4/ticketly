@@ -1,5 +1,5 @@
 import { AuthLayout, ErrorLayout, LoggedLayout } from 'layouts';
-import { ForbiddenPage, Homepage, LoginPage, NotFoundPage, TicketsDetailsPage, TicketsPage } from 'pages';
+import { ForbiddenPage, Homepage, LoginPage, NotFoundPage, TicketsDetailsPage, TicketsPage, UsersPage } from 'pages';
 import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 import { appRoutes } from 'urls';
 
@@ -10,6 +10,7 @@ export const Router = createBrowserRouter(
         <Route path={appRoutes.app.homepage} element={<Homepage />} />
         <Route path={appRoutes.app.tickets.index} element={<TicketsPage />} />
         <Route path={appRoutes.app.tickets.details} element={<TicketsDetailsPage />} />
+        <Route path={appRoutes.app.users} element={<UsersPage />} />
       </Route>
       <Route element={<AuthLayout />}>
         <Route path={appRoutes.auth.login} element={<LoginPage />} />
