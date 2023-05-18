@@ -5,7 +5,7 @@ import { RequestParamsType, WithPaginationTableType } from 'types';
 
 type TableWrapperProps = {
   children: JSX.Element;
-  setOptions: Dispatch<SetStateAction<RequestParamsType | undefined>>;
+  setOptions: Dispatch<SetStateAction<RequestParamsType>>;
   data: WithPaginationTableType<any>;
 };
 
@@ -21,6 +21,7 @@ export const TableWrapper = ({ children, setOptions, data }: TableWrapperProps) 
         .forEach(([key, val]) => {
           params[key] = val;
         });
+
     setOptions(params);
   };
 
