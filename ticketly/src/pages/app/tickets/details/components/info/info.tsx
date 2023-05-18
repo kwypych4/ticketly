@@ -1,5 +1,6 @@
 import { Image, Select } from 'antd';
 import moment from 'moment';
+import { convertMinutes } from 'utils';
 
 import { InfoProps, InfoWrapper } from '.';
 
@@ -9,6 +10,12 @@ export const Info = ({ data, filters, mutateTicket }: InfoProps) => {
   };
   const handleStatusChange = (value: string) => {
     mutateTicket.mutateAsync({ status: value });
+  };
+
+  const getDefaultEngineerValue = () => {
+    if (filters.engineers.length > 0) return data.engineerId;
+    if (data.engineerName) return data.engineerName;
+    return 'Not assigned';
   };
 
   return (
@@ -23,12 +30,12 @@ export const Info = ({ data, filters, mutateTicket }: InfoProps) => {
       </div>
       <div>
         <span>Created:</span>
-        <p>{moment(data.created).format('DD.MM.YYYY HH:MM')}</p>
+        <p>{moment(data.created).format('DD.MM.YYYY HH:mm')}</p>
       </div>
       {data.status === 'finished' && (
         <div>
           <span>Finished:</span>
-          <p>{data.finished}</p>
+          <p>{moment(data.finished).format('DD.MM.YYYY HH:mm')}</p>
         </div>
       )}
       <div>
@@ -37,13 +44,13 @@ export const Info = ({ data, filters, mutateTicket }: InfoProps) => {
       </div>
       <div>
         <span>Time spent:</span>
-        <p>{data.timeSpent}m</p>
+        <p>{data.timeSpent ? convertMinutes(data.timeSpent) : '-'}</p>
       </div>
       <div>
         <span>Assigned engineer:</span>
 
         <Select
-          defaultValue={data.engineerId}
+          defaultValue={getDefaultEngineerValue()}
           style={{ width: 220 }}
           onChange={handleEngineerChange}
           options={filters.engineers}
@@ -58,16 +65,18 @@ export const Info = ({ data, filters, mutateTicket }: InfoProps) => {
           options={filters.statuses}
         />
       </div>
-      <div>
-        <span>Attachments:</span>
-        {data.attachments?.map((attachment) => (
-          <Image
-            key={attachment.title}
-            width={100}
-            src='https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-          />
-        ))}
-      </div>
+      {data.attachments && (
+        <div>
+          <span>Attachments:</span>
+          {data.attachments?.map((attachment) => (
+            <Image
+              key={attachment.title}
+              width={100}
+              src='https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
+            />
+          ))}
+        </div>
+      )}
     </InfoWrapper>
   );
 };
