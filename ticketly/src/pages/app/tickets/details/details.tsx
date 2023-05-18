@@ -10,16 +10,34 @@ import { Wrapper } from './details.styled';
 export const TicketsDetailsPage = () => {
   const { ticketId } = useParams();
 
-  const ticketInfoQuery = useCustomQuery(['ticketDetails', ticketId], () =>
-    api.tickets.details.fetch({ ticketId: ticketId || '' })
+  const ticketInfoQuery = useCustomQuery(
+    ['ticketDetails', ticketId],
+    () => api.tickets.details.fetch({ ticketId: ticketId || '' }),
+    {
+      message: {
+        useResponseErrorMessage: true,
+      },
+    }
   );
 
-  const filtersQuery = useCustomQuery(['ticketFilters', { distinct: false }], () =>
-    api.tickets.filters.fetch({ distinct: false })
+  const filtersQuery = useCustomQuery(
+    ['ticketFilters', { distinct: false }],
+    () => api.tickets.filters.fetch({ distinct: false }),
+    {
+      message: {
+        useResponseErrorMessage: true,
+      },
+    }
   );
 
-  const commentsQuery = useCustomQuery(['ticketComments', ticketId], () =>
-    api.comments.list.fetch({ ticketId: ticketId || '' })
+  const commentsQuery = useCustomQuery(
+    ['ticketComments', ticketId],
+    () => api.comments.list.fetch({ ticketId: ticketId || '' }),
+    {
+      message: {
+        useResponseErrorMessage: true,
+      },
+    }
   );
 
   const mutateTicket = useCustomMutation(
@@ -27,6 +45,9 @@ export const TicketsDetailsPage = () => {
       api.tickets.details.patch({ ticketId: ticketId || '', engineer, status, timeSpent }),
     {
       invalidateQueryKey: ['ticketDetails', 'ticketList'],
+      message: {
+        useResponseErrorMessage: true,
+      },
     }
   );
 
