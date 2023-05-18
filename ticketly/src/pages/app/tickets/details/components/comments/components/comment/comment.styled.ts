@@ -40,5 +40,8 @@ export const CommentButtons = styled.div`
   svg {
     margin-left: 18px;
     cursor: pointer;
+    &:hover {
+      color: ${colors.azure};
+    }
   }
 `;
