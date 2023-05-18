@@ -1,4 +1,6 @@
 import {
+  CreateTicketRequestTypes,
+  CreateTicketResponseTypes,
   RequestParamsType,
   TicketDetailsTypes,
   TicketFiltersTypes,
@@ -82,4 +84,35 @@ const fetchFilters = async (distinct: TicketFiltersProps): TicketFiltersReturn =
 
 export const filters = {
   fetch: fetchFilters,
+};
+
+type CreateTicketResponse = CreateTicketResponseTypes;
+type CreateTicketRequest = CreateTicketRequestTypes;
+type CreateTicketReturn = Promise<CreateTicketResponse>;
+type CreateTicketProps = Omit<CreateTicketRequest, 'estTime' | 'categoryId' | 'priority' | 'status'>;
+
+const createTicket = async ({ title, description, attachments }: CreateTicketProps): CreateTicketReturn => {
+  const body: CreateTicketRequest = {
+    title,
+    estTime: 0,
+    categoryId: '1',
+    priority: 1,
+    status: 'new',
+    description,
+    ...(attachments && { attachments }),
+  };
+
+  const { data } = await request<CreateTicketResponse, CreateTicketRequest>(
+    apiUrls.tickets.index(),
+    'POST',
+    {},
+    body,
+    Boolean(attachments)
+  );
+
+  return data;
+};
+
+export const modify = {
+  post: createTicket,
 };
