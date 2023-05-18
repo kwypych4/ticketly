@@ -12,6 +12,7 @@ export const CommentWrapper = styled.div`
 `;
 
 export const CommentTitle = styled.div`
+  display: flex;
   color: ${colors.pressAgent};
 
   span {
@@ -30,5 +31,14 @@ export const CommentAttachments = styled.div`
   margin: 0 12px 12px 12px;
   & > * {
     margin-right: 18px;
+  }
+`;
+
+export const CommentButtons = styled.div`
+  margin-left: auto;
+
+  svg {
+    margin-left: 18px;
+    cursor: pointer;
   }
 `;

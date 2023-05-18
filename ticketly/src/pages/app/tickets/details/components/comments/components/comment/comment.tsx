@@ -1,8 +1,10 @@
+import { faPen, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Image } from 'antd';
 import moment from 'moment';
 import { CommentsListTypes } from 'types';
 
-import { CommentAttachments, CommentContent, CommentTitle, CommentWrapper } from '.';
+import { CommentAttachments, CommentButtons, CommentContent, CommentTitle, CommentWrapper } from '.';
 
 type CommentProps = {
   commentData: CommentsListTypes;
@@ -14,6 +16,10 @@ export const Comment = ({ commentData }: CommentProps) => {
       <CommentTitle>
         {ownerName}, {moment(created).format('DD.MM.YYYY HH:mm')}{' '}
         {updated !== created || <span>(updated: {moment(updated).format('DD.MM.YYYY HH:mm')})</span>}
+        <CommentButtons>
+          <FontAwesomeIcon icon={faPen} />
+          <FontAwesomeIcon icon={faTrashAlt} />
+        </CommentButtons>
       </CommentTitle>
       <CommentContent>{content}</CommentContent>
       {attachments && (

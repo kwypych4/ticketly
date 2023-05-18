@@ -1,9 +1,11 @@
 import { api } from 'api';
-import { TicketDetails } from 'components/ticket-details';
 import { useCustomMutation } from 'hooks/use-custom-mutation';
 import { useCustomQuery } from 'hooks/use-custom-query';
 import { useParams } from 'react-router-dom';
 import { PageContent, PageItem, PageTitle, PageWrapper } from 'styles';
+
+import { Comments, Info } from './components';
+import { Wrapper } from './details.styled';
 
 export const TicketsDetailsPage = () => {
   const { ticketId } = useParams();
@@ -24,7 +26,7 @@ export const TicketsDetailsPage = () => {
     ({ engineer, status, timeSpent }: { engineer?: string; status?: string; timeSpent?: number }) =>
       api.tickets.details.patch({ ticketId: ticketId || '', engineer, status, timeSpent }),
     {
-      invalidateQueryKey: ['ticketDetails'],
+      invalidateQueryKey: ['ticketDetails', 'ticketList'],
     }
   );
 
@@ -36,12 +38,10 @@ export const TicketsDetailsPage = () => {
       <PageContent>
         <PageItem>
           {ticketInfoQuery.data && filtersQuery.data && commentsQuery.data && (
-            <TicketDetails
-              info={ticketInfoQuery.data}
-              filters={filtersQuery.data}
-              mutateTicket={mutateTicket}
-              comments={commentsQuery.data}
-            />
+            <Wrapper>
+              <Comments comments={commentsQuery.data} />
+              <Info data={ticketInfoQuery.data} filters={filtersQuery.data} mutateTicket={mutateTicket} />
+            </Wrapper>
           )}
         </PageItem>
       </PageContent>
