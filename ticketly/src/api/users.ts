@@ -3,6 +3,7 @@ import {
   CreateUserResponseTypes,
   DeleteUserResponseType,
   RequestParamsType,
+  UpdateUserResponseType,
   UsersFiltersTypes,
   UsersListTypes,
   WithPaginationTableType,
@@ -78,7 +79,43 @@ const deleteComment = async ({ userId }: DeleteUserProps): DeleteUserReturn => {
   return data;
 };
 
+type UpdateUserResponse = UpdateUserResponseType;
+type UpdateUserRequest = {
+  department: string;
+  firstName: string;
+  lastName: string;
+  position: string;
+  role: string;
+  password: string;
+};
+type UpdateUserReturn = Promise<UpdateUserResponse>;
+type UpdateUserProps = { userId: string } & UpdateUserRequest;
+
+const updateUser = async ({
+  userId,
+  department,
+  firstName,
+  lastName,
+  password,
+  position,
+  role,
+}: UpdateUserProps): UpdateUserReturn => {
+  const body = {
+    ...(department && { department }),
+    ...(firstName && { firstName }),
+    ...(lastName && { lastName }),
+    ...(position && { position }),
+    ...(role && { role }),
+    ...(password && { password }),
+  };
+
+  const { data } = await request<UpdateUserResponse, UpdateUserRequest>(apiUrls.users.index(userId), 'PATCH', {}, body);
+
+  return data;
+};
+
 export const modify = {
   post: createUser,
   delete: deleteComment,
+  patch: updateUser,
 };
