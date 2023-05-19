@@ -6,6 +6,7 @@ import { AxiosError } from 'axios';
 import { useCustomMutation } from 'hooks/use-custom-mutation';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore, useUserStore } from 'store';
+import { decodeToken } from 'utils';
 
 import { validationSchema } from './login-form.schema';
 import { FormInputs } from './login-form.types';
@@ -15,9 +16,13 @@ export const LoginForm = () => {
   const navigate = useNavigate();
   const { notification } = App.useApp();
   const mutateLogin = useCustomMutation(api.auth.login, {
-    onSuccess: ({ accessToken, uid, username }) => {
+    onSuccess: ({ accessToken }) => {
       useAuthStore.setState({ isLogged: true, accessToken });
-      useUserStore.setState({ userId: uid, username });
+
+      const { firstName, lastName, role, userId, username } = decodeToken(accessToken);
+
+      useUserStore.setState({ firstName, lastName, role, userId, username });
+
       navigate('/');
     },
     onError: (error: AxiosError<{ error: string }>) => {

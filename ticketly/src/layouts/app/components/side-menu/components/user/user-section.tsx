@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar, Dropdown } from 'antd';
 import { api } from 'api';
 import { useCustomMutation } from 'hooks/use-custom-mutation';
-import { useAuthStore } from 'store';
+import { useAuthStore, useUserStore } from 'store';
 
 import { Container } from '.';
 
@@ -16,6 +16,7 @@ export const UserSection = () => {
     },
     onSuccess: () => {
       useAuthStore.setState({ isLogged: false, accessToken: '' });
+      useUserStore.setState({ userId: '', username: '', firstName: '', lastName: '', role: '' });
     },
   });
   const logoutAllMutation = useCustomMutation(() => api.auth.logout({ logoutFromAllDevices: true }), {
@@ -26,8 +27,10 @@ export const UserSection = () => {
     },
     onSuccess: () => {
       useAuthStore.setState({ isLogged: false, accessToken: '' });
+      useUserStore.setState({ userId: '', username: '', firstName: '', lastName: '', role: '' });
     },
   });
+  const userData = useUserStore((state) => state);
 
   return (
     <Container>
@@ -49,8 +52,11 @@ export const UserSection = () => {
         }}
       >
         <div>
-          <Avatar>KW</Avatar>
-          Kamil Wypych
+          <Avatar>
+            {userData.firstName[0]}
+            {userData.lastName[0]}
+          </Avatar>
+          {userData.firstName} {userData.lastName}
           <FontAwesomeIcon icon={faChevronRight} />
         </div>
       </Dropdown>
