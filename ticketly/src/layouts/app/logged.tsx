@@ -1,4 +1,4 @@
-import { ProtectedRoute } from 'components/protected-route/protected-route';
+import { ProtectedRoute } from 'components';
 import { useAccess } from 'hooks';
 import { Navigate, Outlet } from 'react-router-dom';
 import { appRoutes } from 'urls';
