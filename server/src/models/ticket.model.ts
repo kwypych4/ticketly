@@ -8,6 +8,10 @@ const ticket = new Schema<TicketType>({
     type: String,
     required: true,
   },
+  ownerName: {
+    type: String,
+    required: false,
+  },
   categoryId: {
     type: String,
     required: true,
