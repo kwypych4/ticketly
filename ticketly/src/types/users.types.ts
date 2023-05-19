@@ -11,8 +11,8 @@ export type UsersListTypes = {
 };
 
 export type UsersTableProps = {
-  selectedRowKeys: React.Key[] | undefined;
-  setSelectedRowKeys: Dispatch<SetStateAction<React.Key[] | undefined>>;
+  selectedRow: UsersListTypes | undefined;
+  setSelectedRow: Dispatch<SetStateAction<UsersListTypes | undefined>>;
 } & TableProps<UsersListTypes>;
 
 export type UsersFiltersTypes = {

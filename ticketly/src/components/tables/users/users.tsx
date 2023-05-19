@@ -34,15 +34,14 @@ const columns: ColumnsType<UsersListTypes> = [
   },
 ];
 
-export const UsersTable = ({ setOptions, data, pagination, selectedRowKeys, setSelectedRowKeys }: UsersTableProps) => {
-  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    setSelectedRowKeys([]);
-    setSelectedRowKeys(newSelectedRowKeys);
+export const UsersTable = ({ setOptions, data, pagination, selectedRow, setSelectedRow }: UsersTableProps) => {
+  const handleOnSelect = (record: UsersListTypes) => {
+    setSelectedRow(record);
   };
 
   const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
+    selectedRow,
+    onSelect: handleOnSelect,
   };
 
   return (
