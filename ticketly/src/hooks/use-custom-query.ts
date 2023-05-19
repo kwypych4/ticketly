@@ -61,5 +61,6 @@ export const useCustomQuery = <QueryReturnType>(
       }
     },
     retry: false,
+    enabled: options?.enabled,
   });
 };
