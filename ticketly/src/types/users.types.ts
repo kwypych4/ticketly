@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from 'react';
 import { TableProps } from 'types';
 
 export type UsersListTypes = {
@@ -9,4 +10,33 @@ export type UsersListTypes = {
   username: string;
 };
 
-export type UsersTableProps = TableProps<UsersListTypes>;
+export type UsersTableProps = {
+  selectedRowKeys: React.Key[] | undefined;
+  setSelectedRowKeys: Dispatch<SetStateAction<React.Key[] | undefined>>;
+} & TableProps<UsersListTypes>;
+
+export type UsersFiltersTypes = {
+  roles: {
+    label: string;
+    value: string;
+  }[];
+};
+
+export type CreateUserRequestTypes = {
+  username: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  department: string;
+  position: string;
+  role: string;
+};
+export type CreateUserResponseTypes = {
+  id: string;
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type DeleteUserResponseType = {
+  success: boolean;
+};
