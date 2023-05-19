@@ -19,11 +19,19 @@ export const form = css`
 
   .ant-form-item-control-input-content {
     gap: 18px;
+    display: flex;
+
     .ant-form-item:first-of-type {
       flex-grow: 1;
     }
     .ant-form-item {
       margin-bottom: 6px;
+    }
+    .ant-form-item:nth-of-type(2) {
+      button {
+        margin-top: 32px;
+        height: 32px;
+      }
     }
   }
 
@@ -34,14 +42,5 @@ export const form = css`
   .ant-form-item-control {
     max-width: unset !important;
     min-height: unset !important;
-  }
-
-  .ant-form-item-control-input-content {
-    display: flex;
-
-    button {
-      margin-top: 32px;
-      height: 32px;
-    }
   }
 `;
