@@ -1,6 +1,8 @@
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import { TableRowSelection } from 'antd/es/table/interface';
 import { UsersListTypes, UsersTableProps } from 'types';
+import { checkPrivileges } from 'utils';
 
 const columns: ColumnsType<UsersListTypes> = [
   {
@@ -37,14 +39,18 @@ const columns: ColumnsType<UsersListTypes> = [
   },
 ];
 
-export const UsersTable = ({ setOptions, data, pagination, selectedRow, setSelectedRow }: UsersTableProps) => {
+export const UsersTable = ({ setOptions, data, pagination, setSelectedRow }: UsersTableProps) => {
   const handleOnSelect = (record: UsersListTypes) => {
     setSelectedRow(record);
   };
 
-  const rowSelection = {
-    selectedRow,
+  const rowSelection: TableRowSelection<UsersListTypes> = {
     onSelect: handleOnSelect,
+    type: 'radio',
+  };
+
+  const getRowSelection = () => {
+    return checkPrivileges(['admin']) ? rowSelection : undefined;
   };
 
   return (
@@ -57,10 +63,7 @@ export const UsersTable = ({ setOptions, data, pagination, selectedRow, setSelec
       }}
       onChange={setOptions}
       showSorterTooltip={false}
-      rowSelection={{
-        type: 'radio',
-        ...rowSelection,
-      }}
+      rowSelection={getRowSelection()}
     />
   );
 };

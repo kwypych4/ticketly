@@ -29,6 +29,9 @@ export const UsersPage = () => {
       onSuccess: 'User has been deleted!',
       useResponseErrorMessage: true,
     },
+    onSuccess: () => {
+      setSelectedRow(undefined);
+    },
   });
 
   const handleDeleteUser = () => selectedRow && deleteUserMutation.mutateAsync({ userId: String(selectedRow.id) });
@@ -60,7 +63,7 @@ export const UsersPage = () => {
       </PageTitle>
       <PageContent>
         <TableWrapper setOptions={setOptions} data={usersListQuery.data}>
-          <UsersTable selectedRow={selectedRow} setSelectedRow={setSelectedRow} />
+          <UsersTable setSelectedRow={setSelectedRow} />
         </TableWrapper>
       </PageContent>
       <Modal
