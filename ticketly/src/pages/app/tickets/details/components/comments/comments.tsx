@@ -1,6 +1,7 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Form, Modal } from 'antd';
+import { PrivateWrapper } from 'components/private-wrapper';
 import { useState } from 'react';
 import { CommentsListTypes } from 'types';
 
@@ -19,10 +20,12 @@ export const Comments = ({ comments }: CommentsProps) => {
     <CommentsWrapper>
       <CommentsTitle>
         <h2>Comments</h2>
-        <button onClick={() => setShowModal(true)}>
-          <FontAwesomeIcon icon={faPlus} />
-          Add comment
-        </button>
+        <PrivateWrapper privilegedRoles={['admin', 'engineer']}>
+          <button onClick={() => setShowModal(true)}>
+            <FontAwesomeIcon icon={faPlus} />
+            Add comment
+          </button>
+        </PrivateWrapper>
       </CommentsTitle>
       <CommentsContent>
         {comments.map((comment) => (
