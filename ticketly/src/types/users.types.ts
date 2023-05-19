@@ -4,7 +4,8 @@ import { TableProps } from 'types';
 export type UsersListTypes = {
   id: string;
   department: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   position: string;
   role: string;
   username: string;
@@ -38,5 +39,9 @@ export type CreateUserResponseTypes = {
 };
 
 export type DeleteUserResponseType = {
+  success: boolean;
+};
+
+export type UpdateUserResponseType = {
   success: boolean;
 };
