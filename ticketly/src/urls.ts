@@ -44,6 +44,7 @@ export const appRoutes = {
     forbidden: `${appUrls.error.base}/${appUrls.error.pages.forbidden}`,
   },
 };
+
 const baseURL = import.meta.env.DEV ? import.meta.env.VITE_APP_DEV_API_BASE : import.meta.env.VITE_APP_PROD_API_BASE;
 
 const url = (base: string) => (details?: string | number) => `${baseURL}/${base}${details ? `/${details}` : ''}`;
