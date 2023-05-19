@@ -1,6 +1,5 @@
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import { NavLink } from 'react-router-dom';
 import { UsersListTypes, UsersTableProps } from 'types';
 
 const columns: ColumnsType<UsersListTypes> = [
@@ -8,7 +7,6 @@ const columns: ColumnsType<UsersListTypes> = [
     title: 'Name',
     dataIndex: 'name',
     key: 'name',
-    render: (text, record) => <NavLink to={record.id}>{text}</NavLink>,
   },
   {
     title: 'Username',
@@ -36,7 +34,17 @@ const columns: ColumnsType<UsersListTypes> = [
   },
 ];
 
-export const UsersTable = ({ setOptions, data, pagination }: UsersTableProps) => {
+export const UsersTable = ({ setOptions, data, pagination, selectedRowKeys, setSelectedRowKeys }: UsersTableProps) => {
+  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
+    setSelectedRowKeys([]);
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+  };
+
   return (
     <Table
       columns={columns}
@@ -47,6 +55,10 @@ export const UsersTable = ({ setOptions, data, pagination }: UsersTableProps) =>
       }}
       onChange={setOptions}
       showSorterTooltip={false}
+      rowSelection={{
+        type: 'radio',
+        ...rowSelection,
+      }}
     />
   );
 };
