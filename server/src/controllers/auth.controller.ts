@@ -66,14 +66,22 @@ const login = errorHandler<LoginRequest, LoginResponse>(async (req, res) => {
   };
 });
 
-const checkLogin = errorHandler<LoginRequest, LoginResponse>(async (req, _) => {
+const checkLogin = errorHandler<LoginRequest, LoginResponse>(async (req, res) => {
+  const cookies = cookiesParser(req);
   const userDocument = await UserSchema.findOne({
     _id: req.session.userId,
   });
 
   const isUserLogged = userDocument && Boolean(req.session.userId);
 
-  if (!isUserLogged) throw new HttpError(403, 'Your session has expired!');
+  if (!isUserLogged) {
+    if (cookies)
+      Object.keys(cookies).map((cookie) => {
+        res.clearCookie(cookie);
+        return true;
+      });
+    throw new HttpError(403, 'Your session has expired!');
+  }
 
   const accessToken = createAccessToken({
     userId: userDocument.id,
