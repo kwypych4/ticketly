@@ -3,8 +3,8 @@ import { HttpError } from 'error';
 import { Request } from 'express';
 import { RefreshTokenSchema, UserSchema } from 'models';
 import moment from 'moment';
-import { RefreshTokenType, ResponseWithPagination, UserIdType, UserRoles, UserType } from 'types';
-import { createAccessToken, createRefreshToken, errorHandler, hashPassword, removeAllUserSessions } from 'utils';
+import { ResponseWithPagination, UserRoles, UserType } from 'types';
+import { errorHandler, hashPassword, removeAllUserSessions } from 'utils';
 
 type UsersRequest = {
   query: {
@@ -102,9 +102,7 @@ const getUsersFilters = errorHandler<UsersFiltersRequest, UsersFiltersResponse>(
 type CreateUserRequest = { body: UserType };
 
 type CreateUserResponse = {
-  id: UserIdType;
-  accessToken: string;
-  refreshToken: string;
+  success: boolean;
 };
 
 const createUser = errorHandler<CreateUserRequest, CreateUserResponse>(async (req, _) => {
@@ -125,24 +123,10 @@ const createUser = errorHandler<CreateUserRequest, CreateUserResponse>(async (re
     role: req.body?.role,
   });
 
-  const refreshTokenDocument = new RefreshTokenSchema<RefreshTokenType>({
-    owner: userDocument.id,
-  });
-
-  const accessToken = createAccessToken({
-    userId: userDocument.id,
-    role: req.body.role,
-    isThemeDark: req.body?.isThemeDark || true,
-  });
-  const refreshToken = createRefreshToken(userDocument.id, refreshTokenDocument.id);
-
   await userDocument.save();
-  await refreshTokenDocument.save();
 
   return {
-    id: userDocument.id,
-    accessToken,
-    refreshToken,
+    success: true,
   };
 });
 

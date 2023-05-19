@@ -3,7 +3,7 @@ import { HttpError } from 'error';
 import { Request } from 'express';
 import { logger } from 'logger';
 import { RefreshTokenSchema, UserSchema } from 'models';
-import { RefreshTokenType, UserIdType } from 'types';
+import { RefreshTokenType } from 'types';
 import {
   comparePassword,
   createAccessToken,
@@ -22,8 +22,6 @@ type LoginRequest = {
 } & Request;
 
 type LoginResponse = {
-  username: string;
-  uid: string;
   accessToken: string;
 };
 
@@ -47,8 +45,12 @@ const login = errorHandler<LoginRequest, LoginResponse>(async (req, res) => {
   const accessToken = createAccessToken({
     userId: userDocument.id,
     role: userDocument.role,
+    username: userDocument?.username,
+    firstName: userDocument.firstName,
+    lastName: userDocument.lastName,
     isThemeDark: userDocument.isThemeDark || true,
   });
+
   const refreshToken = createRefreshToken(userDocument.id, refreshTokenDocument.id);
 
   req.session.userId = userDocument.id;
@@ -60,8 +62,6 @@ const login = errorHandler<LoginRequest, LoginResponse>(async (req, res) => {
     maxAge: 1000 * 60 * 60 * 24 * refreshTokenExpDate,
   });
   return {
-    username: userDocument?.username,
-    uid: userDocument?.id,
     accessToken,
   };
 });
@@ -78,12 +78,13 @@ const checkLogin = errorHandler<LoginRequest, LoginResponse>(async (req, _) => {
   const accessToken = createAccessToken({
     userId: userDocument.id,
     role: userDocument.role,
+    firstName: userDocument.firstName,
+    username: userDocument?.username,
+    lastName: userDocument.lastName,
     isThemeDark: userDocument.isThemeDark || true,
   });
 
   return {
-    username: userDocument?.username,
-    uid: userDocument?.id,
     accessToken,
   };
 });
@@ -148,7 +149,6 @@ type TokenRequest = {
 } & Request;
 
 type TokenResponse = {
-  uid: UserIdType;
   accessToken: string;
   refreshToken: string;
 };
@@ -176,12 +176,15 @@ const newRefreshToken = errorHandler<TokenRequest, TokenResponse>(async (req, _)
   const refreshToken = createRefreshToken(currentRefreshToken.userId, refreshTokenDocument.id);
 
   const accessToken = createAccessToken({
-    userId: currentRefreshToken.userId,
+    userId: userDocument.id,
     role: userDocument.role,
+    firstName: userDocument.firstName,
+    username: userDocument.username,
+    lastName: userDocument.lastName,
     isThemeDark: userDocument.isThemeDark || true,
   });
+
   return {
-    uid: currentRefreshToken.userId,
     accessToken,
     refreshToken,
   };
@@ -190,7 +193,6 @@ const newRefreshToken = errorHandler<TokenRequest, TokenResponse>(async (req, _)
 type NewTokenRequest = Request;
 
 type NewTokenResponse = {
-  uid: UserIdType;
   accessToken: string;
   refreshToken: string;
 };
@@ -209,13 +211,15 @@ const newAccessToken = errorHandler<NewTokenRequest, NewTokenResponse>(async (re
   if (!userDocument) throw new HttpError(401, 'Unauthorized');
 
   const accessToken = createAccessToken({
-    userId: refreshToken.userId,
+    userId: userDocument.id,
     role: userDocument.role,
+    firstName: userDocument.firstName,
+    username: userDocument.username,
+    lastName: userDocument.lastName,
     isThemeDark: userDocument.isThemeDark || true,
   });
 
   return {
-    uid: refreshToken.userId,
     accessToken,
     refreshToken: refreshTokenCookie as string,
   };
