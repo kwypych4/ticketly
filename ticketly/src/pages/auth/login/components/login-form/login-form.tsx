@@ -17,10 +17,8 @@ export const LoginForm = () => {
   const { notification } = App.useApp();
   const mutateLogin = useCustomMutation(api.auth.login, {
     onSuccess: ({ accessToken }) => {
-      useAuthStore.setState({ isLogged: true, accessToken });
-
       const { firstName, lastName, role, userId, username } = decodeToken(accessToken);
-
+      useAuthStore.setState({ isLogged: true, accessToken });
       useUserStore.setState({ firstName, lastName, role, userId, username });
 
       navigate('/');
