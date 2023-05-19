@@ -1,3 +1,4 @@
+import { UserRoles } from 'types';
 import { create } from 'zustand';
 
 type UserStateType = {
@@ -5,7 +6,7 @@ type UserStateType = {
   username: string;
   firstName: string;
   lastName: string;
-  role: string;
+  role: UserRoles | '';
 };
 
 export const useUserStore = create<UserStateType>(() => ({

@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
-import { TableProps } from 'types';
+import { TableProps, UserRoles } from 'types';
 
 export type UsersListTypes = {
   id: string;
@@ -7,7 +7,7 @@ export type UsersListTypes = {
   firstName: string;
   lastName: string;
   position: string;
-  role: string;
+  role: UserRoles;
   username: string;
 };
 
@@ -30,7 +30,7 @@ export type CreateUserRequestTypes = {
   lastName: string;
   department: string;
   position: string;
-  role: string;
+  role: UserRoles;
 };
 export type CreateUserResponseTypes = {
   id: string;

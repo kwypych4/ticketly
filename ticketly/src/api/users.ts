@@ -4,6 +4,7 @@ import {
   DeleteUserResponseType,
   RequestParamsType,
   UpdateUserResponseType,
+  UserRoles,
   UsersFiltersTypes,
   UsersListTypes,
   WithPaginationTableType,
@@ -85,7 +86,7 @@ type UpdateUserRequest = {
   firstName: string;
   lastName: string;
   position: string;
-  role: string;
+  role: UserRoles;
   password: string;
 };
 type UpdateUserReturn = Promise<UpdateUserResponse>;
