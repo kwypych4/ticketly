@@ -18,7 +18,7 @@ axiosInstance.interceptors.response.use(
   (response: AxiosResponse) => response,
   async (error: AxiosError<{ error: string }>) => {
     const { accessToken } = useAuthStore.getState();
-
+    const originalRequest = error.config;
     try {
       if (
         error?.response?.status === 401 &&
@@ -31,6 +31,12 @@ axiosInstance.interceptors.response.use(
           const { firstName, lastName, role, userId, username } = decodeToken(accessTokenQuery.accessToken);
 
           useUserStore.setState({ firstName, lastName, role, userId, username });
+
+          if (originalRequest) {
+            originalRequest.headers.Authorization = `Bearer ${accessTokenQuery.accessToken}`;
+          }
+
+          return originalRequest && (await axiosInstance(originalRequest));
         } catch (error) {
           useAuthStore.setState({ isLogged: false, accessToken: '' });
           useUserStore.setState({ userId: '', username: '', firstName: '', lastName: '', role: '' });
