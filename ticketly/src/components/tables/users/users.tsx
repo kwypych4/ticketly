@@ -5,8 +5,11 @@ import { UsersListTypes, UsersTableProps } from 'types';
 const columns: ColumnsType<UsersListTypes> = [
   {
     title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
+    dataIndex: 'lastName',
+    key: 'lastName',
+    render: (_, record) => {
+      return `${record.firstName} ${record.lastName}`;
+    },
   },
   {
     title: 'Username',
