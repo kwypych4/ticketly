@@ -9,11 +9,12 @@ import { useState } from 'react';
 import { PageContent, PageTitle, PageWrapper } from 'styles';
 import { RequestParamsType, UsersListTypes } from 'types';
 
-import { AddUserForm } from './components';
+import { AddUserForm, EditUserForm } from './components';
 import { ButtonsWrapper } from './users.styled';
 
 export const UsersPage = () => {
-  const [form] = Form.useForm();
+  const [addUserForm] = Form.useForm();
+  const [editUserForm] = Form.useForm();
 
   const [options, setOptions] = useState<RequestParamsType>({ page: 1, limit: 13 });
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -47,7 +48,7 @@ export const UsersPage = () => {
                 <FontAwesomeIcon icon={faUserMinus} />
                 Delete selected user
               </button>
-              <button>
+              <button onClick={() => setShowEditModal(true)}>
                 <FontAwesomeIcon icon={faUserEdit} />
                 Edit selected user
               </button>
@@ -63,10 +64,18 @@ export const UsersPage = () => {
       <Modal
         title='Add new user'
         open={showCreateModal}
-        onOk={() => form.submit()}
+        onOk={() => addUserForm.submit()}
         onCancel={() => setShowCreateModal(false)}
       >
-        <AddUserForm setShowModal={setShowCreateModal} form={form} />
+        <AddUserForm setShowModal={setShowCreateModal} form={addUserForm} />
+      </Modal>
+      <Modal
+        title='Edit user'
+        open={showEditModal}
+        onOk={() => editUserForm.submit()}
+        onCancel={() => setShowEditModal(false)}
+      >
+        <EditUserForm setShowModal={setShowEditModal} form={editUserForm} currentData={selectedRow} />
       </Modal>
     </PageWrapper>
   );
