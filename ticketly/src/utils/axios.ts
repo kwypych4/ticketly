@@ -1,7 +1,9 @@
 import { refreshAccessToken } from 'api/auth';
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { useAuthStore } from 'store';
+import { useAuthStore, useUserStore } from 'store';
 import { RequestParamsType } from 'types';
+
+import { decodeToken } from './token-decode';
 
 export const axiosInstance = axios.create({
   headers: {
@@ -25,8 +27,13 @@ axiosInstance.interceptors.response.use(
         try {
           const accessTokenQuery = await refreshAccessToken();
           useAuthStore.setState({ accessToken: accessTokenQuery.accessToken });
+
+          const { firstName, lastName, role, userId, username } = decodeToken(accessTokenQuery.accessToken);
+
+          useUserStore.setState({ firstName, lastName, role, userId, username });
         } catch (error) {
-          useAuthStore.setState({ isLogged: false });
+          useAuthStore.setState({ isLogged: false, accessToken: '' });
+          useUserStore.setState({ userId: '', username: '', firstName: '', lastName: '', role: '' });
         }
       }
     } catch (error) {
