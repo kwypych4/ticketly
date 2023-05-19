@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Form, Modal } from 'antd';
 import { api } from 'api';
 import { TableWrapper, UsersTable } from 'components';
+import { PrivateWrapper } from 'components/private-wrapper';
 import { useCustomMutation, useCustomQuery } from 'hooks';
 import { useState } from 'react';
 import { PageContent, PageTitle, PageWrapper } from 'styles';
@@ -36,24 +37,26 @@ export const UsersPage = () => {
     <PageWrapper>
       <PageTitle>
         <h2>Users</h2>
-        <ButtonsWrapper>
-          <button onClick={() => setShowCreateModal(true)}>
-            <FontAwesomeIcon icon={faUserPlus} />
-            Add new user
-          </button>
-          {selectedRow && (
-            <>
-              <button onClick={handleDeleteUser}>
-                <FontAwesomeIcon icon={faUserMinus} />
-                Delete selected user
-              </button>
-              <button onClick={() => setShowEditModal(true)}>
-                <FontAwesomeIcon icon={faUserEdit} />
-                Edit selected user
-              </button>
-            </>
-          )}
-        </ButtonsWrapper>
+        <PrivateWrapper privilegedRoles={['admin']}>
+          <ButtonsWrapper>
+            <button onClick={() => setShowCreateModal(true)}>
+              <FontAwesomeIcon icon={faUserPlus} />
+              Add new user
+            </button>
+            {selectedRow && (
+              <>
+                <button onClick={handleDeleteUser}>
+                  <FontAwesomeIcon icon={faUserMinus} />
+                  Delete selected user
+                </button>
+                <button onClick={() => setShowEditModal(true)}>
+                  <FontAwesomeIcon icon={faUserEdit} />
+                  Edit selected user
+                </button>
+              </>
+            )}
+          </ButtonsWrapper>
+        </PrivateWrapper>
       </PageTitle>
       <PageContent>
         <TableWrapper setOptions={setOptions} data={usersListQuery.data}>
