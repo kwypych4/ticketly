@@ -12,7 +12,6 @@ export type UsersListTypes = {
 };
 
 export type UsersTableProps = {
-  selectedRow: UsersListTypes | undefined;
   setSelectedRow: Dispatch<SetStateAction<UsersListTypes | undefined>>;
 } & TableProps<UsersListTypes>;
 
