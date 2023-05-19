@@ -7,10 +7,16 @@ import { JwtType, UserIdType, UserRoles } from 'types';
 export const createAccessToken = ({
   userId,
   role,
+  username,
+  firstName,
+  lastName,
   isThemeDark,
 }: {
   userId: UserIdType;
   role: UserRoles;
+  username: string;
+  firstName: string;
+  lastName: string;
   isThemeDark: boolean;
 }) => {
   const accessTokenSecret = environment.secretAccessToken;
@@ -18,6 +24,9 @@ export const createAccessToken = ({
   const jwtPayload: JwtType = {
     userId,
     role,
+    username,
+    firstName,
+    lastName,
     isThemeDark,
   };
   return jwt.sign(jwtPayload, accessTokenSecret, {
