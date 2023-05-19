@@ -1,7 +1,7 @@
 import { Image, Select } from 'antd';
 import moment from 'moment';
 import { apiUrls } from 'urls';
-import { convertMinutes } from 'utils';
+import { checkPrivileges, convertMinutes } from 'utils';
 
 import { InfoProps, InfoWrapper } from '.';
 
@@ -55,6 +55,7 @@ export const Info = ({ data, filters, mutateTicket }: InfoProps) => {
           style={{ width: 220 }}
           onChange={handleEngineerChange}
           options={filters.engineers}
+          disabled={!checkPrivileges(['engineer'])}
         />
       </div>
       <div>
@@ -64,6 +65,7 @@ export const Info = ({ data, filters, mutateTicket }: InfoProps) => {
           style={{ width: 220 }}
           onChange={handleStatusChange}
           options={filters.statuses}
+          disabled={!checkPrivileges(['admin', 'engineer'])}
         />
       </div>
       {data.attachments && (
