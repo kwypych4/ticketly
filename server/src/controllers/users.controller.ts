@@ -20,7 +20,8 @@ type UsersRequest = {
 type UsersResponseObjType = {
   id: string;
   department: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   position: string;
   role: string;
   username: string;
@@ -48,7 +49,8 @@ const getUsers = errorHandler<UsersRequest, UsersResponse>(async (req, _) => {
     _id: 0,
     id: '$_id',
     department: 1,
-    name: { $concat: ['$firstName', ' ', '$lastName'] },
+    firstName: 1,
+    lastName: 1,
     position: 1,
     role: 1,
     username: 1,
@@ -170,7 +172,7 @@ const updateUser = errorHandler<UpdateUserRequest, UpdateUserResponse>(async (re
 
   const newPassword = password ? await hashPassword(password) : undefined;
 
-  if (!roles.includes(req.body?.role))
+  if (role && !roles.includes(req.body?.role))
     throw new HttpError(500, `User can only have 'admin' or 'user' or 'engineer' role.`);
 
   const updateParams = {
