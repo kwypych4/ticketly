@@ -68,5 +68,6 @@ export const apiUrls = {
   },
   users: {
     index: url('users'),
+    filters: url('users/filters'),
   },
 };
