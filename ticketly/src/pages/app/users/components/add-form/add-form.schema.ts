@@ -19,14 +19,14 @@ export const validationSchema: ValidationSchema = {
   [FormInputs.firstName]: [
     {
       required: true,
-      pattern: /^[A-Z][a-z]{2,20}$/,
+      pattern: /^[A-ZĄ-Ż][a-zą-ż]{2,20}$/,
       message: "You need provide user's first name. First letter must be capital and name cannot contain numbers!",
     },
   ],
   [FormInputs.lastName]: [
     {
       required: true,
-      pattern: /^[A-Z][a-z]{2,30}$/,
+      pattern: /^[A-ZĄ-Ż][a-zą-ż]{2,30}$/,
       message: "You need provide user's last name. First letter must be capital and last name cannot contain numbers!",
     },
   ],
