@@ -1,5 +1,5 @@
 import { api } from 'api';
-import { useCustomQuery } from 'hooks/use-custom-query';
+import { useCustomQuery } from 'hooks';
 import { Navigate } from 'react-router-dom';
 import { useAuthStore, useUserStore } from 'store';
 import { appRoutes } from 'urls';

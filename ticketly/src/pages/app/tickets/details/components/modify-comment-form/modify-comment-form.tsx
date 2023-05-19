@@ -1,7 +1,7 @@
 import { Form } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { api } from 'api';
-import { useCustomMutation } from 'hooks/use-custom-mutation';
+import { useCustomMutation } from 'hooks';
 
 import { FormInputs, ModifyCommentFormProps, validationSchema } from '.';
 

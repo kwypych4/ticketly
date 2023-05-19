@@ -3,7 +3,7 @@ import { Button, Form, InputNumber, Upload, UploadFile } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { UploadChangeParam } from 'antd/es/upload';
 import { api } from 'api';
-import { useCustomMutation } from 'hooks/use-custom-mutation';
+import { useCustomMutation } from 'hooks';
 import { useParams } from 'react-router-dom';
 
 import { AddCommentFormProps, FormInputs, initialValues, validationSchema } from '.';

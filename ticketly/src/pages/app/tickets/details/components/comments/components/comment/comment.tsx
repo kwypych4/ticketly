@@ -2,7 +2,7 @@ import { faPen, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Form, Image, Modal } from 'antd';
 import { api } from 'api';
-import { useCustomMutation } from 'hooks/use-custom-mutation';
+import { useCustomMutation } from 'hooks';
 import moment from 'moment';
 import { useState } from 'react';
 import { apiUrls } from 'urls';

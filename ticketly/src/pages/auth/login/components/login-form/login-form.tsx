@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { App, Form, Input } from 'antd';
 import { api } from 'api';
 import { AxiosError } from 'axios';
-import { useCustomMutation } from 'hooks/use-custom-mutation';
+import { useCustomMutation } from 'hooks';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore, useUserStore } from 'store';
 import { decodeToken } from 'utils';

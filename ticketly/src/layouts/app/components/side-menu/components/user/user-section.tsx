@@ -2,7 +2,7 @@ import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar, Dropdown } from 'antd';
 import { api } from 'api';
-import { useCustomMutation } from 'hooks/use-custom-mutation';
+import { useCustomMutation } from 'hooks';
 import { useAuthStore, useUserStore } from 'store';
 
 import { Container } from '.';

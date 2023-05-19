@@ -2,8 +2,7 @@ import { faUnlockKeyhole, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Form, Input, Select } from 'antd';
 import { api } from 'api';
-import { useCustomMutation } from 'hooks/use-custom-mutation';
-import { useCustomQuery } from 'hooks/use-custom-query';
+import { useCustomMutation, useCustomQuery } from 'hooks';
 import { MouseEvent, useEffect, useState } from 'react';
 
 import { validationSchema } from './edit-form.schema';

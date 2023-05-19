@@ -1,7 +1,6 @@
 import { Form, Input, Select } from 'antd';
 import { api } from 'api';
-import { useCustomMutation } from 'hooks/use-custom-mutation';
-import { useCustomQuery } from 'hooks/use-custom-query';
+import { useCustomMutation, useCustomQuery } from 'hooks';
 
 import { validationSchema } from './add-form.schema';
 import { AddUserFormProps, FormInputs } from './add-form.types';

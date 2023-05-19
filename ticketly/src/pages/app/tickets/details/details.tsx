@@ -1,6 +1,5 @@
 import { api } from 'api';
-import { useCustomMutation } from 'hooks/use-custom-mutation';
-import { useCustomQuery } from 'hooks/use-custom-query';
+import { useCustomMutation, useCustomQuery } from 'hooks';
 import { useParams } from 'react-router-dom';
 import { PageContent, PageItem, PageTitle, PageWrapper } from 'styles';
 
