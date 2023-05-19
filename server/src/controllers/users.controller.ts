@@ -168,7 +168,7 @@ const updateUser = errorHandler<UpdateUserRequest, UpdateUserResponse>(async (re
       ...(position && { position }),
       ...(role && { role }),
       ...(isThemeDark && { isThemeDark }),
-      ...(newPassword && { newPassword }),
+      ...(newPassword && { password: newPassword }),
     },
   };
 
