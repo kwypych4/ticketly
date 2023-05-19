@@ -1,6 +1,6 @@
 import { Rule } from 'antd/es/form';
 
-import { FormInputs } from './add-user-form.types';
+import { FormInputs } from './add-form.types';
 
 type ValidationSchema = {
   [key: string]: Rule[];

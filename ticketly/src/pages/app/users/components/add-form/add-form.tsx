@@ -3,8 +3,8 @@ import { api } from 'api';
 import { useCustomMutation } from 'hooks/use-custom-mutation';
 import { useCustomQuery } from 'hooks/use-custom-query';
 
-import { validationSchema } from './add-user-form.schema';
-import { AddUserFormProps, FormInputs } from './add-user-form.types';
+import { validationSchema } from './add-form.schema';
+import { AddUserFormProps, FormInputs } from './add-form.types';
 
 export const AddUserForm = ({ form, setShowModal }: AddUserFormProps) => {
   const filtersQuery = useCustomQuery(['userFilters'], api.users.filters.fetch);
