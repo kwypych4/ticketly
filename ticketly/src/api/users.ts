@@ -82,12 +82,12 @@ const deleteComment = async ({ userId }: DeleteUserProps): DeleteUserReturn => {
 
 type UpdateUserResponse = UpdateUserResponseType;
 type UpdateUserRequest = {
-  department: string;
-  firstName: string;
-  lastName: string;
-  position: string;
-  role: UserRoles;
-  password: string;
+  department?: string;
+  firstName?: string;
+  lastName?: string;
+  position?: string;
+  role?: UserRoles;
+  password?: string;
 };
 type UpdateUserReturn = Promise<UpdateUserResponse>;
 type UpdateUserProps = { userId: string } & UpdateUserRequest;
