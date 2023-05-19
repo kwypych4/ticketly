@@ -1,13 +1,16 @@
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Avatar, Dropdown } from 'antd';
+import { Avatar, Dropdown, Form, Modal } from 'antd';
 import { api } from 'api';
 import { useCustomMutation } from 'hooks';
+import { useState } from 'react';
 import { useAuthStore, useUserStore } from 'store';
 
-import { Container } from '.';
+import { ChangePasswordForm, Container } from '.';
 
 export const UserSection = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [form] = Form.useForm();
   const logoutMutation = useCustomMutation(api.auth.logout, {
     mutationKey: 'logout',
     message: {
@@ -48,6 +51,11 @@ export const UserSection = () => {
               key: '1',
               onClick: () => logoutAllMutation.mutateAsync(),
             },
+            {
+              label: 'Change password',
+              key: '2',
+              onClick: () => setShowModal(true),
+            },
           ],
         }}
       >
@@ -60,6 +68,9 @@ export const UserSection = () => {
           <FontAwesomeIcon icon={faChevronRight} />
         </div>
       </Dropdown>
+      <Modal title='Edit user' open={showModal} onOk={() => form.submit()} onCancel={() => setShowModal(false)}>
+        <ChangePasswordForm setShowModal={setShowModal} form={form} />
+      </Modal>
     </Container>
   );
 };
