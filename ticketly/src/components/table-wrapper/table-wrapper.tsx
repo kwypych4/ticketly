@@ -7,9 +7,10 @@ type TableWrapperProps = {
   children: JSX.Element;
   setOptions: Dispatch<SetStateAction<RequestParamsType>>;
   data: WithPaginationTableType<any>;
+  hasWrapper?: boolean;
 };
 
-export const TableWrapper = ({ children, setOptions, data }: TableWrapperProps) => {
+export const TableWrapper = ({ children, setOptions, data, hasWrapper = true }: TableWrapperProps) => {
   const handleTableChange: TableProps<string>['onChange'] = (pagination, filters, sorter) => {
     const params: RequestParamsType = {
       ...(pagination.current && { page: pagination.current, limit: pagination.pageSize }),
@@ -31,5 +32,5 @@ export const TableWrapper = ({ children, setOptions, data }: TableWrapperProps) 
     pagination: data?.pagination,
   });
 
-  return <PageItem>{childrenWithProps}</PageItem>;
+  return hasWrapper ? <PageItem>{childrenWithProps}</PageItem> : childrenWithProps;
 };
