@@ -1,7 +1,7 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Form, Modal } from 'antd';
-import { PrivateWrapper } from 'components/private-wrapper';
+import { PrivateWrapper } from 'components';
 import { useState } from 'react';
 import { CommentsListTypes } from 'types';
 
