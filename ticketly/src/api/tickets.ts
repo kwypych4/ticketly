@@ -13,9 +13,14 @@ import { request } from 'utils/axios';
 type TicketListResponse = WithPaginationTableType<TicketsListTypes>;
 type TicketListRequest = object;
 type TicketListReturn = Promise<TicketListResponse>;
-
-const fetchList = async (options?: RequestParamsType): TicketListReturn => {
-  const { data } = await request<TicketListResponse, TicketListRequest>(apiUrls.tickets.index(), 'GET', options);
+type TicketListProps = { options?: RequestParamsType; owner?: string; engineer?: string };
+const fetchList = async ({ options, owner, engineer }: TicketListProps): TicketListReturn => {
+  const params = {
+    ...options,
+    ...(owner && { owner }),
+    ...(engineer && { engineer }),
+  };
+  const { data } = await request<TicketListResponse, TicketListRequest>(apiUrls.tickets.index(), 'GET', params);
 
   return data;
 };
