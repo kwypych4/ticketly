@@ -15,6 +15,7 @@ export type TicketsListTypes = {
 };
 
 export type TicketsTableProps = TableProps<TicketsListTypes>;
+export type BriefTicketsTableProps = TableProps<TicketsListTypes> & { assignedToEngineer?: boolean };
 
 type AttachmentType = { type: string; path: string; title: string }[];
 
