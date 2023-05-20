@@ -13,7 +13,7 @@ import { TicketForm } from './components';
 export const TicketsPage = () => {
   const [options, setOptions] = useState<RequestParamsType>({ page: 1, limit: 13 });
   const [showModal, setShowModal] = useState(false);
-  const ticketsListQuery = useCustomQuery(['ticketList', options], () => api.tickets.list.fetch(options));
+  const ticketsListQuery = useCustomQuery(['ticketList', options], () => api.tickets.list.fetch({ options }));
   const [form] = Form.useForm();
   return (
     <PageWrapper>
