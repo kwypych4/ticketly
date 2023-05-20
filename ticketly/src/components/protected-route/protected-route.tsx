@@ -1,4 +1,5 @@
 import { api } from 'api';
+import { LoadingSpinner } from 'components';
 import { useCustomQuery } from 'hooks';
 import { Navigate } from 'react-router-dom';
 import { useAuthStore, useUserStore } from 'store';
@@ -24,7 +25,7 @@ export const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
     enabled: !isLogged,
   });
 
-  if (isLoggedQuery.isLoading) return <div>Loading</div>;
+  if (isLoggedQuery.isLoading) return <LoadingSpinner />;
 
   return isLogged ? children : <Navigate to={appRoutes.auth.login} />;
 };
