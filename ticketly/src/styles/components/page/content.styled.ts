@@ -10,7 +10,8 @@ export const PageContent = styled.div`
   display: flex;
   width: 100%;
   flex-grow: 1;
-  flex-wrap: wrap;
+  gap: ${gap}px;
+  /* flex-wrap: wrap; */
 `;
 
 export const PageItem = styled.div<PageItemProps>`
@@ -18,6 +19,10 @@ export const PageItem = styled.div<PageItemProps>`
   border-radius: 20px;
   background-color: ${colors.white};
   padding: 12px;
+  ${PageContent} {
+    flex-wrap: wrap;
+    background-color: blue;
+  }
 
   &:nth-of-type(odd) {
     margin-right: ${({ isHalf }) => (isHalf ? `${gap}px` : 'unset')};
