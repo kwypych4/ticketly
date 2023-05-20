@@ -60,6 +60,7 @@ export const UsersTable = ({ setOptions, data, pagination, setSelectedRow }: Use
       rowKey='id'
       pagination={{
         total: pagination?.totalElements,
+        pageSize: pagination?.limit,
       }}
       onChange={setOptions}
       showSorterTooltip={false}

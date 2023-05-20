@@ -50,6 +50,7 @@ export const TicketsTable = ({ setOptions, data, pagination }: TicketsTableProps
       rowKey='id'
       pagination={{
         total: pagination?.totalElements,
+        pageSize: pagination?.limit,
       }}
       onChange={setOptions}
       showSorterTooltip={false}
