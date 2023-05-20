@@ -39,7 +39,6 @@ type TicketsResponse = ResponseWithPagination<
 const getAllTickets = errorHandler<TicketsRequest, TicketsResponse>(async (req, _) => {
   const limit = Number(req.query.limit) || 25;
   const page = Number(req.query.page) || 1;
-  const totalElements = await TicketSchema.countDocuments({});
   const {
     owner,
     engineer,
@@ -73,7 +72,7 @@ const getAllTickets = errorHandler<TicketsRequest, TicketsResponse>(async (req, 
       },
     }),
     ...(displayRestrictedData ? { owner: req.session.userId } : owner && { owner }),
-    ...(engineer && { engineer }),
+    ...(engineer && { engineerId: engineer }),
     ...(priority && { priority }),
     ...(categoryId && { categoryId }),
     ...(title && { $text: { $search: title } }),
@@ -110,7 +109,7 @@ const getAllTickets = errorHandler<TicketsRequest, TicketsResponse>(async (req, 
 
   return {
     pagination: {
-      totalElements,
+      totalElements: data.length,
       limit,
       page,
     },
