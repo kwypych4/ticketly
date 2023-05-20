@@ -65,6 +65,7 @@ export const TicketsBriefTable = ({
   data,
   pagination,
   assignedToEngineer = false,
+  isLoading,
 }: BriefTicketsTableProps) => {
   return (
     <Table
@@ -77,6 +78,7 @@ export const TicketsBriefTable = ({
       }}
       onChange={setOptions}
       showSorterTooltip={false}
+      loading={isLoading}
     />
   );
 };

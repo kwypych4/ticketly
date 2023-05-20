@@ -42,7 +42,7 @@ const columns: ColumnsType<TicketsListTypes> = [
   },
 ];
 
-export const TicketsTable = ({ setOptions, data, pagination }: TicketsTableProps) => {
+export const TicketsTable = ({ setOptions, data, pagination, isLoading }: TicketsTableProps) => {
   return (
     <Table
       columns={columns}
@@ -54,6 +54,7 @@ export const TicketsTable = ({ setOptions, data, pagination }: TicketsTableProps
       }}
       onChange={setOptions}
       showSorterTooltip={false}
+      loading={isLoading}
     />
   );
 };

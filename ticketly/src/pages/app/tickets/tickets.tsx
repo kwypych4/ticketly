@@ -25,7 +25,7 @@ export const TicketsPage = () => {
         </button>
       </PageTitle>
       <PageContent>
-        <TableWrapper setOptions={setOptions} data={ticketsListQuery.data}>
+        <TableWrapper isLoading={ticketsListQuery.isLoading} setOptions={setOptions} data={ticketsListQuery.data}>
           <TicketsTable />
         </TableWrapper>
       </PageContent>

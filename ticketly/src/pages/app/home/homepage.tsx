@@ -1,6 +1,5 @@
 import { api } from 'api';
-import { TableWrapper, TicketsBriefTable } from 'components';
-import { PrivateWrapper } from 'components/private-wrapper';
+import { PrivateWrapper, TableWrapper, TicketsBriefTable } from 'components';
 import { useCustomQuery } from 'hooks';
 import { useState } from 'react';
 import { useUserStore } from 'store';
@@ -26,14 +25,24 @@ export const Homepage = () => {
         <PrivateWrapper privilegedRoles={['admin', 'engineer']}>
           <PageItem>
             <h3>Tickets assigned to you</h3>
-            <TableWrapper hasWrapper={false} setOptions={setOptions} data={assignedTicketsListQuery.data}>
+            <TableWrapper
+              isLoading={assignedTicketsListQuery.isLoading}
+              hasWrapper={false}
+              setOptions={setOptions}
+              data={assignedTicketsListQuery.data}
+            >
               <TicketsBriefTable assignedToEngineer />
             </TableWrapper>
           </PageItem>
         </PrivateWrapper>
         <PageItem>
           <h3>Your tickets</h3>
-          <TableWrapper hasWrapper={false} setOptions={setOptions} data={ticketsListQuery.data}>
+          <TableWrapper
+            isLoading={ticketsListQuery.isLoading}
+            hasWrapper={false}
+            setOptions={setOptions}
+            data={ticketsListQuery.data}
+          >
             <TicketsBriefTable />
           </TableWrapper>
         </PageItem>

@@ -2,8 +2,7 @@ import { faUserEdit, faUserMinus, faUserPlus } from '@fortawesome/free-solid-svg
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Form, Modal } from 'antd';
 import { api } from 'api';
-import { TableWrapper, UsersTable } from 'components';
-import { PrivateWrapper } from 'components/private-wrapper';
+import { PrivateWrapper, TableWrapper, UsersTable } from 'components';
 import { useCustomMutation, useCustomQuery } from 'hooks';
 import { useState } from 'react';
 import { PageContent, PageTitle, PageWrapper } from 'styles';
@@ -62,7 +61,7 @@ export const UsersPage = () => {
         </PrivateWrapper>
       </PageTitle>
       <PageContent>
-        <TableWrapper setOptions={setOptions} data={usersListQuery.data}>
+        <TableWrapper isLoading={usersListQuery.isLoading} setOptions={setOptions} data={usersListQuery.data}>
           <UsersTable setSelectedRow={setSelectedRow} />
         </TableWrapper>
       </PageContent>

@@ -39,7 +39,7 @@ const columns: ColumnsType<UsersListTypes> = [
   },
 ];
 
-export const UsersTable = ({ setOptions, data, pagination, setSelectedRow }: UsersTableProps) => {
+export const UsersTable = ({ setOptions, data, pagination, setSelectedRow, isLoading }: UsersTableProps) => {
   const handleOnSelect = (record: UsersListTypes) => {
     setSelectedRow(record);
   };
@@ -65,6 +65,7 @@ export const UsersTable = ({ setOptions, data, pagination, setSelectedRow }: Use
       onChange={setOptions}
       showSorterTooltip={false}
       rowSelection={getRowSelection()}
+      loading={isLoading}
     />
   );
 };
