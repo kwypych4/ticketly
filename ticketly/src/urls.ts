@@ -20,7 +20,7 @@ export const appUrls = {
   error: {
     base: '',
     pages: {
-      notFound: '*',
+      notFound: 'not-found',
       forbidden: 'forbidden',
     },
   },

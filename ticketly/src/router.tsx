@@ -27,7 +27,7 @@ export const Router = createBrowserRouter(
       </Route>
       <Route element={<ErrorLayout />}>
         <Route path={appRoutes.error.forbidden} element={<ForbiddenPage />} />
-        <Route path={appRoutes.error.notFound} element={<NotFoundPage />} />
+        <Route path='*' element={<NotFoundPage />} />
       </Route>
     </>
   )
