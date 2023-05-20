@@ -4,6 +4,7 @@ import { Request } from 'express';
 import fileUpload from 'express-fileupload';
 import { TicketSchema, UserSchema } from 'models';
 import moment from 'moment';
+import { isValidObjectId } from 'mongoose';
 import { AttachmentType, ResponseWithPagination, StatusType, TicketType, UserIdType, UserType } from 'types';
 import { errorHandler, slugify } from 'utils';
 
@@ -182,9 +183,13 @@ type OneTicketRequest = Request;
 type OneTicketResponse = TicketType;
 
 const getOneTicket = errorHandler<OneTicketRequest, OneTicketResponse>(async (req, _) => {
+  const isIdCorrect = isValidObjectId(req.params.id);
+
+  if (!isIdCorrect) throw new HttpError(404, 'Ticket not found');
+
   const ticket = await TicketSchema.findOne<TicketType>({ _id: req.params.id });
 
-  if (!ticket) throw new HttpError(400, 'Ticket not found');
+  if (!ticket) throw new HttpError(404, 'Ticket not found');
 
   const engineer = ticket.engineerId && (await UserSchema.findOne<UserType>({ _id: ticket.engineerId }));
   return {

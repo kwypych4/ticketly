@@ -3,6 +3,7 @@ import { Request } from 'express';
 import fileUpload from 'express-fileupload';
 import { CommentSchema, TicketSchema, UserSchema } from 'models';
 import moment from 'moment';
+import { isValidObjectId } from 'mongoose';
 import { AttachmentType, CommentType, TicketType, UserType } from 'types';
 import { errorHandler, slugify } from 'utils';
 
@@ -11,6 +12,10 @@ type CommentsRequest = Request;
 type CommentsResponse = CommentType[];
 
 const getComments = errorHandler<CommentsRequest, CommentsResponse>(async (req, _) => {
+  const isIdCorrect = isValidObjectId(req.params.ticketId);
+
+  if (!isIdCorrect) throw new HttpError(404, 'There are no comments for this ticket');
+
   const limit = Number(req.query.limit) || 25;
   const page = Number(req.query.page) || 1;
 
@@ -19,7 +24,7 @@ const getComments = errorHandler<CommentsRequest, CommentsResponse>(async (req, 
     .skip((page - 1) * limit)
     .sort({ created: -1 });
 
-  if (!comments) throw new HttpError(400, 'There are no comments for this ticket');
+  if (!comments) throw new HttpError(404, 'There are no comments for this ticket');
 
   const data = await Promise.all(
     comments.map(async ({ _id, ownerId, created, updated, content, ticket, attachments }) => {

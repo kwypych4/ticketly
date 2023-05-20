@@ -1,18 +1,19 @@
 import { users } from 'controllers';
 import express from 'express';
+import { verifyRole } from 'middlewares/verify-role';
 
 const router = express.Router();
 
-router.get('/', users.getUsers);
+router.get('/', verifyRole(['engineer', 'admin']), users.getUsers);
 
-router.get('/filters', users.getUsersFilters);
+router.get('/filters', verifyRole(['engineer', 'admin']), users.getUsersFilters);
 
-router.get('/:id', users.getOneUser);
+router.get('/:id', verifyRole(['admin']), users.getOneUser);
 
-router.post('/', users.createUser);
+router.post('/', verifyRole(['admin']), users.createUser);
 
-router.delete('/:id', users.deleteUser);
+router.delete('/:id', verifyRole(['admin']), users.deleteUser);
 
-router.patch('/:id', users.updateUser);
+router.patch('/:id', verifyRole(['admin']), users.updateUser);
 
 export const usersRouter = router;

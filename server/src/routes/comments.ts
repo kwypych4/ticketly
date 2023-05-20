@@ -5,9 +5,14 @@ import { verifyRole } from 'middlewares/verify-role';
 
 const router = express.Router();
 
-router.get('/:ticketId', comments.getComments);
-router.post('/:ticketId', uploadFile({ apiKeyName: 'attachments' }), comments.createComment);
-router.patch('/:id', comments.updateComment);
+router.get('/:ticketId', verifyRole(['user', 'engineer', 'admin']), comments.getComments);
+router.post(
+  '/:ticketId',
+  verifyRole(['engineer', 'admin']),
+  uploadFile({ apiKeyName: 'attachments' }),
+  comments.createComment
+);
+router.patch('/:id', verifyRole(['engineer', 'admin']), comments.updateComment);
 router.delete('/:id', verifyRole(['admin']), comments.deleteComment);
 
 export const commentsRouter = router;
