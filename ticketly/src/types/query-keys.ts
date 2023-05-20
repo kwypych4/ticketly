@@ -1,5 +1,7 @@
 export type QueryKeys =
   | 'ticketList'
+  | 'ticketListOwner'
+  | 'ticketListAssigned'
   | 'ticketDetails'
   | 'ticketFilters'
   | 'ticketComments'
