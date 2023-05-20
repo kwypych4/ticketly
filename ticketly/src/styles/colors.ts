@@ -1,4 +1,6 @@
-const dark = true;
+import { useUserStore } from 'store';
+
+const { isThemeDark } = useUserStore.getState();
 
 const colors = {
   white: '#ffffff',
@@ -15,14 +17,14 @@ const colors = {
 };
 
 export const palette = {
-  alpha: dark ? colors.darkToneInk : colors.whiteSolid,
-  bravo: dark ? colors.direWolf : colors.white,
-  charlie: dark ? colors.purpleIllusionist : colors.azure,
-  delta: dark ? colors.white : colors.trappedDarkness,
-  echo: dark ? colors.white : colors.pressAgent,
-  foxtrot: dark ? colors.purpleIllusionist : colors.ghostlyTuna,
-  golf: dark ? colors.bauhaus : colors.whiteSolid,
-  hotel: dark ? colors.bauhaus : colors.aliceBlue,
-  india: dark ? colors.pressAgent : colors.white,
-  juliett: dark ? colors.bauhaus : colors.white,
+  alpha: isThemeDark ? colors.darkToneInk : colors.whiteSolid,
+  bravo: isThemeDark ? colors.direWolf : colors.white,
+  charlie: isThemeDark ? colors.purpleIllusionist : colors.azure,
+  delta: isThemeDark ? colors.white : colors.trappedDarkness,
+  echo: isThemeDark ? colors.white : colors.pressAgent,
+  foxtrot: isThemeDark ? colors.purpleIllusionist : colors.ghostlyTuna,
+  golf: isThemeDark ? colors.bauhaus : colors.whiteSolid,
+  hotel: isThemeDark ? colors.bauhaus : colors.aliceBlue,
+  india: isThemeDark ? colors.pressAgent : colors.white,
+  juliett: isThemeDark ? colors.bauhaus : colors.white,
 };

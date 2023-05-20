@@ -11,9 +11,9 @@ export const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const isLoggedQuery = useCustomQuery(['checkLogin'], () => api.auth.checkLogin(), {
     onSuccess: ({ accessToken }) => {
       useAuthStore.setState({ isLogged: true, accessToken });
-      const { firstName, lastName, role, userId, username } = decodeToken(accessToken);
+      const { firstName, lastName, role, userId, username, isThemeDark } = decodeToken(accessToken);
 
-      useUserStore.setState({ firstName, lastName, role, userId, username });
+      useUserStore.setState({ firstName, lastName, role, userId, username, isThemeDark });
     },
     onError: () => {
       useAuthStore.setState({ isLogged: false, accessToken: '' });
