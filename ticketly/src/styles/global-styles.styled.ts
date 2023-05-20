@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
-import { button, form, table } from './components';
+import { button, form, modal, notification, select, table } from './components';
 
 export const GlobalStyle = createGlobalStyle` 
 
@@ -19,4 +19,7 @@ textarea {
   ${button}
   ${form}
   ${table}
+  ${select}
+  ${modal}
+  ${notification}
 `;

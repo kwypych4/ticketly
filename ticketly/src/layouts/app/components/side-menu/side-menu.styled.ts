@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { colors } from 'styles/colors';
+import { palette } from 'styles/colors';
 
 export const Wrapper = styled.div`
   position: sticky;
@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
   min-width: 220px;
   width: 280px;
   height: 100vh;
-  background-color: ${colors.white};
+  background-color: ${palette.bravo};
 `;
 export const MenuList = styled.ul`
   list-style: none;
@@ -26,13 +26,13 @@ export const MenuList = styled.ul`
       align-items: center;
       height: 100%;
       text-decoration: none;
-      color: ${colors.pressAgent};
+      color: ${palette.echo};
       border-radius: 15px;
       padding-left: 10px;
       transition: 0.3s linear;
 
       &:hover {
-        background-color: ${colors.azure}10;
+        background-color: ${palette.hotel};
         padding-left: 15px;
       }
       svg {
@@ -41,8 +41,8 @@ export const MenuList = styled.ul`
         margin-top: -4px;
       }
       &.active {
-        color: ${colors.white};
-        background-color: ${colors.azure};
+        color: ${palette.bravo};
+        background-color: ${palette.charlie};
       }
     }
   }

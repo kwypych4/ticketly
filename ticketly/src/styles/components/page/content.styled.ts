@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { colors } from 'styles';
+import { palette } from 'styles';
 
 const gap = 18;
 
@@ -11,7 +11,6 @@ export const PageContent = styled.div`
   width: 100%;
   flex-grow: 1;
   gap: ${gap}px;
-  /* flex-wrap: wrap; */
 `;
 
 export const PageItem = styled.div<PageItemProps>`
@@ -19,11 +18,11 @@ export const PageItem = styled.div<PageItemProps>`
   flex-direction: column;
   width: ${({ isHalf }) => (isHalf ? `calc(50% - ${gap / 2}px)` : `100%`)};
   border-radius: 20px;
-  background-color: ${colors.white};
+  background-color: ${palette.bravo};
   padding: 12px;
-  ${PageContent} {
-    flex-wrap: wrap;
-    background-color: blue;
+  h2,
+  h3 {
+    color: ${palette.delta};
   }
 
   &:nth-of-type(odd) {

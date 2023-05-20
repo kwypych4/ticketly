@@ -1,4 +1,5 @@
 import { css } from 'styled-components';
+import { palette } from 'styles';
 
 export const form = css`
   textarea.ant-input {
@@ -14,6 +15,7 @@ export const form = css`
 
     label {
       text-align: start !important;
+      color: ${palette.delta} !important;
     }
   }
 
@@ -21,6 +23,37 @@ export const form = css`
     gap: 18px;
     display: flex;
 
+    .ant-input,
+    .ant-input-number,
+    .ant-input-password {
+      background-color: ${palette.juliett};
+      color: ${palette.delta};
+      &:hover,
+      &:focus,
+      &-focused {
+        border-color: ${palette.charlie};
+      }
+      .ant-input-suffix {
+        .ant-input-password-icon {
+          color: ${palette.delta} !important;
+          &:hover {
+            color: ${palette.charlie} !important;
+          }
+        }
+      }
+      .ant-input-number-handler-wrap {
+        background-color: ${palette.juliett};
+        .ant-input-number-handler {
+          color: ${palette.delta} !important;
+          & > * {
+            &:hover {
+              color: ${palette.charlie};
+            }
+            color: ${palette.delta} !important;
+          }
+        }
+      }
+    }
     .ant-form-item:first-of-type {
       flex-grow: 1;
     }

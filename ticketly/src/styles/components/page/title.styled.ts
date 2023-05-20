@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { colors } from 'styles/colors';
+import { palette } from 'styles/colors';
 
 export const PageTitle = styled.div`
   display: flex;
@@ -9,7 +9,7 @@ export const PageTitle = styled.div`
   margin-bottom: 6px;
   h2 {
     margin: 0;
-    color: ${colors.trappedDarkness};
+    color: ${palette.delta};
     font-size: 30px;
   }
 

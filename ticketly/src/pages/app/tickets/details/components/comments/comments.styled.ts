@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { colors } from 'styles';
+import { palette } from 'styles';
 
 export const CommentsWrapper = styled.div`
   display: flex;
@@ -7,7 +7,7 @@ export const CommentsWrapper = styled.div`
   width: 70%;
   min-width: 500px;
   height: 100%;
-  border-right: 1px solid ${colors.ghostlyTuna};
+  border-right: 1px solid ${palette.golf};
   position: relative;
   overflow: hidden;
 `;

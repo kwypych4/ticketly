@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { colors } from 'styles';
+import { palette } from 'styles';
 
 export const InfoWrapper = styled.div`
   position: absolute;
@@ -12,11 +12,12 @@ export const InfoWrapper = styled.div`
 
   div {
     margin-bottom: 12px;
-    border-bottom: 1px solid ${colors.ghostlyTuna};
-    padding-left: 6px;
+    border-bottom: 1px solid ${palette.golf};
+    padding-left: 12px;
 
     .ant-select {
-      padding: 0;
+      padding: 6px 0 0 6px;
+      color: red;
     }
 
     .ant-image {
@@ -28,7 +29,7 @@ export const InfoWrapper = styled.div`
       height: 100%;
     }
     span {
-      color: ${colors.pressAgent};
+      color: ${palette.echo};
       margin: 0;
       padding-left: 0;
       font-size: 12px;
@@ -37,9 +38,10 @@ export const InfoWrapper = styled.div`
     h3,
     p {
       margin: 0;
-      padding: 0;
+      padding-top: 6px;
+      padding-left: 6px;
       margin-bottom: 12px;
-      color: ${colors.trappedDarkness};
+      color: ${palette.delta};
     }
   }
 `;
