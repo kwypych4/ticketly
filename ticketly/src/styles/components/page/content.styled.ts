@@ -15,6 +15,8 @@ export const PageContent = styled.div`
 `;
 
 export const PageItem = styled.div<PageItemProps>`
+  display: flex;
+  flex-direction: column;
   width: ${({ isHalf }) => (isHalf ? `calc(50% - ${gap / 2}px)` : `100%`)};
   border-radius: 20px;
   background-color: ${colors.white};
