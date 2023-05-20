@@ -55,7 +55,7 @@ export const Info = ({ data, filters, mutateTicket }: InfoProps) => {
           style={{ width: 220 }}
           onChange={handleEngineerChange}
           options={filters.engineers}
-          disabled={!checkPrivileges(['engineer'])}
+          disabled={!checkPrivileges(['admin', 'engineer'])}
         />
       </div>
       <div>
