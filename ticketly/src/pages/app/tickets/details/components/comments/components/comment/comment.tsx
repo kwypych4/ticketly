@@ -2,6 +2,7 @@ import { faPen, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Form, Image, Modal } from 'antd';
 import { api } from 'api';
+import { PrivateWrapper } from 'components/private-wrapper';
 import { useCustomMutation } from 'hooks';
 import moment from 'moment';
 import { useState } from 'react';
@@ -32,7 +33,9 @@ export const Comment = ({ commentData }: CommentProps) => {
         {updated && <span>(updated: {moment(updated).format('DD.MM.YYYY HH:mm')})</span>}
         <CommentButtons>
           <FontAwesomeIcon icon={faPen} onClick={() => setShowModal(true)} />
-          <FontAwesomeIcon icon={faTrashAlt} onClick={() => handleCommentDelete()} />
+          <PrivateWrapper privilegedRoles={['admin']}>
+            <FontAwesomeIcon icon={faTrashAlt} onClick={() => handleCommentDelete()} />
+          </PrivateWrapper>
         </CommentButtons>
       </CommentTitle>
       <CommentContent>{content}</CommentContent>
