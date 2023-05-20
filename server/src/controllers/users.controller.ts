@@ -29,8 +29,6 @@ type UsersResponseObjType = {
 type UsersResponse = ResponseWithPagination<UsersResponseObjType[]>;
 
 const getUsers = errorHandler<UsersRequest, UsersResponse>(async (req, _) => {
-  const totalElements = await UserSchema.countDocuments({});
-
   const limit = Number(req.query.limit) || 25;
   const page = Number(req.query.page) || 1;
 
@@ -61,7 +59,7 @@ const getUsers = errorHandler<UsersRequest, UsersResponse>(async (req, _) => {
   if (!users) throw new HttpError(400, 'Users not found');
   return {
     pagination: {
-      totalElements,
+      totalElements: users.length,
       limit,
       page,
     },
