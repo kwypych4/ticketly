@@ -1,5 +1,4 @@
 import { css } from 'styled-components';
- 
 
 export const form = css`
   textarea.ant-input {
@@ -8,6 +7,17 @@ export const form = css`
   .ant-form {
     display: flex;
     flex-direction: column;
+
+    .ant-switch {
+      width: unset;
+      display: inline-block;
+    }
+    button {
+      display: flex;
+      justify-content: center;
+      width: 120px;
+      align-self: flex-end;
+    }
   }
   .ant-form-item-row {
     display: flex;
@@ -23,6 +33,9 @@ export const form = css`
     gap: 18px;
     display: flex;
 
+    span {
+      color: ${({ theme }) => theme.delta};
+    }
     .ant-input,
     .ant-input-number,
     .ant-input-password {

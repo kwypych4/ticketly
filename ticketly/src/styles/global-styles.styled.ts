@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
-import { button, form, modal, notification, select, table } from './components';
+import { button, dropdown, form, modal, notification, select, switchButton, table } from './components';
 
 export const GlobalStyle = createGlobalStyle` 
 
@@ -21,4 +21,6 @@ textarea {
   ${select}
   ${modal}
   ${notification}
+  ${switchButton}
+  ${dropdown}
 `;

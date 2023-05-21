@@ -16,6 +16,7 @@ export const Wrapper = styled.div`
   justify-content: center;
   width: 100%;
   height: 100vh;
+  background-color: ${({ theme }) => theme.alpha};
 `;
 
 export const Spinner = styled.div`

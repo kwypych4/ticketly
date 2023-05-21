@@ -4,6 +4,7 @@ const gap = 18;
 
 type PageItemProps = {
   isHalf?: boolean;
+  width?: string;
 };
 export const PageContent = styled.div`
   display: flex;
@@ -12,10 +13,16 @@ export const PageContent = styled.div`
   gap: ${gap}px;
 `;
 
+const getWidth = ({ isHalf, width }: PageItemProps) => {
+  if (isHalf) return `calc(50% - ${gap / 2}px)`;
+  if (width) return width;
+  return '100%';
+};
+
 export const PageItem = styled.div<PageItemProps>`
   display: flex;
   flex-direction: column;
-  width: ${({ isHalf }) => (isHalf ? `calc(50% - ${gap / 2}px)` : `100%`)};
+  width: ${({ isHalf, width }) => getWidth({ isHalf, width })};
   border-radius: 20px;
   background-color: ${({ theme }) => theme.bravo};
   padding: 12px;
