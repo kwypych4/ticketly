@@ -42,7 +42,7 @@ const user = new Schema<UserType>({
   },
   isThemeDark: {
     type: Boolean,
-    required: false,
+    required: true,
     default: true,
   },
 });

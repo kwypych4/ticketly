@@ -119,6 +119,7 @@ const createUser = errorHandler<CreateUserRequest, CreateUserResponse>(async (re
     department: req.body?.department,
     position: req.body?.position,
     role: req.body?.role,
+    isThemeDark: true,
   });
 
   await userDocument.save();
@@ -150,7 +151,7 @@ type UpdateUserRequest = {
 type UpdateUserResponse = { success: boolean };
 
 const updateUser = errorHandler<UpdateUserRequest, UpdateUserResponse>(async (req, _) => {
-  const { department, firstName, lastName, position, role, password, isThemeDark } = req.body;
+  const { department, firstName, lastName, position, role, password } = req.body;
 
   const newPassword = password ? await hashPassword(password) : undefined;
 
@@ -165,17 +166,42 @@ const updateUser = errorHandler<UpdateUserRequest, UpdateUserResponse>(async (re
       ...(lastName && { lastName }),
       ...(position && { position }),
       ...(role && { role }),
-      ...(isThemeDark && { isThemeDark }),
       ...(newPassword && { password: newPassword }),
     },
   };
 
-  const ticket = await UserSchema.updateOne<UserType>({ _id: req.params.id }, updateParams);
+  const user = await UserSchema.updateOne<UserType>({ _id: req.params.id }, updateParams);
 
-  if (!ticket) throw new HttpError(400, 'User not found');
+  if (!user) throw new HttpError(400, 'User not found');
 
   return {
     success: true,
+  };
+});
+
+type UpdateUserThemeRequest = {
+  body: { isThemeDark?: boolean | undefined };
+} & Request;
+
+type UpdateUserThemeResponse = { isThemeDark: boolean };
+
+const updateUserTheme = errorHandler<UpdateUserThemeRequest, UpdateUserThemeResponse>(async (req, _) => {
+  const { isThemeDark } = req.body;
+
+  const updateParams = {
+    $set: {
+      updated: moment().toISOString(),
+      ...(isThemeDark && { isThemeDark }),
+    },
+  };
+
+  const { userId } = req.session;
+  const user = await UserSchema.updateOne<UserType>({ _id: userId }, updateParams);
+
+  if (!user) throw new HttpError(400, 'User not found');
+
+  return {
+    isThemeDark,
   };
 });
 
@@ -186,4 +212,5 @@ export const users = {
   createUser,
   deleteUser,
   updateUser,
+  updateUserTheme,
 };

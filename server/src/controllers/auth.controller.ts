@@ -48,7 +48,7 @@ const login = errorHandler<LoginRequest, LoginResponse>(async (req, res) => {
     username: userDocument?.username,
     firstName: userDocument.firstName,
     lastName: userDocument.lastName,
-    isThemeDark: userDocument.isThemeDark || true,
+    isThemeDark: userDocument.isThemeDark,
   });
 
   const refreshToken = createRefreshToken(userDocument.id, refreshTokenDocument.id);
@@ -89,7 +89,7 @@ const checkLogin = errorHandler<LoginRequest, LoginResponse>(async (req, res) =>
     firstName: userDocument.firstName,
     username: userDocument?.username,
     lastName: userDocument.lastName,
-    isThemeDark: userDocument.isThemeDark || true,
+    isThemeDark: userDocument.isThemeDark,
   });
 
   return {
@@ -189,7 +189,7 @@ const newRefreshToken = errorHandler<TokenRequest, TokenResponse>(async (req, _)
     firstName: userDocument.firstName,
     username: userDocument.username,
     lastName: userDocument.lastName,
-    isThemeDark: userDocument.isThemeDark || true,
+    isThemeDark: userDocument.isThemeDark,
   });
 
   return {
@@ -224,7 +224,7 @@ const newAccessToken = errorHandler<NewTokenRequest, NewTokenResponse>(async (re
     firstName: userDocument.firstName,
     username: userDocument.username,
     lastName: userDocument.lastName,
-    isThemeDark: userDocument.isThemeDark || true,
+    isThemeDark: userDocument.isThemeDark,
   });
 
   return {

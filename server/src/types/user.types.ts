@@ -11,5 +11,5 @@ export type UserType = {
   department: string;
   position: string;
   role: UserRoles;
-  isThemeDark?: boolean;
+  isThemeDark: boolean;
 };
