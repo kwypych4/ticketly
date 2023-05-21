@@ -1,8 +1,10 @@
-import { useUserStore } from 'store';
+import { Form } from 'antd';
 import { PageContent, PageItem, PageTitle, PageWrapper } from 'styles';
 
+import { SettingsForm } from './components';
+
 export const SettingsPage = () => {
-  const handleChange = useUserStore((state) => state.changeTheme);
+  const [form] = Form.useForm();
   return (
     <PageWrapper>
       <PageTitle>
@@ -11,7 +13,7 @@ export const SettingsPage = () => {
       <PageContent>
         <PageItem>
           <h2>Work in progress</h2>
-          <button onClick={handleChange}>CHange theme</button>
+          <SettingsForm form={form} />
         </PageItem>
       </PageContent>
     </PageWrapper>

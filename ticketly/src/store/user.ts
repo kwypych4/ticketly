@@ -8,15 +8,13 @@ type UserStateType = {
   lastName: string;
   role: UserRoles | '';
   isThemeDark: boolean;
-  changeTheme: () => void;
 };
 
-export const useUserStore = create<UserStateType>((set) => ({
+export const useUserStore = create<UserStateType>(() => ({
   userId: '',
   username: '',
   firstName: '',
   lastName: '',
   role: '',
   isThemeDark: false,
-  changeTheme: () => set((state) => ({ isThemeDark: !state.isThemeDark })),
 }));

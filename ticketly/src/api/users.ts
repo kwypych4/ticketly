@@ -4,6 +4,7 @@ import {
   DeleteUserResponseType,
   RequestParamsType,
   UpdateUserResponseType,
+  UpdateUserThemeResponseType,
   UserRoles,
   UsersFiltersTypes,
   UsersListTypes,
@@ -115,8 +116,33 @@ const updateUser = async ({
   return data;
 };
 
+type UpdateUserThemeResponse = UpdateUserThemeResponseType;
+type UpdateUserThemeRequest = {
+  isThemeDark: boolean;
+};
+type UpdateUserThemeReturn = Promise<UpdateUserThemeResponse>;
+type UpdateUserThemeProps = UpdateUserThemeRequest;
+
+const updateUserTheme = async ({ isThemeDark }: UpdateUserThemeProps): UpdateUserThemeReturn => {
+  const body = {
+    isThemeDark,
+  };
+
+  const { data } = await request<UpdateUserThemeResponse, UpdateUserThemeRequest>(
+    apiUrls.users.index(),
+    'PATCH',
+    {},
+    body
+  );
+
+  return data;
+};
+
 export const modify = {
   post: createUser,
   delete: deleteComment,
-  patch: updateUser,
+  patch: {
+    data: updateUser,
+    theme: updateUserTheme,
+  },
 };

@@ -13,7 +13,7 @@ export const EditUserForm = ({ form, setShowModal, currentData }: EditUserFormPr
 
   const filtersQuery = useCustomQuery(['userFilters'], api.users.filters.fetch);
 
-  const editUserMutation = useCustomMutation(api.users.modify.patch, {
+  const editUserMutation = useCustomMutation(api.users.modify.patch.data, {
     invalidateQueryKey: ['usersList'],
     onSuccess: () => {
       setShowModal(false);
