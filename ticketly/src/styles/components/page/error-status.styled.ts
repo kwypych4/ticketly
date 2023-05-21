@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { palette } from 'styles';
 
 export const ErrorStatus = styled.div`
   position: relative;
@@ -7,8 +6,8 @@ export const ErrorStatus = styled.div`
   width: 100%;
   margin: 0;
   padding: 0;
-  color: ${palette.echo};
-  background-color: ${palette.bravo};
+  color: ${({ theme }) => theme.echo};
+  background-color: ${({ theme }) => theme.bravo};
   font-size: 256px;
   p {
     padding: 0;

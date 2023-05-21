@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { palette } from 'styles';
 
 export const InfoWrapper = styled.div`
   position: absolute;
@@ -12,7 +11,7 @@ export const InfoWrapper = styled.div`
 
   div {
     margin-bottom: 12px;
-    border-bottom: 1px solid ${palette.golf};
+    border-bottom: 1px solid ${({ theme }) => theme.golf};
     padding-left: 12px;
 
     .ant-select {
@@ -29,7 +28,7 @@ export const InfoWrapper = styled.div`
       height: 100%;
     }
     span {
-      color: ${palette.echo};
+      color: ${({ theme }) => theme.echo};
       margin: 0;
       padding-left: 0;
       font-size: 12px;
@@ -41,7 +40,7 @@ export const InfoWrapper = styled.div`
       padding-top: 6px;
       padding-left: 6px;
       margin-bottom: 12px;
-      color: ${palette.delta};
+      color: ${({ theme }) => theme.delta};
     }
   }
 `;

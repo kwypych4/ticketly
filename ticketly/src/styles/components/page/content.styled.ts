@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { palette } from 'styles';
 
 const gap = 18;
 
@@ -18,11 +17,11 @@ export const PageItem = styled.div<PageItemProps>`
   flex-direction: column;
   width: ${({ isHalf }) => (isHalf ? `calc(50% - ${gap / 2}px)` : `100%`)};
   border-radius: 20px;
-  background-color: ${palette.bravo};
+  background-color: ${({ theme }) => theme.bravo};
   padding: 12px;
   h2,
   h3 {
-    color: ${palette.delta};
+    color: ${({ theme }) => theme.delta};
   }
 
   &:nth-of-type(odd) {

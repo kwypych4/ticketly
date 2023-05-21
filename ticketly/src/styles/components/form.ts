@@ -1,5 +1,5 @@
 import { css } from 'styled-components';
-import { palette } from 'styles';
+ 
 
 export const form = css`
   textarea.ant-input {
@@ -15,7 +15,7 @@ export const form = css`
 
     label {
       text-align: start !important;
-      color: ${palette.delta} !important;
+      color: ${({ theme }) => theme.delta} !important;
     }
   }
 
@@ -26,30 +26,30 @@ export const form = css`
     .ant-input,
     .ant-input-number,
     .ant-input-password {
-      background-color: ${palette.juliett};
-      color: ${palette.delta};
+      background-color: ${({ theme }) => theme.juliett};
+      color: ${({ theme }) => theme.delta};
       &:hover,
       &:focus,
       &-focused {
-        border-color: ${palette.charlie};
+        border-color: ${({ theme }) => theme.charlie};
       }
       .ant-input-suffix {
         .ant-input-password-icon {
-          color: ${palette.delta} !important;
+          color: ${({ theme }) => theme.delta} !important;
           &:hover {
-            color: ${palette.charlie} !important;
+            color: ${({ theme }) => theme.charlie} !important;
           }
         }
       }
       .ant-input-number-handler-wrap {
-        background-color: ${palette.juliett};
+        background-color: ${({ theme }) => theme.juliett};
         .ant-input-number-handler {
-          color: ${palette.delta} !important;
+          color: ${({ theme }) => theme.delta} !important;
           & > * {
             &:hover {
-              color: ${palette.charlie};
+              color: ${({ theme }) => theme.charlie};
             }
-            color: ${palette.delta} !important;
+            color: ${({ theme }) => theme.delta} !important;
           }
         }
       }

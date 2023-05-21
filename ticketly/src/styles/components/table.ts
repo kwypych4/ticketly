@@ -1,5 +1,4 @@
 import { css } from 'styled-components';
-import { palette } from 'styles';
 
 export const table = css`
   .ant-table-wrapper {
@@ -17,8 +16,8 @@ export const table = css`
           background-color: transparent;
           th {
             background-color: transparent;
-            color: ${palette.delta};
-            border-color: ${palette.golf};
+            color: ${({ theme }) => theme.delta};
+            border-color: ${({ theme }) => theme.golf};
 
             &::before {
               background-color: transparent !important;
@@ -28,7 +27,7 @@ export const table = css`
           thead {
             tr {
               td {
-                border-color: ${palette.golf};
+                border-color: ${({ theme }) => theme.golf};
               }
             }
           }
@@ -36,34 +35,34 @@ export const table = css`
             .ant-table-placeholder {
               background-color: transparent;
               .ant-empty-description {
-                color: ${palette.delta};
+                color: ${({ theme }) => theme.delta};
               }
             }
             td {
-              border-color: ${palette.golf};
+              border-color: ${({ theme }) => theme.golf};
 
               .ant-radio-wrapper .ant-radio-checked .ant-radio-inner {
-                border-color: ${palette.charlie};
-                background-color: ${palette.charlie};
+                border-color: ${({ theme }) => theme.charlie};
+                background-color: ${({ theme }) => theme.charlie};
               }
             }
             tr:hover {
-              background-color: ${palette.golf};
+              background-color: ${({ theme }) => theme.golf};
 
               td {
-                background-color: ${palette.golf};
+                background-color: ${({ theme }) => theme.golf};
               }
             }
           }
 
           td {
             background-color: transparent;
-            color: ${palette.delta};
+            color: ${({ theme }) => theme.delta};
             a {
-              color: ${palette.charlie};
+              color: ${({ theme }) => theme.charlie};
 
               &:hover {
-                color: ${palette.delta};
+                color: ${({ theme }) => theme.delta};
               }
             }
           }
@@ -74,15 +73,15 @@ export const table = css`
             background-color: transparent;
 
             a {
-              color: ${palette.charlie};
+              color: ${({ theme }) => theme.charlie};
             }
           }
           li {
             button {
-              color: ${palette.delta};
+              color: ${({ theme }) => theme.delta};
             }
 
-            border-color: ${palette.charlie};
+            border-color: ${({ theme }) => theme.charlie};
           }
         }
       }

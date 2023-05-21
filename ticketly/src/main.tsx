@@ -1,4 +1,5 @@
 import { App } from 'antd';
+import { CustomThemeProvider } from 'components';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -17,10 +18,12 @@ const queryClient = new QueryClient({
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <App>
-        <GlobalStyle />
-        <RouterProvider router={Router} />
-      </App>
+      <CustomThemeProvider>
+        <App>
+          <GlobalStyle />
+          <RouterProvider router={Router} />
+        </App>
+      </CustomThemeProvider>
     </QueryClientProvider>
   </React.StrictMode>
 );

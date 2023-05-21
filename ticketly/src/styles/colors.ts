@@ -28,3 +28,16 @@ export const palette = {
   india: isThemeDark ? colors.pressAgent : colors.white,
   juliett: isThemeDark ? colors.bauhaus : colors.white,
 };
+
+export const getPalette = (isThemeDark: boolean) => ({
+  alpha: isThemeDark ? colors.darkToneInk : colors.whiteSolid,
+  bravo: isThemeDark ? colors.direWolf : colors.white,
+  charlie: isThemeDark ? colors.purpleIllusionist : colors.azure,
+  delta: isThemeDark ? colors.white : colors.trappedDarkness,
+  echo: isThemeDark ? colors.white : colors.pressAgent,
+  foxtrot: isThemeDark ? colors.purpleIllusionist : colors.ghostlyTuna,
+  golf: isThemeDark ? colors.bauhaus : colors.whiteSolid,
+  hotel: isThemeDark ? colors.bauhaus : colors.aliceBlue,
+  india: isThemeDark ? colors.pressAgent : colors.white,
+  juliett: isThemeDark ? colors.bauhaus : colors.white,
+});

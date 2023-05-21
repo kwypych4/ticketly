@@ -9,7 +9,7 @@ export const PageTitle = styled.div`
   margin-bottom: 6px;
   h2 {
     margin: 0;
-    color: ${palette.delta};
+    color: ${({ theme }) => theme.delta};
     font-size: 30px;
   }
 

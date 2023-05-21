@@ -1,16 +1,16 @@
 import { css } from 'styled-components';
-import { palette } from 'styles';
+ 
 
 export const notification = css`
   .ant-notification {
     .ant-notification-notice {
-      background-color: ${palette.juliett};
+      background-color: ${({ theme }) => theme.juliett};
 
       .ant-notification-notice-message {
-        color: ${palette.delta};
+        color: ${({ theme }) => theme.delta};
       }
       .ant-notification-notice-close {
-        color: ${palette.echo};
+        color: ${({ theme }) => theme.echo};
       }
     }
   }

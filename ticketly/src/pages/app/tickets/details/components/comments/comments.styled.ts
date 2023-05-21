@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { palette } from 'styles';
 
 export const CommentsWrapper = styled.div`
   display: flex;
@@ -7,7 +6,7 @@ export const CommentsWrapper = styled.div`
   width: 70%;
   min-width: 500px;
   height: 100%;
-  border-right: 1px solid ${palette.golf};
+  border-right: 1px solid ${({ theme }) => theme.golf};
   position: relative;
   overflow: hidden;
 `;

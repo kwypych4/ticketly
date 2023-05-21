@@ -1,18 +1,18 @@
 import { css } from 'styled-components';
-import { palette } from 'styles';
+ 
 
 export const modal = css`
   .ant-modal {
     .ant-modal-content {
-      background-color: ${palette.bravo};
+      background-color: ${({ theme }) => theme.bravo};
       .ant-modal-close {
-        color: ${palette.echo};
+        color: ${({ theme }) => theme.echo};
       }
       .ant-modal-header {
-        background-color: ${palette.bravo};
+        background-color: ${({ theme }) => theme.bravo};
 
         .ant-modal-title {
-          color: ${palette.delta};
+          color: ${({ theme }) => theme.delta};
         }
       }
     }

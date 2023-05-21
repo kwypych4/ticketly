@@ -1,5 +1,4 @@
 import styled, { keyframes } from 'styled-components';
-import { palette } from 'styles';
 
 const rotate = keyframes`
   0% {
@@ -32,10 +31,10 @@ export const Spinner = styled.div`
     width: 64px;
     height: 64px;
     margin: 8px;
-    border: 8px solid ${palette.charlie};
+    border: 8px solid ${({ theme }) => theme.charlie};
     border-radius: 50%;
     animation: ${rotate} 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-    border-color: ${palette.charlie} transparent transparent transparent;
+    border-color: ${({ theme }) => theme.charlie} transparent transparent transparent;
 
     &:nth-child(1) {
       animation-delay: -0.45s;

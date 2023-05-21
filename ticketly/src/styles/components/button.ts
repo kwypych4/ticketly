@@ -1,7 +1,5 @@
 import { css } from 'styled-components';
 
-import { palette } from '../colors';
-
 export const button = css`
   button {
     display: flex;
@@ -10,39 +8,39 @@ export const button = css`
       margin-right: 6px;
     }
 
-    color: ${palette.bravo};
-    background-color: ${palette.charlie};
-
+    color: ${({ theme }) => theme.bravo};
+    background-color: ${({ theme }) => theme.charlie};
+    background-color: ${({ theme }) => theme.charlie};
     padding: 12px;
     height: 50%;
 
-    border: 1px solid ${palette.foxtrot};
+    border: 1px solid ${({ theme }) => theme.foxtrot};
     border-radius: 15px;
     font-size: 15px;
     cursor: pointer;
     transition: 0.15s linear;
     &:hover {
-      background-color: ${palette.charlie}a0;
-      color: ${palette.delta};
+      background-color: ${({ theme }) => theme.charlie}a0;
+      color: ${({ theme }) => theme.delta};
     }
   }
 
   .ant-btn-primary {
-    color: ${palette.bravo} !important;
-    background-color: ${palette.charlie} !important;
+    color: ${({ theme }) => theme.bravo} !important;
+    background-color: ${({ theme }) => theme.charlie} !important;
     &:hover {
-      border-color: ${palette.charlie}a0 !important;
-      background-color: ${palette.charlie}a0 !important;
-      color: ${palette.delta} !important;
+      border-color: ${({ theme }) => theme.charlie}a0 !important;
+      background-color: ${({ theme }) => theme.charlie}a0 !important;
+      color: ${({ theme }) => theme.delta} !important;
     }
   }
   .ant-btn-default {
-    color: ${palette.echo} !important;
-    background-color: ${palette.bravo} !important;
+    color: ${({ theme }) => theme.echo} !important;
+    background-color: ${({ theme }) => theme.bravo} !important;
     &:hover {
-      border-color: ${palette.charlie} !important;
-      background-color: ${palette.charlie}a0 !important;
-      color: ${palette.delta} !important;
+      border-color: ${({ theme }) => theme.charlie} !important;
+      background-color: ${({ theme }) => theme.charlie}a0 !important;
+      color: ${({ theme }) => theme.delta} !important;
     }
   }
 `;

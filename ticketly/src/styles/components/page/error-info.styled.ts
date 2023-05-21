@@ -1,14 +1,13 @@
 import styled from 'styled-components';
-import { palette } from 'styles';
 
 export const ErrorInfo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: ${palette.echo};
+  background-color: ${({ theme }) => theme.echo};
   height: 50%;
   width: 100%;
-  color: ${palette.foxtrot};
+  color: ${({ theme }) => theme.foxtrot};
   h1 {
     font-size: 64px;
   }

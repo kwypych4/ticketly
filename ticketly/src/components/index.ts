@@ -1,3 +1,4 @@
+export * from './custom-theme-provider';
 export * from './loading-spinner';
 export * from './private-wrapper';
 export * from './protected-route';

@@ -1,18 +1,17 @@
 import styled from 'styled-components';
-import { palette } from 'styles';
 
 export const CommentWrapper = styled.div`
   margin: 12px 24px;
   margin-right: 36px;
   align-self: center;
   min-height: 60px;
-  border-bottom: 1px solid ${palette.golf};
+  border-bottom: 1px solid ${({ theme }) => theme.golf};
   margin-bottom: 18px;
 `;
 
 export const CommentTitle = styled.div`
   display: flex;
-  color: ${palette.echo};
+  color: ${({ theme }) => theme.echo};
 
   span {
     font-size: 12px;
@@ -23,7 +22,7 @@ export const CommentContent = styled.div`
   font-size: 16px;
   margin: 6px 12px 18px 12px;
   width: 100%;
-  color: ${palette.delta};
+  color: ${({ theme }) => theme.delta};
 `;
 
 export const CommentAttachments = styled.div`
@@ -41,7 +40,7 @@ export const CommentButtons = styled.div`
     margin-left: 18px;
     cursor: pointer;
     &:hover {
-      color: ${palette.charlie};
+      color: ${({ theme }) => theme.charlie};
     }
   }
 `;

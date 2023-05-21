@@ -1,5 +1,4 @@
 import { css } from 'styled-components';
-import { palette } from 'styles';
 
 export const select = css`
   .ant-select {
@@ -7,31 +6,31 @@ export const select = css`
     &-open,
     &-focused {
       .ant-select-selector {
-        border-color: ${palette.charlie} !important;
+        border-color: ${({ theme }) => theme.charlie} !important;
       }
     }
     .ant-select-selection-item {
-      color: ${palette.delta} !important;
+      color: ${({ theme }) => theme.delta} !important;
     }
     border: none !important;
 
     .ant-select-selector {
-      background-color: ${palette.golf} !important;
+      background-color: ${({ theme }) => theme.golf} !important;
     }
   }
 
   .ant-select-dropdown {
-    background-color: ${palette.golf};
+    background-color: ${({ theme }) => theme.golf};
   }
 
   .ant-select-item-option {
-    color: ${palette.echo} !important;
+    color: ${({ theme }) => theme.echo} !important;
 
     &:hover {
-      background-color: ${palette.bravo} !important;
+      background-color: ${({ theme }) => theme.bravo} !important;
     }
     &-selected {
-      background-color: ${palette.india} !important;
+      background-color: ${({ theme }) => theme.india} !important;
     }
   }
 `;
