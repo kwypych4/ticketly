@@ -44,11 +44,15 @@ export const useCustomQuery = <QueryReturnType>(
         notification.warning({ message: error.response.data?.error });
       }
 
+      if (error.response?.status === 403 && error.response?.data.error === 'Your session has expired!') {
+        useAuthStore.setState({ isLogged: false, accessToken: '' });
+        notification.warning({ message: error.response.data?.error });
+        navigate(appRoutes.auth.login);
+      } else if (error.response?.status === 403) {
+        navigate(appRoutes.error.forbidden);
+      }
       if (error.response?.status === 404) {
         navigate(appRoutes.error.notFound);
-      }
-      if (error.response?.status === 403) {
-        navigate(appRoutes.error.forbidden);
       }
 
       if (options?.onError) {
