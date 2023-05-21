@@ -9,5 +9,5 @@ export const routesPrivileges: PrivilegesTypes = {
   [appRoutes.app.users]: ['admin', 'engineer'],
   [appRoutes.app.tickets.index]: ['admin', 'engineer'],
   [appRoutes.app.tickets.details]: ['admin', 'user', 'engineer'],
-  [appRoutes.app.settings]: ['admin'],
+  [appRoutes.app.settings]: ['admin', 'engineer', 'user'],
 };
