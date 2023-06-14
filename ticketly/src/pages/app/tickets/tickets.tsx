@@ -2,13 +2,11 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Form, Modal } from 'antd';
 import { api } from 'api';
-import { TableWrapper, TicketsTable } from 'components';
+import { TableWrapper, TicketForm, TicketsTable } from 'components';
 import { useCustomQuery } from 'hooks';
 import { useState } from 'react';
 import { PageContent, PageTitle, PageWrapper } from 'styles';
 import { RequestParamsType } from 'types';
-
-import { TicketForm } from './components';
 
 export const TicketsPage = () => {
   const [options, setOptions] = useState<RequestParamsType>({ page: 1, limit: 13 });
