@@ -12,7 +12,6 @@ export const SettingsPage = () => {
       </PageTitle>
       <PageContent>
         <PageItem>
-          <h2>Work in progress</h2>
           <SettingsForm form={form} />
         </PageItem>
       </PageContent>
