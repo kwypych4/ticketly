@@ -68,7 +68,7 @@ export const UserSection = () => {
           <FontAwesomeIcon icon={faChevronRight} />
         </div>
       </Dropdown>
-      <Modal title='Edit user' open={showModal} onOk={() => form.submit()} onCancel={() => setShowModal(false)}>
+      <Modal title='Change password' open={showModal} onOk={() => form.submit()} onCancel={() => setShowModal(false)}>
         <ChangePasswordForm setShowModal={setShowModal} form={form} />
       </Modal>
     </Container>
