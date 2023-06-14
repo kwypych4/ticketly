@@ -24,6 +24,7 @@ export const form = css`
     flex-direction: column;
 
     label {
+      font-weight: 700;
       text-align: start !important;
       color: ${({ theme }) => theme.delta} !important;
     }
@@ -35,6 +36,16 @@ export const form = css`
 
     span {
       color: ${({ theme }) => theme.delta};
+    }
+
+    .ant-upload-wrapper {
+      .ant-upload {
+        span.ant-upload {
+          button {
+            width: auto;
+          }
+        }
+      }
     }
     .ant-input,
     .ant-input-number,
@@ -52,6 +63,11 @@ export const form = css`
           &:hover {
             color: ${({ theme }) => theme.charlie} !important;
           }
+        }
+      }
+      .ant-input-number-input-wrap {
+        input {
+          color: ${({ theme }) => theme.delta} !important;
         }
       }
       .ant-input-number-handler-wrap {
