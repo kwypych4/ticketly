@@ -1,5 +1,8 @@
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Form, Modal } from 'antd';
 import { api } from 'api';
-import { PrivateWrapper, TableWrapper, TicketsBriefTable } from 'components';
+import { PrivateWrapper, TableWrapper, TicketForm, TicketsBriefTable } from 'components';
 import { useCustomQuery } from 'hooks';
 import { useState } from 'react';
 import { useUserStore } from 'store';
@@ -9,6 +12,8 @@ import { RequestParamsType } from 'types';
 export const Homepage = () => {
   const { userId } = useUserStore.getState();
   const [options, setOptions] = useState<RequestParamsType>({ page: 1, limit: 13 });
+  const [showModal, setShowModal] = useState(false);
+  const [form] = Form.useForm();
   const ticketsListQuery = useCustomQuery(['ticketListOwner', options], () =>
     api.tickets.list.fetch({ options, owner: userId })
   );
@@ -20,6 +25,12 @@ export const Homepage = () => {
     <PageWrapper>
       <PageTitle>
         <h2>Dashboard</h2>
+        <PrivateWrapper privilegedRoles={['user']}>
+          <button onClick={() => setShowModal(true)}>
+            <FontAwesomeIcon icon={faPlus} />
+            Add new ticket
+          </button>
+        </PrivateWrapper>
       </PageTitle>
       <PageContent>
         <PrivateWrapper privilegedRoles={['admin', 'engineer']}>
@@ -47,6 +58,10 @@ export const Homepage = () => {
           </TableWrapper>
         </PageItem>
       </PageContent>
+
+      <Modal title='Create new ticket' open={showModal} onOk={() => form.submit()} onCancel={() => setShowModal(false)}>
+        <TicketForm setShowModal={setShowModal} form={form} />
+      </Modal>
     </PageWrapper>
   );
 };
