@@ -10,7 +10,7 @@ import { FormInputs, TicketFormProps } from './ticket-form.types';
 
 export const TicketForm = ({ form, setShowModal }: TicketFormProps) => {
   const createTicketMutation = useCustomMutation(api.tickets.modify.post, {
-    invalidateQueryKey: ['ticketList'],
+    invalidateQueryKey: ['ticketList', 'ticketListOwner'],
     onSuccess: () => {
       setShowModal(false);
     },
