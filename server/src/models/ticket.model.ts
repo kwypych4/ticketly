@@ -12,10 +12,6 @@ const ticket = new Schema<TicketType>({
     type: String,
     required: false,
   },
-  categoryId: {
-    type: String,
-    required: true,
-  },
   engineerId: {
     type: String,
     required: false,
@@ -33,10 +29,6 @@ const ticket = new Schema<TicketType>({
     type: String,
     required: true,
     index: 'text',
-  },
-  estTime: {
-    type: Number,
-    required: true,
   },
   created: {
     type: Date,

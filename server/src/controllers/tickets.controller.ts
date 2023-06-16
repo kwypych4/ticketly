@@ -79,6 +79,8 @@ const getAllTickets = errorHandler<TicketsRequest, TicketsResponse>(async (req, 
     ...(title && { $text: { $search: title } }),
   };
 
+  const rawTickets = await TicketSchema.find<TicketType>(queryCondition);
+
   const tickets = await TicketSchema.find<TicketType>(queryCondition)
     .limit(limit)
     .skip((page - 1) * limit)
@@ -110,7 +112,7 @@ const getAllTickets = errorHandler<TicketsRequest, TicketsResponse>(async (req, 
 
   return {
     pagination: {
-      totalElements: data.length,
+      totalElements: rawTickets.length,
       limit,
       page,
     },
@@ -193,13 +195,11 @@ const getOneTicket = errorHandler<OneTicketRequest, OneTicketResponse>(async (re
 
   const engineer = ticket.engineerId && (await UserSchema.findOne<UserType>({ _id: ticket.engineerId }));
   return {
-    categoryId: ticket.categoryId,
     finished: ticket.finished,
     created: ticket.created,
     updated: ticket.updated,
     engineerId: ticket.engineerId,
     ...(engineer && { engineerName: `${engineer?.firstName} ${engineer?.lastName}` }),
-    estTime: ticket.estTime,
     owner: ticket.owner,
     ownerName: ticket.ownerName,
     priority: ticket.priority,

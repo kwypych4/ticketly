@@ -7,13 +7,11 @@ export type TicketType = {
   _id?: UserIdType;
   owner: UserIdType;
   ownerName: string;
-  categoryId: string;
   engineerId: UserIdType;
   engineerName?: string;
   priority: number;
   title: string;
   description: string;
-  estTime: number;
   created?: number;
   updated?: number;
   finished?: number;
