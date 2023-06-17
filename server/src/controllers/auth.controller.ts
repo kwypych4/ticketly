@@ -202,7 +202,6 @@ type NewTokenRequest = Request;
 
 type NewTokenResponse = {
   accessToken: string;
-  refreshToken: string;
 };
 
 const newAccessToken = errorHandler<NewTokenRequest, NewTokenResponse>(async (req) => {
@@ -229,7 +228,6 @@ const newAccessToken = errorHandler<NewTokenRequest, NewTokenResponse>(async (re
 
   return {
     accessToken,
-    refreshToken: refreshTokenCookie as string,
   };
 });
 
