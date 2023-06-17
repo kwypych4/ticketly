@@ -134,6 +134,7 @@ type DeleteUserRequest = Request;
 type DeleteUserResponse = { success: boolean };
 
 const deleteUser = errorHandler<DeleteUserRequest, DeleteUserResponse>(async (req, _) => {
+  if (String(req.userId) === req.params.id) throw new HttpError(403, `You can't delete your own account!`);
   await UserSchema.deleteOne({ _id: req.params.id });
   await RefreshTokenSchema.deleteMany({ owner: req.params.id });
 
@@ -204,6 +205,33 @@ const updateUserTheme = errorHandler<UpdateUserThemeRequest, UpdateUserThemeResp
     isThemeDark,
   };
 });
+type UpdateUserPasswordRequest = {
+  body: { password: string };
+} & Request;
+
+type UpdateUserPasswordResponse = { success: boolean };
+
+const updateUserPassword = errorHandler<UpdateUserPasswordRequest, UpdateUserPasswordResponse>(async (req, _) => {
+  const { password } = req.body;
+
+  const newPassword = password ? await hashPassword(password) : undefined;
+
+  const updateParams = {
+    $set: {
+      updated: moment().toISOString(),
+      ...(newPassword && { password: newPassword }),
+    },
+  };
+
+  const { userId } = req.session;
+  const user = await UserSchema.updateOne<UserType>({ _id: userId }, updateParams);
+
+  if (!user) throw new HttpError(400, 'User not found');
+
+  return {
+    success: true,
+  };
+});
 
 export const users = {
   getUsers,
@@ -213,4 +241,5 @@ export const users = {
   deleteUser,
   updateUser,
   updateUserTheme,
+  updateUserPassword,
 };
