@@ -11,4 +11,6 @@ export const environment = {
   accessTokenExpTime: process.env.ACCESS_TOKEN_EXP_TIME,
   refreshTokenExpTime: process.env.REFRESH_TOKEN_EXP_TIME,
   sessionSecret: process.env.SESSION_SECRET as string,
+  mongoDbUser: process.env.MONGO_DB_USER as string,
+  mongoDbPassword: process.env.MONGO_DB_PASSWORD as string,
 };
