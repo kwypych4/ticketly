@@ -3,6 +3,7 @@ import {
   CreateUserResponseTypes,
   DeleteUserResponseType,
   RequestParamsType,
+  UpdateUserPasswordResponseType,
   UpdateUserResponseType,
   UpdateUserThemeResponseType,
   UserRoles,
@@ -138,11 +139,34 @@ const updateUserTheme = async ({ isThemeDark }: UpdateUserThemeProps): UpdateUse
   return data;
 };
 
+type UpdateUserPasswordResponse = UpdateUserPasswordResponseType;
+type UpdateUserPasswordRequest = {
+  password: string;
+};
+type UpdateUserPasswordReturn = Promise<UpdateUserPasswordResponse>;
+type UpdateUserPasswordProps = UpdateUserPasswordRequest;
+
+const updateUserPassword = async ({ password }: UpdateUserPasswordProps): UpdateUserPasswordReturn => {
+  const body = {
+    password,
+  };
+
+  const { data } = await request<UpdateUserPasswordResponse, UpdateUserPasswordRequest>(
+    apiUrls.users.passwordUpdate(),
+    'PATCH',
+    {},
+    body
+  );
+
+  return data;
+};
+
 export const modify = {
   post: createUser,
   delete: deleteComment,
   patch: {
     data: updateUser,
     theme: updateUserTheme,
+    password: updateUserPassword,
   },
 };

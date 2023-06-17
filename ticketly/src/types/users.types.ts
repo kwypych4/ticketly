@@ -44,6 +44,11 @@ export type DeleteUserResponseType = {
 export type UpdateUserResponseType = {
   success: boolean;
 };
+
+export type UpdateUserPasswordResponseType = {
+  success: boolean;
+};
+
 export type UpdateUserThemeResponseType = {
   isThemeDark: string;
 };

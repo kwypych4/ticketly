@@ -1,15 +1,12 @@
 import { Form, Input } from 'antd';
 import { api } from 'api';
 import { useCustomMutation } from 'hooks';
-import { useUserStore } from 'store';
 
 import { getRepeatPasswordRules, validationSchema } from './password-form.schema';
 import { ChangePasswordFormProps, FormInputs } from './password-form.types';
 
 export const ChangePasswordForm = ({ form, setShowModal }: ChangePasswordFormProps) => {
-  const { userId } = useUserStore.getState();
-
-  const editUserMutation = useCustomMutation(api.users.modify.patch, {
+  const editUserMutation = useCustomMutation(api.users.modify.patch.password, {
     onSuccess: () => {
       setShowModal(false);
     },
@@ -21,7 +18,6 @@ export const ChangePasswordForm = ({ form, setShowModal }: ChangePasswordFormPro
 
   const handleFinish = () => {
     const payload = {
-      userId,
       password: form.getFieldValue(FormInputs.password),
     };
     editUserMutation.mutateAsync({ ...payload });

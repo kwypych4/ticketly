@@ -69,6 +69,7 @@ export const apiUrls = {
   },
   users: {
     index: url('users'),
+    passwordUpdate: url('users/change_password'),
     filters: url('users/filters'),
   },
 };
