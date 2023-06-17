@@ -15,6 +15,7 @@ router.post('/', verifyRole(['admin']), users.createUser);
 router.delete('/:id', verifyRole(['admin']), users.deleteUser);
 
 router.patch('/', verifyRole(['admin', 'engineer', 'user']), users.updateUserTheme);
+router.patch('/change_password', verifyRole(['admin', 'engineer', 'user']), users.updateUserPassword);
 router.patch('/:id', verifyRole(['admin']), users.updateUser);
 
 export const usersRouter = router;
