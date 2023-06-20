@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { useUserStore } from 'store';
 import { PageContent, PageItem, PageTitle, PageWrapper } from 'styles';
 import { RequestParamsType } from 'types';
+import { checkPrivileges } from 'utils';
 
 export const Homepage = () => {
   const { userId } = useUserStore.getState();
@@ -17,8 +18,12 @@ export const Homepage = () => {
   const ticketsListQuery = useCustomQuery(['ticketListOwner', options], () =>
     api.tickets.list.fetch({ options, owner: userId })
   );
-  const assignedTicketsListQuery = useCustomQuery(['ticketListAssigned', options], () =>
-    api.tickets.list.fetch({ options, engineer: userId })
+  const assignedTicketsListQuery = useCustomQuery(
+    ['ticketListAssigned', options],
+    () => api.tickets.list.fetch({ options, engineer: userId }),
+    {
+      enabled: checkPrivileges(['admin', 'engineer']),
+    }
   );
 
   return (
