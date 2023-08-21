@@ -10,6 +10,8 @@ module.exports = {
     'airbnb/hooks',
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
+    'plugin:testing-library/react',
+    'plugin:jest-dom/recommended',
   ],
   overrides: [],
   parser: '@typescript-eslint/parser',
@@ -18,7 +20,7 @@ module.exports = {
     sourceType: 'module',
     project: ['./tsconfig.json'],
   },
-  plugins: ['react', '@typescript-eslint', 'prettier', 'simple-import-sort'],
+  plugins: ['react', '@typescript-eslint', 'prettier', 'simple-import-sort', 'testing-library', 'jest-dom'],
   rules: {
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
