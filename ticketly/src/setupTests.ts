@@ -4,6 +4,9 @@ import { expect, vi } from 'vitest';
 
 expect.extend(matchers);
 
+const { getComputedStyle } = window;
+window.getComputedStyle = (elt) => getComputedStyle(elt);
+
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: vi.fn().mockImplementation((query) => ({
