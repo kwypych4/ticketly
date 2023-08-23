@@ -1,4 +1,5 @@
 import { ColumnsType } from 'antd/es/table';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { TicketsListTypes } from 'types';
 import { convertMinutes } from 'utils';
@@ -13,7 +14,7 @@ export const columns: ColumnsType<TicketsListTypes> = [
     title: 'Problem',
     dataIndex: 'title',
     key: 'title',
-    render: (text, record) => NavLink({ to: record.id, children: text }),
+    render: (text, record) => React.createElement(NavLink, { to: record.id }, text),
   },
   {
     title: 'Assigned To',
