@@ -13,7 +13,7 @@ export const columns: ColumnsType<TicketsListTypes> = [
     title: 'Problem',
     dataIndex: 'title',
     key: 'title',
-    render: (text, record) => <NavLink to={record.id}>{text}</NavLink>,
+    render: (text, record) => NavLink({ to: record.id, children: text }),
   },
   {
     title: 'Assigned To',
