@@ -1,7 +1,7 @@
 import { Table } from 'antd';
 import { TicketsTableProps } from 'types';
 
-import { columns } from './tickets.data';
+import { columns } from './tickets.config';
 
 export const TicketsTable = ({ setOptions, data, pagination, isLoading }: TicketsTableProps) => {
   return (
