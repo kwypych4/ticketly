@@ -1,32 +1,13 @@
-import { renderTable, screen } from 'utils';
+import { convertMinutes, renderTable, screen } from 'utils';
 import { describe, expect, test } from 'vitest';
 
 import { TicketsTable } from '.';
-import { columns } from './tickets.data';
+import { columns } from './tickets.config';
+import { mockData } from './tickets.mocks';
 
-const data = {
-  pagination: {
-    totalElements: 2,
-    limit: 13,
-    page: 1,
-  },
-  data: [
-    {
-      id: '648da26cd0154e2030ff1fb2',
-      ownerId: '648d9430f494ad396ebdabb8',
-      ownerName: 'Test Test',
-      title: 'Ticket test',
-      timeSpent: 1233,
-      status: 'new',
-      created: '2023-06-17T11:23:46.537Z',
-      updated: '2023-06-17T11:23:46.538Z',
-      finished: '1970-01-01T00:00:00.000Z',
-    },
-  ],
-};
 describe('tickets table renders correctly', () => {
   test('columns are rendering correctly', () => {
-    renderTable(<TicketsTable />, { tableData: data });
+    renderTable(<TicketsTable />, { tableData: mockData });
 
     const colsTitles = columns.map(({ title }) => title);
 
@@ -35,5 +16,27 @@ describe('tickets table renders correctly', () => {
     const areTitlesCorrect = colsTitles.every((title) => titlesFromScreen.includes(String(title)));
 
     expect(areTitlesCorrect).toBeTruthy();
+  });
+
+  test('rows are rendering correctly', () => {
+    renderTable(<TicketsTable />, { tableData: mockData });
+
+    const rows = screen.getAllByRole('row');
+
+    const mockDataLength = mockData.data?.length;
+
+    expect(mockDataLength === rows.length).toBeTruthy();
+
+    const assignedEngineer = mockData.data?.[0].engineer ? mockData.data[0].engineer : 'Not assigned';
+    const ownerName = mockData.data?.[0].ownerName;
+    const title = mockData.data?.[0].title;
+    const timeSpent = convertMinutes(mockData.data?.[0].timeSpent || 0);
+    const status =
+      String(mockData.data?.[0].status)[0].toLocaleUpperCase() + String(mockData.data?.[0].status).slice(1);
+
+    const firstRowFromMock = `${ownerName}${title}${assignedEngineer}${timeSpent}${status}`;
+    const firstRowFromScreen = rows[1].textContent;
+
+    expect(firstRowFromMock === firstRowFromScreen).toBeTruthy();
   });
 });
