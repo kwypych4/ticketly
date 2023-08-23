@@ -5,13 +5,13 @@ export type TicketsListTypes = {
   ownerId: string;
   ownerName: string;
   title: string;
-  engineerId: string;
-  engineer: string;
+  engineerId?: string;
+  engineer?: string;
   timeSpent: number | undefined;
-  status: number;
-  created: number | undefined;
-  updated: number | undefined;
-  finished: number | undefined;
+  status: string;
+  created: string | undefined;
+  updated: string | undefined;
+  finished: string | undefined;
 };
 
 export type TicketsTableProps = TableProps<TicketsListTypes>;
