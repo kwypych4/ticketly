@@ -1,8 +1,13 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import matchers from '@testing-library/jest-dom/matchers';
-import { expect, vi } from 'vitest';
+import { server } from 'mocks';
+import { afterAll, afterEach, beforeAll, expect, vi } from 'vitest';
 
 expect.extend(matchers);
+
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 const { getComputedStyle } = window;
 window.getComputedStyle = (elt) => getComputedStyle(elt);
