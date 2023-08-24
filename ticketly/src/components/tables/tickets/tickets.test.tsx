@@ -1,5 +1,5 @@
 import { convertMinutes, renderTable, screen } from 'utils';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vitest } from 'vitest';
 
 import { TicketsTable } from '.';
 import { columns } from './tickets.config';
@@ -38,5 +38,18 @@ describe('tickets table renders correctly', () => {
     const firstRowFromScreen = rows[1].textContent;
 
     expect(firstRowFromMock === firstRowFromScreen).toBeTruthy();
+  });
+
+  test('pagination is available', () => {
+    renderTable(<TicketsTable />, { tableData: mockData, setOptions: vitest.fn });
+
+    const changePageButtons: HTMLElement[] = screen
+      .getAllByRole('button')
+      .filter((button) => button.classList.contains('ant-pagination-item-link'));
+    const prevPageButton = changePageButtons[0];
+    const nextPageButton = changePageButtons[1];
+
+    expect(nextPageButton).toBeEnabled();
+    expect(prevPageButton).toBeDisabled();
   });
 });
