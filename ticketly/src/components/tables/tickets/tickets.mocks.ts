@@ -2,7 +2,7 @@ import { TableProps, TicketsListTypes } from 'types';
 
 export const mockData: TableProps<TicketsListTypes> = {
   pagination: {
-    totalElements: 2,
+    totalElements: 14,
     limit: 13,
     page: 1,
   },
@@ -11,7 +11,7 @@ export const mockData: TableProps<TicketsListTypes> = {
       id: '648da26cd0154e2030ff1fb1',
       ownerId: '648d9430f494ad396ebdabb8',
       ownerName: 'Test Test',
-      title: 'Ticket test',
+      title: 'First Page',
       timeSpent: 1233,
       status: 'new',
       created: '2023-06-17T11:23:46.537Z',
@@ -154,7 +154,7 @@ export const mockData: TableProps<TicketsListTypes> = {
       id: '648da26cd0154e2030ff1fb14',
       ownerId: '648d9430f494ad396ebdabb8',
       ownerName: 'Test Test',
-      title: 'Ticket test',
+      title: 'Second Page',
       timeSpent: 1233,
       status: 'new',
       created: '2023-06-17T11:23:46.537Z',
