@@ -44,6 +44,7 @@ module.exports = {
     '@typescript-eslint/naming-convention': 0,
     'react/require-default-props': 0,
     'import/no-cycle': 0,
+    'testing-library/no-debugging-utils': 1,
   },
   settings: {
     'import/resolver': {
